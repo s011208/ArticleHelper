@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/transparent_activity_dim_behind"
+    android:padding="@dimen/activity_act_editor_padding">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_background_color"
+        android:padding="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:id="@+id/highlight_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_act_editor_item_margin"
+                android:button="@drawable/high_light_icon"
+                android:gravity="center"
+                android:text="@string/activity_act_editor_add_into_highlight"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/edit_content_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/highlight_checkbox"
+                android:layout_margin="@dimen/activity_act_editor_item_margin"
+                android:paddingLeft="@dimen/activity_act_editor_text_paddingLeft"
+                android:textIsSelectable="true" />
+
+            <RelativeLayout
+                android:id="@+id/text_note_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_content_text"
+                android:layout_margin="@dimen/activity_act_editor_item_margin">
+
+                <TextView
+                    android:id="@+id/edit_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/edit_button"
+                    android:gravity="center"
+                    android:text="@string/activity_act_editor_click_to_edit_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/text_note_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/edit_button"
+                    android:paddingLeft="@dimen/activity_act_editor_text_paddingLeft" />
+
+            </RelativeLayout>
+
+            <GridView
+                android:id="@+id/image_note_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_note_area"
+                android:layout_margin="@dimen/activity_act_editor_item_margin"
+                android:drawSelectorOnTop="false"
+                android:horizontalSpacing="1dp"
+                android:listSelector="@null"
+                android:numColumns="@integer/activity_act_editor_grid_column_count"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="1dp">
+
+            </GridView>
+        </RelativeLayout>
+    </ScrollView>
+</FrameLayout>

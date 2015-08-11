@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.bj4.yhh.accountant.utils.TranslationHeaderLayout
+        android:id="@+id/translation_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_background_color">
+
+    </com.bj4.yhh.accountant.utils.TranslationHeaderLayout>
+
+    <com.bj4.yhh.accountant.utils.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="@dimen/floating_action_button_size"
+        android:layout_height="@dimen/floating_action_button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/floating_action_button_margin"
+        android:padding="@dimen/floating_action_button_shadow_layer_size" />
+
+    <include layout="@layout/display_act_content_menu"></include>
+
+</RelativeLayout>

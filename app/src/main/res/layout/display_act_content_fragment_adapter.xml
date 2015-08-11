@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ViewSwitcher
+        android:id="@+id/act_content_switcher"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_chapter_content"
+                style="@style/AppBaseTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/display_act_content_adapter_chapter_title_height"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="@dimen/display_act_content_fragment_chapter_title_textsize" />
+
+            <ImageView
+                android:id="@+id/chapter_is_important"
+                android:layout_width="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                android:layout_height="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                android:layout_alignBottom="@+id/txt_chapter_content"
+                android:layout_alignTop="@+id/txt_chapter_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/txt_chapter_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/thumb_up"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/chapter_has_text_note"
+                android:layout_width="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                android:layout_height="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                android:layout_alignBottom="@+id/txt_chapter_content"
+                android:layout_alignTop="@+id/txt_chapter_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/chapter_is_important"
+                android:scaleType="fitCenter"
+                android:src="@drawable/border_color_p"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/chapter_has_image_note"
+                android:layout_width="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                android:layout_height="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                android:layout_alignBottom="@+id/txt_chapter_content"
+                android:layout_alignTop="@+id/txt_chapter_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/chapter_has_text_note"
+                android:scaleType="fitCenter"
+                android:src="@drawable/orange_image_filter"
+                android:visibility="invisible" />
+
+            <View
+                android:id="@+id/chapter_under_line"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:layout_alignLeft="@+id/txt_chapter_content"
+                android:layout_alignRight="@+id/txt_chapter_content"
+                android:layout_below="@+id/txt_chapter_content"
+                android:background="@color/main_title_color"
+                android:paddingTop="3dp"></View>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/display_act_content_fragment_article_padding_left"
+            android:paddingRight="@dimen/display_act_content_fragment_article_padding_right">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_article_number"
+                    style="@style/AppBaseTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/display_act_content_adapter_article_title_height"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingBottom="3dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/display_act_content_fragment_article_content_textsize" />
+
+                <ImageView
+                    android:id="@+id/article_is_important"
+                    android:layout_width="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                    android:layout_height="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                    android:layout_alignBottom="@+id/txt_article_number"
+                    android:layout_alignTop="@+id/txt_article_number"
+                    android:layout_toRightOf="@+id/txt_article_number"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/thumb_up" />
+
+                <ImageView
+                    android:id="@+id/article_has_text_note"
+                    android:layout_width="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                    android:layout_height="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                    android:layout_alignBottom="@+id/txt_article_number"
+                    android:layout_alignTop="@+id/txt_article_number"
+                    android:layout_toRightOf="@+id/article_is_important"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/border_color_p" />
+
+                <ImageView
+                    android:id="@+id/article_has_image_note"
+                    android:layout_width="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                    android:layout_height="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                    android:layout_alignBottom="@+id/txt_article_number"
+                    android:layout_alignTop="@+id/txt_article_number"
+                    android:layout_toRightOf="@+id/article_has_text_note"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/orange_image_filter" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txt_article_content"
+                style="@style/AppBaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/display_act_content_item_bg"
+                android:textSize="@dimen/display_act_content_fragment_article_content_textsize" />
+
+        </LinearLayout>
+    </ViewSwitcher>
+</RelativeLayout>

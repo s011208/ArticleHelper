@@ -1,0 +1,56 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="selected_act_list_view_height">36dp</dimen>
+    <dimen name="selected_act_list_view_title_textsize">20sp</dimen>
+    <dimen name="selected_act_expandable_list_view_arrow_width">40dp</dimen>
+    <dimen name="search_act_fragment_search_bar_height">40dp</dimen>
+
+    <dimen name="main_card_fragment_card_container_margin">16dp</dimen>
+    <dimen name="main_card_fragment_card_container_item_padding">5dp</dimen>
+    <dimen name="main_card_fragment_card_container_swipe_threshold">16dp</dimen>
+    <dimen name="main_card_fragment_card_container_scroll_threshold">180dp</dimen>
+
+    <dimen name="select_act_list_loading_status_size">36dp</dimen>
+
+    <dimen name="display_act_content_fragment_act_title_textsize">24sp</dimen>
+    <dimen name="display_act_content_fragment_act_sub_title_textsize">13sp</dimen>
+    <dimen name="display_act_content_fragment_chapter_title_textsize">18sp</dimen>
+    <dimen name="display_act_content_fragment_article_content_textsize">15sp</dimen>
+    <dimen name="display_act_content_fragment_divider_height">5dp</dimen>
+    <dimen name="display_act_content_fragment_article_padding_left">20dp</dimen>
+    <dimen name="display_act_content_fragment_article_padding_right">20dp</dimen>
+    <dimen name="display_act_content_adapter_chapter_title_height">35dp</dimen>
+    <dimen name="display_act_content_adapter_article_title_height">32dp</dimen>
+    <dimen name="display_act_content_adapter_chapter_status_icon_size">25dp</dimen>
+
+    <dimen name="activity_act_editor_padding">10dp</dimen>
+    <dimen name="activity_act_editor_item_margin">5dp</dimen>
+    <dimen name="activity_act_editor_text_paddingLeft">15dp</dimen>
+    <dimen name="activity_act_editor_grid_size">60dp</dimen>
+    <dimen name="activity_act_editor_grid_resource_icon_padding">10dp</dimen>
+
+    <dimen name="dialog_title_padding">10dp</dimen>
+    <dimen name="dialog_content_layout_margin_h">13dp</dimen>
+    <dimen name="dialog_image_view_padding">3dp</dimen>
+
+    <dimen name="activity_image_wallpaper_action_bar_height">48dp</dimen>
+    <dimen name="activity_image_wallpaper_action_bar_item_padding">8dp</dimen>
+    <dimen name="activity_image_wallpaper_grid_h">1dp</dimen>
+
+    <dimen name="floating_action_button_size">60dp</dimen>
+    <dimen name="floating_action_button_margin">10dp</dimen>
+    <dimen name="floating_action_button_drawable_padding">10dp</dimen>
+    <dimen name="floating_action_button_shadow_layer_size">3dp</dimen>
+    <dimen name="floating_action_bar_custom_view_margin">3dp</dimen>
+
+    <dimen name="custom_progressbar_rect_item_radius">5dp</dimen>
+
+    <dimen name="menu_panel_bar_height">70dp</dimen>
+    <dimen name="menu_panel_item_image_size">65dp</dimen>
+    <dimen name="menu_panel_item_image_padding">15dp</dimen>
+    <dimen name="menu_panel_search_view_padding">3dp</dimen>
+    <dimen name="menu_panel_item_background_size">100dp</dimen>
+</resources>

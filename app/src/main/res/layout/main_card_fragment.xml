@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.bj4.yhh.accountant.fragments.cards.CardListView
+        android:id="@+id/card_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/main_card_fragment_card_container_margin"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/main_card_fragment_card_container_item_padding">
+
+    </com.bj4.yhh.accountant.fragments.cards.CardListView>
+
+</RelativeLayout>

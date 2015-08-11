@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_image_wallpaper_grid_h"
+    android:paddingRight="@dimen/activity_image_wallpaper_grid_h">
+
+    <ImageView
+        android:id="@+id/cell_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+</FrameLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_panel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="invisible">
+
+    <View
+        android:id="@+id/menu_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/menu_bg" />
+
+    <FrameLayout
+        android:id="@+id/menu_items_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_panel_bar_height"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:id="@+id/select_important"
+            android:layout_width="@dimen/menu_panel_item_image_size"
+            android:layout_height="@dimen/menu_panel_item_image_size"
+            android:background="@drawable/menu_item_bg_1"
+            android:padding="@dimen/menu_panel_item_image_padding"
+            android:scaleType="centerInside"
+            android:src="@drawable/white_thumb_up" />
+
+        <ImageView
+            android:id="@+id/select_note"
+            android:layout_width="@dimen/menu_panel_item_image_size"
+            android:layout_height="@dimen/menu_panel_item_image_size"
+            android:background="@drawable/menu_item_bg_2"
+            android:padding="@dimen/menu_panel_item_image_padding"
+            android:scaleType="centerInside"
+            android:src="@drawable/white_border_color" />
+
+        <ImageView
+            android:id="@+id/select_image"
+            android:layout_width="@dimen/menu_panel_item_image_size"
+            android:layout_height="@dimen/menu_panel_item_image_size"
+            android:background="@drawable/menu_item_bg_3"
+            android:padding="@dimen/menu_panel_item_image_padding"
+            android:scaleType="centerInside"
+            android:src="@drawable/white_image_filter" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_panel_bar_height"
+        android:layout_above="@+id/menu_items_bar">
+
+        <EditText
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:singleLine="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/search_view_bg"
+            android:gravity="center_vertical"
+            android:hint="@android:string/search_go"
+            android:textColor="@android:color/white"
+            android:textColorHint="#88ffffff"
+            android:textSize="20sp" />
+    </FrameLayout>
+</RelativeLayout>

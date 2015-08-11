@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="main_background_color">#eeeeee</color>
+    <color name="main_items_color">#808080</color>
+    <color name="main_icon_on_title_color">#000000</color>
+    <color name="main_title_color">#ff9900</color>
+    <color name="main_title_color_dark">#ff8800</color>
+    <color name="dialog_title_text_color">#eeeeee</color>
+    <color name="holo_blue_light">#33b5e5</color>
+    <color name="holo_blue_dark">#0099cc</color>
+</resources>

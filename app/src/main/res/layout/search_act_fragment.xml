@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <AutoCompleteTextView
+        android:id="@+id/auto"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_act_fragment_search_bar_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:ellipsize="end"
+        android:maxLength="20"></AutoCompleteTextView>
+
+    <com.bj4.yhh.accountant.utils.SunProgressBar
+        android:id="@+id/auto_loading_progress"
+        android:layout_width="@dimen/search_act_fragment_search_bar_height"
+        android:layout_height="@dimen/search_act_fragment_search_bar_height"
+        android:layout_alignBottom="@+id/auto"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/auto"
+        android:padding="3dp"
+        android:visibility="invisible" />
+
+    <ListView
+        android:id="@+id/selected_act_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/auto"
+        android:layout_margin="10dp"
+        android:visibility="gone"></ListView>
+
+    <ExpandableListView
+        android:id="@+id/expand_act_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/auto"></ExpandableListView>
+
+    <com.bj4.yhh.accountant.utils.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="@dimen/floating_action_button_size"
+        android:layout_height="@dimen/floating_action_button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/floating_action_button_shadow_layer_size" />
+</RelativeLayout>

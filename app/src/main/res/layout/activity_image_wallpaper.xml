@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/preview_pager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom"
+        android:background="#20000000"></android.support.v4.view.ViewPager>
+
+    <RelativeLayout
+        android:id="@+id/custom_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_image_wallpaper_action_bar_height"
+        android:background="#20000000">
+
+        <ImageView
+            android:id="@+id/action_bar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/activity_image_wallpaper_action_bar_item_padding"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_back" />
+
+        <ImageView
+            android:id="@+id/action_bar_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/activity_image_wallpaper_action_bar_item_padding"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_delete" />
+
+        <ImageView
+            android:id="@+id/action_bar_share"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/activity_image_wallpaper_action_bar_item_padding"
+            android:layout_toLeftOf="@+id/action_bar_delete"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_share" />
+
+    </RelativeLayout>
+
+</FrameLayout>
