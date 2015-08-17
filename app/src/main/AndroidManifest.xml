@@ -44,6 +44,10 @@
             android:name="com.bj4.yhh.accountant.database.ActProvider"
             android:authorities="com.bj4.yhh.accountant" />
 
+        <provider
+            android:name="com.bj4.yhh.accountant.database.PlanProvider"
+            android:authorities="com.bj4.yhh.accountant.PlanProvider" />
+
         <service android:name=".parse.service.ParseService" />
         <service android:name=".services.RetrieveActDataService" />
     </application>

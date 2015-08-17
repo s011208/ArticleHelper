@@ -2,11 +2,16 @@ package com.bj4.yhh.accountant.fragments.plan;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 
 import com.bj4.yhh.accountant.act.Act;
+import com.bj4.yhh.accountant.database.PlanProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by yenhsunhuang on 15/8/18.
@@ -43,7 +48,22 @@ public class Plan {
         mCurrentPlanProgress = currentProgress;
         mTotalItems = totalItem;
         mFinishedItem = finishedItem;
+    }
 
+    public static void insertOrUpdate(Context context, Plan plan) {
+        if (plan.mId == NO_ID) {
+            insert(context, plan);
+        } else {
+            update(context, plan);
+        }
+    }
+
+    private static void insert(Context context, Plan plan) {
+        context.getContentResolver().insert(getBaseUri(), plan.toContentValues());
+    }
+
+    private static void update(Context context, Plan plan) {
+        context.getContentResolver().update(getBaseUri(), plan.toContentValues(), ID + "=" + plan.mId, null);
     }
 
     public void initAct(Context context) {
@@ -94,5 +114,36 @@ public class Plan {
         cv.put(TOTAL_ITEMS, mTotalItems);
         cv.put(FINISHED_ITEM, mFinishedItem);
         return cv;
+    }
+
+    public static Uri getBaseUri() {
+        return Uri.parse("content://" + PlanProvider.AUTHORITY + "/" + PlanProvider.PATH_PLAN);
+    }
+
+    public static ArrayList<Plan> query(Context context) {
+        final ArrayList<Plan> rtn = new ArrayList<Plan>();
+        Cursor data = context.getContentResolver().query(getBaseUri(), null, null, null, null, null);
+        if (data != null) {
+            try {
+                final int indexOfId = data.getColumnIndex(ID);
+                final int indexOfActId = data.getColumnIndex(ACT_ID);
+                final int indexOfPlanOrder = data.getColumnIndex(PLAN_ORDER);
+                final int indexOfTotalPlanProgress = data.getColumnIndex(TOTAL_PLAN_PROGRESS);
+                final int indexOfCurrentPlanProgress = data.getColumnIndex(CURRENT_PLAN_PROGRESS);
+                final int indexOfTotalItem = data.getColumnIndex(TOTAL_ITEMS);
+                final int indexOfFinishedItem = data.getColumnIndex(FINISHED_ITEM);
+                while (data.moveToNext()) {
+                    Plan plan =
+                            new Plan(data.getLong(indexOfId), data.getLong(indexOfActId), data.getInt(indexOfPlanOrder)
+                                    , data.getInt(indexOfTotalPlanProgress), data.getInt(indexOfCurrentPlanProgress)
+                                    , data.getInt(indexOfTotalItem), data.getInt(indexOfFinishedItem));
+                    plan.initAct(context);
+                    rtn.add(plan);
+                }
+            } finally {
+                data.close();
+            }
+        }
+        return rtn;
     }
 }

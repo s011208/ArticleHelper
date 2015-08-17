@@ -20,21 +20,23 @@ public class PlanListAdapter extends BaseAdapter {
     }
 
     private void updateContent() {
+        mData.clear();
+        mData.addAll(Plan.query(mContext));
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return mData.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Plan getItem(int position) {
+        return mData.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
