@@ -53,4 +53,10 @@
     <dimen name="menu_panel_item_image_padding">15dp</dimen>
     <dimen name="menu_panel_search_view_padding">3dp</dimen>
     <dimen name="menu_panel_item_background_size">100dp</dimen>
+
+    <dimen name="main_entry_fragment_layout_margin">8dp</dimen>
+    <integer name="main_entry_fragment_grid_column_num">2</integer>
+    <dimen name="main_entry_fragment_grid_item_margin">5dp</dimen>
+    <dimen name="main_entry_fragment_grid_spacing">6dp</dimen>
+    <dimen name="main_entry_fragment_menu_icon_size">64dp</dimen>
 </resources>

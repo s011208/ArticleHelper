@@ -9,4 +9,23 @@
     <color name="dialog_title_text_color">#eeeeee</color>
     <color name="holo_blue_light">#33b5e5</color>
     <color name="holo_blue_dark">#0099cc</color>
+
+    <color name="menu_item_bg_1_np">#ff00f6</color>
+    <color name="menu_item_bg_1_p">#e100d9</color>
+    <color name="menu_item_bg_2_np">#ff9966</color>
+    <color name="menu_item_bg_2_p">#e1875a</color>
+    <color name="menu_item_bg_3_np">#009999</color>
+    <color name="menu_item_bg_3_p">#008787</color>
+    <color name="menu_item_bg_4_np">#00ff8c</color>
+    <color name="menu_item_bg_4_p">#00cc70</color>
+    <color name="menu_item_bg_5_np">#eb14ff</color>
+    <color name="menu_item_bg_5_p">#bc10cc</color>
+    <color name="menu_item_bg_6_np">#75fff1</color>
+    <color name="menu_item_bg_6_p">#5dccc0</color>
+    <color name="menu_item_bg_7_np">#ffc5b5</color>
+    <color name="menu_item_bg_7_p">#cc9d90</color>
+    <color name="menu_item_bg_8_np">#04ff00</color>
+    <color name="menu_item_bg_8_p">#03cc00</color>
+    <color name="menu_item_bg_9_np">#4c61ff</color>
+    <color name="menu_item_bg_9_p">#3d4dcc</color>
 </resources>

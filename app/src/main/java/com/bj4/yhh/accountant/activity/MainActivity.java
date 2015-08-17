@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.bj4.yhh.accountant.R;
+import com.bj4.yhh.accountant.fragments.entry.MainEntryFragment;
 import com.bj4.yhh.accountant.fragments.searchActs.SearchActFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
 import com.bj4.yhh.accountant.utils.SunProgressBar;
@@ -19,7 +20,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getFragmentManager().beginTransaction().replace(R.id.container, new SearchActFragment()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.container, new MainEntryFragment()).commit();
     }
 
     @Override

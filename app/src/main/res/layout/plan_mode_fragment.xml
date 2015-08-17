@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/button_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/add_new_plan"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/on_click_background"
+            android:gravity="center"
+            android:text="@string/plan_mode_fragment_add_new_plan" />
+
+        <Button
+            android:id="@+id/remove_all_plans"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/on_click_background"
+            android:gravity="center"
+            android:text="@string/plan_mode_fragment_remove_all_plans" />
+    </LinearLayout>
+
+    <ViewSwitcher
+        android:id="@+id/top_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button_area">
+
+
+        <ListView
+            android:id="@+id/plan_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></RelativeLayout>
+
+    </ViewSwitcher>
+</RelativeLayout>

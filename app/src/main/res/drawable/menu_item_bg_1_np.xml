@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
 
-    <solid android:color="#ff00f6" />
+    <solid android:color="@color/menu_item_bg_1_np" />
 
     <size
         android:width="@dimen/menu_panel_item_background_size"

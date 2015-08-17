@@ -32,4 +32,13 @@
         <item>Copy to</item>
         <item>Remove</item>
     </array>
+
+    <string name="menu_list_items_text_add_new_act">Add new act</string>
+    <string name="menu_list_items_text_plan_mode">Plan mode</string>
+    <string name="menu_list_items_text_test_mode">Test mode</string>
+    <string name="menu_list_items_text_review_mode">Review mode</string>
+    <string name="menu_list_items_text_update_acts">Update acts</string>
+
+    <string name="plan_mode_fragment_add_new_plan">Add new plan</string>
+    <string name="plan_mode_fragment_remove_all_plans">Remove all plans</string>
 </resources>

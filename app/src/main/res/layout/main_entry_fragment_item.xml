@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bj4.yhh.accountant.utils.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_entry_item_click_bg">
+
+    <ImageView
+        android:id="@+id/menu_icon"
+        android:layout_width="@dimen/main_entry_fragment_menu_icon_size"
+        android:layout_height="@dimen/main_entry_fragment_menu_icon_size"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/menu_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/menu_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="4dp"
+        android:ellipsize="end"
+        android:gravity="top|center_horizontal"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+</com.bj4.yhh.accountant.utils.SquareRelativeLayout>

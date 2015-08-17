@@ -155,6 +155,13 @@ public class Act implements Comparable<Act> {
         return rtn;
     }
 
+    public static Act queryActById(Context context, long id) {
+        ArrayList<Act> items = query(context, null, ActDatabase.ID + "=" + id, null, null);
+        if (items.isEmpty())
+            return null;
+        else return items.get(0);
+    }
+
     public static int update(Context context, ContentValues values, String selection, String[] selectionArgs) {
         int rtn = context.getContentResolver().update(getBaseUri(), values, selection, selectionArgs);
         return rtn;

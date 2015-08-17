@@ -24,14 +24,6 @@
         android:padding="3dp"
         android:visibility="invisible" />
 
-    <ListView
-        android:id="@+id/selected_act_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/auto"
-        android:layout_margin="10dp"
-        android:visibility="gone"></ListView>
-
     <ExpandableListView
         android:id="@+id/expand_act_list"
         android:layout_width="match_parent"

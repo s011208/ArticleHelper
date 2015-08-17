@@ -64,8 +64,6 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
 
     private AutoCompleteTextView mAutoCompleteTextView;
 
-    private ListView mSelectedList;
-    private SelectedActListAdapter mSelectedActListAdapter;
     private SunProgressBar mAutoCompleteLoadingProgressBar;
     private ExpandableListView mExpandableListView;
     private ExpandableActListAdapter mExpandableActListAdapter;
@@ -102,9 +100,6 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
     }
 
     private void setActData() {
-        if (mSelectedActListAdapter != null) {
-            mSelectedActListAdapter.notifyDataSetChanged();
-        }
         if (mExpandableActListAdapter != null) {
             mExpandableActListAdapter.updateContent();
             mExpandableActListAdapter.notifyDataSetChanged();
@@ -144,10 +139,9 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
                 if (retrieveSuccess) {
                     String resultTitle = intent.getStringExtra(RetrieveActDataService.EXTRA_RETRIEVE_ACT_DATA_TITLE);
                     if (resultTitle == null) return;
-                    if (mSelectedActListAdapter != null) {
-                        if (DEBUG)
-                            Log.v(TAG, "mSelectedActListAdapter.notifyDataSetChanged");
-                        mSelectedActListAdapter.notifyDataSetChanged();
+                    if (mExpandableActListAdapter != null) {
+                        mExpandableActListAdapter.updateContent();
+                        mExpandableActListAdapter.notifyDataSetChanged();
                     }
                 } else {
                     // ignore
@@ -173,7 +167,6 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.search_act_fragment, null);
         initAutoCompleteTextView(root);
-        initSelectedList(root);
         initExpandedListView(root);
         initFloatingActionButton(root);
         return root;
@@ -270,30 +263,6 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
                 imm.hideSoftInputFromWindow(mAutoCompleteTextView.getWindowToken(), 0);
             }
         }
-    }
-
-    private void initSelectedList(View root) {
-        mSelectedList = (ListView) root.findViewById(R.id.selected_act_list);
-        mSelectedActListAdapter = new SelectedActListAdapter(getActivity());
-        mSelectedList.setAdapter(mSelectedActListAdapter);
-        mSelectedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Act clickedItem = (Act) parent.getItemAtPosition(position);
-                showActContent(clickedItem);
-            }
-        });
-        mSelectedList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Act clickedItem = (Act) parent.getItemAtPosition(position);
-                // TODO show confirm dialog in advance
-                Act.deleteAct(getActivity(), clickedItem);
-                mSelectedActListAdapter.notifyDataSetChanged();
-                return false;
-            }
-        });
-        setActData();
     }
 
     private void initAutoCompleteTextView(View root) {

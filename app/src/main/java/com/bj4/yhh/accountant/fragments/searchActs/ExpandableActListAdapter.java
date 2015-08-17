@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.act.Act;
@@ -138,17 +139,20 @@ public class ExpandableActListAdapter extends BaseExpandableListAdapter {
             holder = new ChildViewHolder();
             convertView = mInflater.inflate(R.layout.expandable_folder_child_view, null);
             holder.mTitle = (TextView) convertView.findViewById(R.id.child_txt);
+            holder.mStatusSwitcher = (ViewSwitcher) convertView.findViewById(R.id.act_loading_status);
             convertView.setTag(holder);
         } else {
             holder = (ChildViewHolder) convertView.getTag();
         }
         Act child = getChild(groupPosition, childPosition);
         holder.mTitle.setText(child.getTitle());
+        holder.mStatusSwitcher.setDisplayedChild(child.hasLoadedSuccess() ? 1 : 0);
         return convertView;
     }
 
     private static class ChildViewHolder {
         TextView mTitle;
+        ViewSwitcher mStatusSwitcher;
     }
 
     @Override

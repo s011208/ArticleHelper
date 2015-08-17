@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:background="@drawable/on_click_background"
-    android:orientation="horizontal">
+    android:background="@drawable/on_click_background">
+
+    <ViewSwitcher
+        android:id="@+id/act_loading_status"
+        android:layout_width="@dimen/select_act_list_loading_status_size"
+        android:layout_height="@dimen/select_act_list_loading_status_size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:padding="2dp">
+
+        <com.bj4.yhh.accountant.utils.SunProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/loading_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/orange_check_all" />
+    </ViewSwitcher>
 
     <TextView
         android:id="@+id/child_txt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/act_loading_status"
         android:gravity="center_vertical"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
-</LinearLayout>
+</RelativeLayout>
