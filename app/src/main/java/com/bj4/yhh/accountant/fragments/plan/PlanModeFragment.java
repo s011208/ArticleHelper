@@ -1,6 +1,7 @@
 package com.bj4.yhh.accountant.fragments.plan;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,15 @@ import android.widget.ListView;
 import android.widget.ViewSwitcher;
 
 import com.bj4.yhh.accountant.R;
+import com.bj4.yhh.accountant.activity.MainActivity;
 import com.bj4.yhh.accountant.utils.BaseFragment;
 
 /**
  * Created by yenhsunhuang on 15/8/17.
  */
 public class PlanModeFragment extends BaseFragment implements View.OnClickListener {
+    private static final String TAG = "PlanModeFragment";
+    private static final boolean DEBUG = true;
     private PlanListAdapter mPlanListAdapter;
 
     @Override
@@ -42,7 +46,14 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         final int vId = v.getId();
         if (vId == R.id.add_new_plan) {
+            if (DEBUG) {
+                Log.d(TAG, "add_new_plan");
+            }
+            getFragmentManager().beginTransaction().replace(MainActivity.getMainFragmentContainerId(), new AddPlanFragment()).addToBackStack(null).commit();
         } else if (vId == R.id.remove_all_plans) {
+            if (DEBUG) {
+                Log.d(TAG, "remove_all_plans");
+            }
         }
     }
 }

@@ -22,8 +22,6 @@ public class PlanProvider extends ContentProvider {
     private static final boolean DEBUG = true;
     private static final String TAG = "PlanProvider";
 
-    private PlanDatabase mPlanDatabase;
-
     public static final String AUTHORITY = "com.bj4.yhh.accountant.PlanProvider";
 
     public static final String PATH_PLAN = "path_plan";
@@ -37,7 +35,6 @@ public class PlanProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mPlanDatabase = PlanDatabase.getInstance(getContext());
         return true;
     }
 
@@ -45,7 +42,7 @@ public class PlanProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         switch (URI_MATCHER.match(uri)) {
             case CODE_PLAN:
-                return mPlanDatabase.getDataBase().query(PlanDatabase.TABLE_PLAN, projection, selection, selectionArgs, null, null, sortOrder);
+                return PlanDatabase.getInstance(getContext()).getDataBase().query(PlanDatabase.TABLE_PLAN, projection, selection, selectionArgs, null, null, sortOrder);
         }
         return null;
     }
@@ -59,7 +56,7 @@ public class PlanProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         switch (URI_MATCHER.match(uri)) {
             case CODE_PLAN:
-                return ContentUris.withAppendedId(uri, mPlanDatabase.getDataBase().insert(PlanDatabase.TABLE_PLAN, null, values));
+                return ContentUris.withAppendedId(uri, PlanDatabase.getInstance(getContext()).getDataBase().insert(PlanDatabase.TABLE_PLAN, null, values));
         }
         return null;
     }
@@ -68,7 +65,7 @@ public class PlanProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         switch (URI_MATCHER.match(uri)) {
             case CODE_PLAN:
-                return mPlanDatabase.getDataBase().delete(PlanDatabase.TABLE_PLAN, selection, selectionArgs);
+                return PlanDatabase.getInstance(getContext()).getDataBase().delete(PlanDatabase.TABLE_PLAN, selection, selectionArgs);
         }
         return 0;
     }
@@ -77,7 +74,7 @@ public class PlanProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         switch (URI_MATCHER.match(uri)) {
             case CODE_PLAN:
-                return mPlanDatabase.getDataBase().update(PlanDatabase.TABLE_PLAN, values, selection, selectionArgs);
+                return PlanDatabase.getInstance(getContext()).getDataBase().update(PlanDatabase.TABLE_PLAN, values, selection, selectionArgs);
         }
         return 0;
     }
@@ -103,6 +100,7 @@ public class PlanProvider extends ContentProvider {
         public PlanDatabase(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             mContext = context;
+            mDb = getWritableDatabase();
             createTableActsFolder();
         }
 

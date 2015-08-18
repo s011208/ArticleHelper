@@ -211,4 +211,16 @@ public class Act implements Comparable<Act> {
             Article.deleteByChapterId(context, chapter.mId);
         }
     }
+
+    public static int getArticleCount(Context context
+            , Act act) {
+        if (act.getChapters().isEmpty()) {
+            queryAllActContent(context, act);
+        }
+        int count = 0;
+        for (Chapter chapter : act.getChapters()) {
+            count += chapter.getArticles().size();
+        }
+        return count;
+    }
 }

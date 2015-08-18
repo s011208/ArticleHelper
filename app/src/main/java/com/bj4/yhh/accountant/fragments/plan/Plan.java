@@ -25,6 +25,9 @@ public class Plan {
     public static final String TOTAL_ITEMS = "total_items";
     public static final String FINISHED_ITEM = "finished_item";
 
+    public static final int ORDER_BY_ARTICLE = 0;
+    public static final int ORDER_BY_RANDOM = 1;
+
     public static final long NO_ID = -1;
     public long mId;
     public long mActId;

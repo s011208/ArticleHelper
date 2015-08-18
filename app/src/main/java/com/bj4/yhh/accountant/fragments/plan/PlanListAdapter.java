@@ -41,6 +41,6 @@ public class PlanListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        return new View(mContext);
     }
 }

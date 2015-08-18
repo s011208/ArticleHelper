@@ -6,21 +6,25 @@ import android.util.Log;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.fragments.entry.MainEntryFragment;
-import com.bj4.yhh.accountant.fragments.searchActs.SearchActFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
-import com.bj4.yhh.accountant.utils.SunProgressBar;
 
 
 public class MainActivity extends BaseActivity {
     private static final boolean DEBUG = true;
+    private static int sContainerId;
     private static final String TAG = "MainActivity";
     public static final int REQUEST_EDIT_ACT_CONTENT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sContainerId = R.id.container;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getFragmentManager().beginTransaction().replace(R.id.container, new MainEntryFragment()).commit();
+    }
+
+    public static int getMainFragmentContainerId() {
+        return sContainerId;
     }
 
     @Override
