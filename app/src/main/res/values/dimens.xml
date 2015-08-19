@@ -59,4 +59,8 @@
     <dimen name="main_entry_fragment_grid_item_margin">5dp</dimen>
     <dimen name="main_entry_fragment_grid_spacing">6dp</dimen>
     <dimen name="main_entry_fragment_menu_icon_size">64dp</dimen>
+
+    <dimen name="add_plan_fragment_container_padding">12dp</dimen>
+    <dimen name="add_plan_fragment_item_text_size">18sp</dimen>
+    <dimen name="add_plan_fragment_item_margin_v">12dp</dimen>
 </resources>

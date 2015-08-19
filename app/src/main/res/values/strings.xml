@@ -41,4 +41,12 @@
 
     <string name="plan_mode_fragment_add_new_plan">Add new plan</string>
     <string name="plan_mode_fragment_remove_all_plans">Remove all plans</string>
+    <string name="add_plan_fragment_act_name">Act name</string>
+    <string name="add_plan_fragment_total_plan_day">Total plan days</string>
+    <string name="add_plan_fragment_order">Order</string>
+    <string name="add_plan_fragment_total_article_count">Article count</string>
+    <array name="add_plan_fragment_order">
+        <item>by article</item>
+        <item>by random</item>
+    </array>
 </resources>

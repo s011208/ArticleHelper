@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/add_plan_fragment_container_padding">
+
+    <LinearLayout
+        android:id="@+id/button_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/on_click_background"
+            android:gravity="center"
+            android:text="@android:string/cancel" />
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/on_click_background"
+            android:gravity="center"
+            android:text="@android:string/ok" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button_area"
+        android:layout_alignParentTop="true"
+        android:foregroundGravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/add_plan_fragment_item_margin_v"
+                android:layout_marginTop="@dimen/add_plan_fragment_item_margin_v"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/add_plan_fragment_act_name"
+                    android:textSize="@dimen/add_plan_fragment_item_text_size" />
+
+                <Spinner
+                    android:id="@+id/act_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"></Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/add_plan_fragment_item_margin_v"
+                android:layout_marginTop="@dimen/add_plan_fragment_item_margin_v"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/add_plan_fragment_total_plan_day"
+                    android:textSize="@dimen/add_plan_fragment_item_text_size" />
+
+                <EditText
+                    android:id="@+id/total_day"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:numeric="integer"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"></EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/add_plan_fragment_item_margin_v"
+                android:layout_marginTop="@dimen/add_plan_fragment_item_margin_v"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/add_plan_fragment_order"
+                    android:textSize="@dimen/add_plan_fragment_item_text_size" />
+
+                <Spinner
+                    android:id="@+id/act_order_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"></Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/add_plan_fragment_item_margin_v"
+                android:layout_marginTop="@dimen/add_plan_fragment_item_margin_v"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/add_plan_fragment_total_article_count"
+                    android:textSize="@dimen/add_plan_fragment_item_text_size" />
+
+                <TextView
+                    android:id="@+id/total_article_counr"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
