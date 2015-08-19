@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/add_plan_fragment_container_padding">
 
     <LinearLayout
         android:id="@+id/button_area"
@@ -29,17 +30,29 @@
             android:text="@string/plan_mode_fragment_remove_all_plans" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/sep"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/button_area"
+        android:layout_marginBottom="@dimen/add_plan_fragment_container_padding"
+        android:layout_marginTop="@dimen/add_plan_fragment_container_padding"
+        android:background="@color/main_title_color"></View>
+
     <ViewSwitcher
         android:id="@+id/top_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/button_area">
+        android:layout_above="@+id/sep">
 
 
         <ListView
             android:id="@+id/plan_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="16dp"
+            android:listSelector="@drawable/on_click_background"></ListView>
 
         <RelativeLayout
             android:layout_width="match_parent"

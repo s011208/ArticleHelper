@@ -47,6 +47,8 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
         for (Act act : acts) {
             actsName.add(act.getTitle());
         }
+        if (!acts.isEmpty())
+            mSelectedAct = acts.get(0);
         ArrayAdapter<String> actSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, actsName);
         actSpinner.setAdapter(actSpinnerAdapter);
         actSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -124,8 +126,9 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
                 Log.d(TAG, "ok");
             }
             final int totalProgress = mTotalArticleCount / mTotalPlanDay + 1;
-            Plan addPlan = new Plan(mSelectedAct.getId(), mOrderBy, totalProgress, 0, mTotalArticleCount, 0);
-            Plan.insertOrUpdate(getActivity(), addPlan);
+            Plan plan = new Plan(mSelectedAct.getId(), mOrderBy, totalProgress, 0, mTotalArticleCount, 0);
+            if (DEBUG) Log.v(TAG, "plan: " + plan.toString());
+            Plan.insertOrUpdate(getActivity(), plan);
             getActivity().onBackPressed();
         } else if (vId == R.id.cancel) {
             if (DEBUG) {

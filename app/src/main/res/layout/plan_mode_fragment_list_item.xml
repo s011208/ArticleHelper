@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/top_area"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
+
+
+        <ImageView
+            android:id="@+id/outline_btn"
+            android:layout_width="@dimen/plan_mode_fragment_outline_icon_size"
+            android:layout_height="@dimen/plan_mode_fragment_outline_icon_size"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/orange_outline" />
+
+        <TextView
+            android:id="@+id/act_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/outline_btn"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/plan_mode_fragment_list_act_title_text_size" />
+
+        <TextView
+            android:id="@+id/plan_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/act_title"
+            android:layout_toLeftOf="@+id/outline_btn"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/plan_mode_fragment_list_act_title_text_size" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/plan_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@+id/top_area"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="8dp"
+        android:progress="10"
+        android:progressDrawable="@drawable/orange_progress_bar" />
+
+    <RelativeLayout
+        android:id="@+id/progress_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/plan_progress"
+        android:layout_alignRight="@+id/plan_progress"
+        android:layout_below="@+id/plan_progress"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/act_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/plan_mode_fragment_list_act_title_text_size" />
+
+        <TextView
+            android:id="@+id/plan_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/act_item"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/plan_mode_fragment_list_act_title_text_size" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/sep"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/progress_area"
+        android:background="@color/main_title_color">
+
+    </View>
+
+</RelativeLayout>

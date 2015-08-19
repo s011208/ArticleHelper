@@ -43,6 +43,15 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (mPlanListAdapter != null) {
+            mPlanListAdapter.updateContent();
+            mPlanListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         final int vId = v.getId();
         if (vId == R.id.add_new_plan) {
@@ -53,6 +62,11 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
         } else if (vId == R.id.remove_all_plans) {
             if (DEBUG) {
                 Log.d(TAG, "remove_all_plans");
+            }
+            Plan.deleteAllPlans(getActivity());
+            if (mPlanListAdapter != null) {
+                mPlanListAdapter.updateContent();
+                mPlanListAdapter.notifyDataSetChanged();
             }
         }
     }

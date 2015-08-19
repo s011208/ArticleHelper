@@ -63,4 +63,7 @@
     <dimen name="add_plan_fragment_container_padding">12dp</dimen>
     <dimen name="add_plan_fragment_item_text_size">18sp</dimen>
     <dimen name="add_plan_fragment_item_margin_v">12dp</dimen>
+
+    <dimen name="plan_mode_fragment_outline_icon_size">40dp</dimen>
+    <dimen name="plan_mode_fragment_list_act_title_text_size">20sp</dimen>
 </resources>

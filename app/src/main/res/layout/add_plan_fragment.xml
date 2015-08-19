@@ -30,10 +30,19 @@
             android:text="@android:string/ok" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/sep"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/button_area"
+        android:layout_marginBottom="@dimen/add_plan_fragment_container_padding"
+        android:layout_marginTop="@dimen/add_plan_fragment_container_padding"
+        android:background="@color/main_title_color"></View>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/button_area"
+        android:layout_above="@+id/sep"
         android:layout_alignParentTop="true"
         android:foregroundGravity="center_horizontal">
 
@@ -86,9 +95,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:numeric="integer"
                     android:gravity="center_horizontal"
-                    android:inputType="numberDecimal"></EditText>
+                    android:inputType="numberDecimal"
+                    android:numeric="integer"></EditText>
             </LinearLayout>
 
             <LinearLayout

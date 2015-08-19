@@ -45,8 +45,11 @@
     <string name="add_plan_fragment_total_plan_day">Total plan days</string>
     <string name="add_plan_fragment_order">Order</string>
     <string name="add_plan_fragment_total_article_count">Article count</string>
+
+    <string name="add_plan_fragment_order_by_article">by article</string>
+    <string name="add_plan_fragment_order_by_random">by random</string>
     <array name="add_plan_fragment_order">
-        <item>by article</item>
-        <item>by random</item>
+        <item>@string/add_plan_fragment_order_by_article</item>
+        <item>@string/add_plan_fragment_order_by_random</item>
     </array>
 </resources>

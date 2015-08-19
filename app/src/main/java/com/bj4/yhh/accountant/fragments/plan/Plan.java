@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.bj4.yhh.accountant.act.Act;
+import com.bj4.yhh.accountant.database.ActDatabase;
 import com.bj4.yhh.accountant.database.PlanProvider;
 
 import org.json.JSONException;
@@ -70,8 +71,8 @@ public class Plan {
     }
 
     public void initAct(Context context) {
-        if (mId != NO_ID) {
-            mAct = Act.queryActById(context, mId);
+        if (mActId != ActDatabase.NO_ID) {
+            mAct = Act.queryActById(context, mActId);
         }
     }
 
@@ -107,9 +108,15 @@ public class Plan {
         return toJson().toString();
     }
 
+    public static void deleteAllPlans(Context context) {
+        context.getContentResolver().delete(getBaseUri(), null, null);
+    }
+
     public ContentValues toContentValues() {
         ContentValues cv = new ContentValues();
-        cv.put(ID, mId);
+        if (mId != NO_ID) {
+            cv.put(ID, mId);
+        }
         cv.put(ACT_ID, mActId);
         cv.put(PLAN_ORDER, mPlanOrderBy);
         cv.put(TOTAL_PLAN_PROGRESS, mTotalPlanProgress);
