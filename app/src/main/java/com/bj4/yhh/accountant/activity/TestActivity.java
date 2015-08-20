@@ -2,7 +2,12 @@ package com.bj4.yhh.accountant.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.fragments.plan.Plan;
 
 import org.json.JSONException;
@@ -19,6 +24,16 @@ public class TestActivity extends BaseActivity {
 
     private Plan mPlan;
 
+    private TextView mActTitle, mActInfo;
+    private ImageView mOutlineBtn;
+
+    private Button mYes, mNo;
+
+    private TextView mRemainTestItems;
+
+    private TextView mQuestions;
+    private ListView mAnswers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,5 +45,21 @@ public class TestActivity extends BaseActivity {
         if (DEBUG) {
             Log.d(TAG, "Plan: " + mPlan);
         }
+        setContentView(R.layout.activity_test);
+        initComponents();
+    }
+
+    private void initComponents() {
+        mActTitle = (TextView) findViewById(R.id.act_title);
+        mActInfo = (TextView) findViewById(R.id.act_detail_info);
+        mOutlineBtn = (ImageView) findViewById(R.id.outline_btn);
+
+        mYes = (Button) findViewById(R.id.yes);
+        mNo = (Button) findViewById(R.id.no);
+
+        mRemainTestItems = (TextView) findViewById(R.id.remain_test_items);
+
+        mQuestions = (TextView) findViewById(R.id.question_text);
+        mAnswers = (ListView) findViewById(R.id.answer_llist);
     }
 }
