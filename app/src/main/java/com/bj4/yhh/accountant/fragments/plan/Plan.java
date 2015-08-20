@@ -1,5 +1,6 @@
 package com.bj4.yhh.accountant.fragments.plan;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -63,7 +64,8 @@ public class Plan {
     }
 
     private static void insert(Context context, Plan plan) {
-        context.getContentResolver().insert(getBaseUri(), plan.toContentValues());
+        final long id = ContentUris.parseId(context.getContentResolver().insert(getBaseUri(), plan.toContentValues()));
+        plan.mId = id;
     }
 
     private static void update(Context context, Plan plan) {
@@ -74,6 +76,10 @@ public class Plan {
         if (mActId != ActDatabase.NO_ID) {
             mAct = Act.queryActById(context, mActId);
         }
+    }
+
+    public Act getAct() {
+        return mAct;
     }
 
     public String getActTitle() {

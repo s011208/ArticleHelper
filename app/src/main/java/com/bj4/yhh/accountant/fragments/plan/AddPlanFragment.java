@@ -1,5 +1,7 @@
 package com.bj4.yhh.accountant.fragments.plan;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +18,9 @@ import android.widget.TextView;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.act.Act;
+import com.bj4.yhh.accountant.act.Article;
+import com.bj4.yhh.accountant.act.Chapter;
+import com.bj4.yhh.accountant.fragments.test.TestItem;
 import com.bj4.yhh.accountant.utils.BaseFragment;
 
 import java.util.ArrayList;
@@ -142,11 +147,54 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
             Plan plan = new Plan(mSelectedAct.getId(), mOrderBy, totalProgress, 0, mTotalArticleCount, 0);
             if (DEBUG) Log.v(TAG, "plan: " + plan.toString());
             Plan.insertOrUpdate(getActivity(), plan);
+            new InsertTestItemTask(getActivity(), plan, mTotalPlanDay, mOrderBy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else if (vId == R.id.cancel) {
             if (DEBUG) {
                 Log.d(TAG, "cancel");
             }
         }
         getActivity().onBackPressed();
+    }
+
+    private static class InsertTestItemTask extends AsyncTask<Void, Void, Void> {
+        private final Plan mPlan;
+        private final int mTotalDay;
+        private final int mOrderBy;
+        private final Context mContext;
+
+        public InsertTestItemTask(Context context, Plan plan, int totalDay, int orderBy) {
+            mContext = context;
+            mPlan = plan;
+            mTotalDay = totalDay;
+            mOrderBy = orderBy;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mPlan.initAct(mContext);
+            final Act act = mPlan.getAct();
+            Act.queryAllActContent(mContext, act);
+            final int totalArticleCount = Act.getArticleCount(mContext, act);
+            final int itemPerDay = totalArticleCount / mTotalDay;
+            final long planId = mPlan.mId;
+            final long actId = act.getId();
+            int displayDay = 0;
+            int itemCounter = 0;
+            final ArrayList<TestItem> testItems = new ArrayList<TestItem>();
+            for (Chapter chapter : act.getChapters()) {
+                final long chapterId = chapter.mId;
+                for (Article article : chapter.getArticles()) {
+                    final long articleId = article.mId;
+                    testItems.add(new TestItem(planId, actId, chapterId, articleId, displayDay));
+                    ++itemCounter;
+                    if (itemCounter % itemPerDay == 0) {
+                        ++displayDay;
+                    }
+                }
+            }
+            int numInserted = TestItem.bulkInsert(mContext, testItems);
+            if (DEBUG) Log.d(TAG, "insert: " + numInserted);
+            return null;
+        }
     }
 }

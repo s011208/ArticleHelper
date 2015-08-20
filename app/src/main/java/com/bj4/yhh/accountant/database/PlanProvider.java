@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteFullException;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.bj4.yhh.accountant.fragments.plan.Plan;
+import com.bj4.yhh.accountant.fragments.test.TestItem;
 
 /**
  * Created by yenhsunhuang on 15/8/18.
@@ -27,10 +29,14 @@ public class PlanProvider extends ContentProvider {
     public static final String PATH_PLAN = "path_plan";
     private static final int CODE_PLAN = 1000;
 
+    public static final String PATH_TEST_ITEM = "path_test_item";
+    private static final int CODE_TEST_ITEM = 2000;
+
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
         URI_MATCHER.addURI(AUTHORITY, PATH_PLAN, CODE_PLAN);
+        URI_MATCHER.addURI(AUTHORITY, PATH_TEST_ITEM, CODE_TEST_ITEM);
     }
 
     @Override
@@ -43,6 +49,8 @@ public class PlanProvider extends ContentProvider {
         switch (URI_MATCHER.match(uri)) {
             case CODE_PLAN:
                 return PlanDatabase.getInstance(getContext()).getDataBase().query(PlanDatabase.TABLE_PLAN, projection, selection, selectionArgs, null, null, sortOrder);
+            case CODE_TEST_ITEM:
+                return PlanDatabase.getInstance(getContext()).getDataBase().query(PlanDatabase.TABLE_TEST_ITEM, projection, selection, selectionArgs, null, null, sortOrder);
         }
         return null;
     }
@@ -57,6 +65,8 @@ public class PlanProvider extends ContentProvider {
         switch (URI_MATCHER.match(uri)) {
             case CODE_PLAN:
                 return ContentUris.withAppendedId(uri, PlanDatabase.getInstance(getContext()).getDataBase().insert(PlanDatabase.TABLE_PLAN, null, values));
+            case CODE_TEST_ITEM:
+                return ContentUris.withAppendedId(uri, PlanDatabase.getInstance(getContext()).getDataBase().insert(PlanDatabase.TABLE_TEST_ITEM, null, values));
         }
         return null;
     }
@@ -66,6 +76,8 @@ public class PlanProvider extends ContentProvider {
         switch (URI_MATCHER.match(uri)) {
             case CODE_PLAN:
                 return PlanDatabase.getInstance(getContext()).getDataBase().delete(PlanDatabase.TABLE_PLAN, selection, selectionArgs);
+            case CODE_TEST_ITEM:
+                return PlanDatabase.getInstance(getContext()).getDataBase().delete(PlanDatabase.TABLE_TEST_ITEM, selection, selectionArgs);
         }
         return 0;
     }
@@ -75,8 +87,43 @@ public class PlanProvider extends ContentProvider {
         switch (URI_MATCHER.match(uri)) {
             case CODE_PLAN:
                 return PlanDatabase.getInstance(getContext()).getDataBase().update(PlanDatabase.TABLE_PLAN, values, selection, selectionArgs);
+            case CODE_TEST_ITEM:
+                return PlanDatabase.getInstance(getContext()).getDataBase().update(PlanDatabase.TABLE_TEST_ITEM, values, selection, selectionArgs);
         }
         return 0;
+    }
+
+    @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        String table = null;
+        switch (URI_MATCHER.match(uri)) {
+            case CODE_PLAN:
+                table = PlanDatabase.TABLE_PLAN;
+                break;
+            case CODE_TEST_ITEM:
+                table = PlanDatabase.TABLE_TEST_ITEM;
+                break;
+        }
+        if (table == null)
+            return super.bulkInsert(uri, values);
+        else {
+            int numInserted = 0;
+            SQLiteDatabase sqlDB = PlanDatabase.getInstance(getContext()).getDataBase();
+            sqlDB.beginTransaction();
+            try {
+                for (ContentValues cv : values) {
+                    long newID = sqlDB.insertOrThrow(table, null, cv);
+                    if (newID <= 0) {
+                        throw new SQLException("Failed to insert row into " + uri);
+                    }
+                }
+                sqlDB.setTransactionSuccessful();
+                numInserted = values.length;
+            } finally {
+                sqlDB.endTransaction();
+            }
+            return numInserted;
+        }
     }
 
     private static class PlanDatabase extends SQLiteOpenHelper {
@@ -93,7 +140,7 @@ public class PlanProvider extends ContentProvider {
         private static final String DATABASE_NAME = "plan_database.db";
 
         private static final String TABLE_PLAN = "table_plan";
-
+        private static final String TABLE_TEST_ITEM = "table_test_item";
         private SQLiteDatabase mDb;
         private Context mContext;
 
@@ -101,10 +148,26 @@ public class PlanProvider extends ContentProvider {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             mContext = context;
             mDb = getWritableDatabase();
-            createTableActsFolder();
+            createTablePlan();
+            createTableTestItem();
         }
 
-        private void createTableActsFolder() {
+        private void createTableTestItem() {
+            final SQLiteDatabase database = getDataBase();
+            if (database == null)
+                return;
+            database.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TEST_ITEM + " ("
+                    + TestItem.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + TestItem.PLAN_ID + " INTEGER,"
+                    + TestItem.HAS_FAILED + " INTEGER,"
+                    + TestItem.IS_ANSWER + " INTEGER,"
+                    + TestItem.DISPLAY_DAY + " INTEGER,"
+                    + TestItem.ACT_ID + " INTEGER,"
+                    + TestItem.CHAPTER_ID + " INTEGER,"
+                    + TestItem.ARTICLE_ID + " INTEGER)");
+        }
+
+        private void createTablePlan() {
             final SQLiteDatabase database = getDataBase();
             if (database == null)
                 return;
