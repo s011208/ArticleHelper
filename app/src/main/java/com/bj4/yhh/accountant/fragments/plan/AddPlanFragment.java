@@ -125,6 +125,10 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
             if (DEBUG) {
                 Log.d(TAG, "ok");
             }
+            if (mSelectedAct == null) {
+                // TODO show add new act toast
+                return;
+            }
             final int totalProgress = mTotalArticleCount / mTotalPlanDay + 1;
             Plan plan = new Plan(mSelectedAct.getId(), mOrderBy, totalProgress, 0, mTotalArticleCount, 0);
             if (DEBUG) Log.v(TAG, "plan: " + plan.toString());

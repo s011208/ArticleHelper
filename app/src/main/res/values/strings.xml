@@ -33,7 +33,7 @@
         <item>Remove</item>
     </array>
 
-    <string name="menu_list_items_text_add_new_act">Add new act</string>
+    <string name="menu_list_items_text_manage_act">Manage acts</string>
     <string name="menu_list_items_text_plan_mode">Plan mode</string>
     <string name="menu_list_items_text_test_mode">Test mode</string>
     <string name="menu_list_items_text_review_mode">Review mode</string>
