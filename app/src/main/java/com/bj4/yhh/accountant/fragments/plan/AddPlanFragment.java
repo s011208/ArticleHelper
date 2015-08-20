@@ -133,12 +133,11 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
             Plan plan = new Plan(mSelectedAct.getId(), mOrderBy, totalProgress, 0, mTotalArticleCount, 0);
             if (DEBUG) Log.v(TAG, "plan: " + plan.toString());
             Plan.insertOrUpdate(getActivity(), plan);
-            getActivity().onBackPressed();
         } else if (vId == R.id.cancel) {
             if (DEBUG) {
                 Log.d(TAG, "cancel");
             }
-            getActivity().onBackPressed();
         }
+        getActivity().onBackPressed();
     }
 }

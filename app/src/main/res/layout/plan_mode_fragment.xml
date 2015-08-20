@@ -52,7 +52,7 @@
             android:layout_height="match_parent"
             android:divider="@null"
             android:dividerHeight="16dp"
-            android:listSelector="@drawable/on_click_background"></ListView>
+            android:listSelector="@drawable/on_list_item_click_background"></ListView>
 
         <RelativeLayout
             android:layout_width="match_parent"
