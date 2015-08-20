@@ -52,4 +52,6 @@
         <item>@string/add_plan_fragment_order_by_article</item>
         <item>@string/add_plan_fragment_order_by_random</item>
     </array>
+
+    <string name="init_data_fragment_percentage">"loading... %s %%"</string>
 </resources>

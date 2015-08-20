@@ -45,9 +45,11 @@ public class AccountDataHelper {
     }
 
     public interface Callback {
-        public void onStartRetrieveAllActDataFromParse();
+        void onStartRetrieveAllActDataFromParse();
 
-        public void onFinishRetrieveAllActDataFromParse();
+        void onFinishRetrieveAllActDataFromParse();
+
+        void onProgressUpdate(int progress);
     }
 
     private final Handler mHandler = new Handler();
@@ -66,6 +68,12 @@ public class AccountDataHelper {
         mCallbacks.remove(cb);
     }
 
+    private boolean mIsRetrieveDataSuccess = false;
+
+    public boolean isRetrieveDataSuccess() {
+        return mIsRetrieveDataSuccess;
+    }
+
     private boolean mIsRetrieveDataFromParse = false;
 
     public boolean isRetrievingDataFromParse() {
@@ -74,12 +82,26 @@ public class AccountDataHelper {
 
     private void onFinishRetrieveAllActDataFromParse() {
         mIsRetrieveDataFromParse = false;
+        onProgressUpdate(100);
         if (!mCallbacks.isEmpty()) {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     for (Callback cb : mCallbacks) {
                         cb.onFinishRetrieveAllActDataFromParse();
+                    }
+                }
+            });
+        }
+    }
+
+    private void onProgressUpdate(final int progress) {
+        if (!mCallbacks.isEmpty()) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    for (Callback cb : mCallbacks) {
+                        cb.onProgressUpdate(progress);
                     }
                 }
             });
@@ -110,7 +132,6 @@ public class AccountDataHelper {
     private AccountDataHelper(Context context) {
         mContext = context.getApplicationContext();
         registerReceivers();
-        parseAllActListFromParse();
     }
 
     public static ArrayList<Act> getActs() {
@@ -129,7 +150,7 @@ public class AccountDataHelper {
         ParseQuery.getQuery(object).countInBackground(cb);
     }
 
-    private void parseAllActListFromParse() {
+    public void parseAllActListFromParse() {
         onStartRetrieveAllActDataFromParse();
         getParseObjectCount("ActListItem", new CountCallback() {
             @Override
@@ -137,6 +158,8 @@ public class AccountDataHelper {
                 Runnable task = new Runnable() {
                     @Override
                     public void run() {
+                        int progress = 0;
+                        onProgressUpdate(progress);
                         if (e != null) {
                             Log.w(TAG, "failed to getCount", e);
                             onFinishRetrieveAllActDataFromParse();
@@ -156,19 +179,25 @@ public class AccountDataHelper {
                                 data.close();
                             }
                         }
+                        progress = 20;
+                        onProgressUpdate(progress);
                         if (localAllActListCount == parseDataCount) {
                             if (DEBUG) {
                                 Log.v(TAG, "all act list has been synced");
                             }
+                            mIsRetrieveDataSuccess = true;
                             onFinishRetrieveAllActDataFromParse();
                             return;
                         }
                         ParseQuery<ParseObject> query = ParseQuery.getQuery("ActListItem");
                         List<ParseObject> list = new ArrayList<ParseObject>();
                         try {
-                            for (int i = 0; i < parseDataCount / PARSE_QUERY_LIMIT + 1; ++i) {
+                            final int totalQueryTime = parseDataCount / PARSE_QUERY_LIMIT + 1;
+                            for (int i = 0; i < totalQueryTime; ++i) {
                                 list.addAll(query.setLimit(PARSE_QUERY_LIMIT).setSkip(i * PARSE_QUERY_LIMIT).find());
                                 Log.v(TAG, "list size: " + list.size());
+                                progress = 20 + (70 / totalQueryTime) * i;
+                                onProgressUpdate(progress);
                             }
                             if (list.size() <= localAllActListCount) {
                                 onFinishRetrieveAllActDataFromParse();
@@ -181,11 +210,16 @@ public class AccountDataHelper {
                                 cvs[i] = new ActListItem(object.getString(ActDatabase.URL), object.getString(ActDatabase.TITLE),
                                         object.getString(ActDatabase.AMENDED_DATE), object.getString(ActDatabase.CATEGORY)).getContentValues();
                             }
+                            progress = 95;
+                            onProgressUpdate(progress);
                             int rtn = mContext.getContentResolver().bulkInsert(Uri.parse("content://" + ActProvider.AUTHORITY + "/" + ActProvider.PATH_ALL_ACTS_LIST_FROM_PARSE), cvs);
+                            progress = 98;
+                            onProgressUpdate(progress);
                             if (DEBUG) {
                                 Log.v(TAG, "list size: " + list.size() + ", insert row: " + rtn);
                                 Log.d(TAG, "pid: " + android.os.Process.myPid() + ", tid: " + android.os.Process.myTid());
                             }
+                            mIsRetrieveDataSuccess = true;
                         } catch (ParseException e1) {
                             Log.w(TAG, "failed to find all act list item", e);
                         }

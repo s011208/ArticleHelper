@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.fragments.entry.MainEntryFragment;
+import com.bj4.yhh.accountant.fragments.init.InitDataFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
 
 
@@ -20,7 +21,7 @@ public class MainActivity extends BaseActivity {
         sContainerId = R.id.container;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getFragmentManager().beginTransaction().replace(R.id.container, new MainEntryFragment()).commit();
+        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), new InitDataFragment()).commit();
     }
 
     public static int getMainFragmentContainerId() {

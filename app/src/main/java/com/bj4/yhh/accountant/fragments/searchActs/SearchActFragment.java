@@ -282,9 +282,6 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
             }
         });
         mAutoCompleteLoadingProgressBar = (SunProgressBar) root.findViewById(R.id.auto_loading_progress);
-        if (mAccountDataHelper.isRetrievingDataFromParse()) {
-            onStartRetrieveAllActDataFromParse();
-        }
         setAutoCompleteTextViewItem();
     }
 
@@ -296,6 +293,11 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
     @Override
     public void onFinishRetrieveAllActDataFromParse() {
         mAutoCompleteLoadingProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onProgressUpdate(int progress) {
+
     }
 
     @Override
