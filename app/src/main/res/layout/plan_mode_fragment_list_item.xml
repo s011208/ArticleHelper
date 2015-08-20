@@ -18,7 +18,7 @@
             android:layout_alignParentTop="true"
             android:layout_margin="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/orange_outline" />
+            android:src="@drawable/white_outline_icon" />
 
         <TextView
             android:id="@+id/act_title"
@@ -51,7 +51,6 @@
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
         android:layout_marginTop="8dp"
-        android:progress="10"
         android:progressDrawable="@drawable/orange_progress_bar" />
 
     <RelativeLayout

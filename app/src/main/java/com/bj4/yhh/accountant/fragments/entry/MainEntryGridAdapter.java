@@ -31,7 +31,7 @@ public class MainEntryGridAdapter extends BaseAdapter {
     public static final int UPDATE_ACTS = 4;
 
     private static final int[] MENU_TEXT_RESOURCES = new int[]{
-            R.string.menu_list_items_text_add_new_act,
+            R.string.menu_list_items_text_manage_act,
             R.string.menu_list_items_text_plan_mode,
             R.string.menu_list_items_text_review_mode,
             R.string.menu_list_items_text_test_mode,
