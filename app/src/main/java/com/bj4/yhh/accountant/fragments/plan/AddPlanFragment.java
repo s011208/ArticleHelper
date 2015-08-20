@@ -43,6 +43,15 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
         final TextView articleCount = (TextView) root.findViewById(R.id.total_article_counr);
         Spinner actSpinner = (Spinner) root.findViewById(R.id.act_spinner);
         final ArrayList<Act> acts = Act.query(getActivity(), null, null, null, null);
+        final ArrayList<Plan> plans = Plan.query(getActivity());
+        for (Plan plan : plans) {
+            for (Act act : acts) {
+                if (plan.mActId == act.getId()) {
+                    acts.remove(act);
+                    break;
+                }
+            }
+        }
         final ArrayList<String> actsName = new ArrayList<String>();
         for (Act act : acts) {
             actsName.add(act.getTitle());
