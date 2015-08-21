@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             super.onBackPressed();
         } else {
-            BaseFragment currentFragment = (BaseFragment) getFragmentManager().findFragmentById(R.id.container);
+            BaseFragment currentFragment = (BaseFragment) getFragmentManager().findFragmentById(getMainFragmentContainerId());
             if (currentFragment.onBackPress()) {
                 return;
             }

@@ -66,4 +66,6 @@
 
     <dimen name="plan_mode_fragment_outline_icon_size">40dp</dimen>
     <dimen name="plan_mode_fragment_list_act_title_text_size">20sp</dimen>
+
+    <dimen name="test_item_fragment_act_title_text_size">22sp</dimen>
 </resources>

@@ -54,6 +54,10 @@ public class Article extends ActContent {
         return query(context, null, ActDatabase.CHAPTER_ID + "=" + chapterId, null, ActDatabase.COLUMN_ORDER + " asc");
     }
 
+    public static ArrayList<Article> quertArticleByArticleId(Context context, long articleId) {
+        return query(context, null, ActDatabase.ID + "=" + articleId, null, ActDatabase.COLUMN_ORDER + " asc");
+    }
+
     public static ArrayList<Article> query(Context context, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final ArrayList<Article> rtn = new ArrayList<Article>();
         Cursor data = context.getContentResolver().query(getBaseUri(), projection, selection, selectionArgs, sortOrder);

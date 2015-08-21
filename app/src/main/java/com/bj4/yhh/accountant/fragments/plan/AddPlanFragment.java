@@ -24,6 +24,8 @@ import com.bj4.yhh.accountant.fragments.test.TestItem;
 import com.bj4.yhh.accountant.utils.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  * Created by yenhsunhuang on 15/8/18.
@@ -190,9 +192,18 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
                     if (itemCounter % itemPerDay == 0) {
                         ++displayDay;
                     }
+                    if (DEBUG) Log.v(TAG, "article: " + article);
+                }
+                if (DEBUG) {
+                    Log.i(TAG, "chapter: " + chapter);
                 }
             }
+            if (mOrderBy == Plan.ORDER_BY_ARTICLE) {
+            } else if (mOrderBy == Plan.ORDER_BY_RANDOM) {
+                Collections.shuffle(testItems, new Random(System.nanoTime()));
+            }
             int numInserted = TestItem.bulkInsert(mContext, testItems);
+
             if (DEBUG) Log.d(TAG, "insert: " + numInserted);
             return null;
         }

@@ -72,6 +72,10 @@ public class Chapter extends ActContent {
         return query(context, null, ActDatabase.ACT_ID + "=" + actId, null, ActDatabase.ACT_ID + " asc");
     }
 
+    public static ArrayList<Chapter> queryChapterByChapterId(Context context, long chapterId) {
+        return query(context, null, ActDatabase.ID + "=" + chapterId, null, null);
+    }
+
     public static ArrayList<Chapter> query(Context context, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final ArrayList<Chapter> rtn = new ArrayList<Chapter>();
         Cursor data = context.getContentResolver().query(getBaseUri(), projection, selection, selectionArgs, sortOrder);
@@ -90,5 +94,9 @@ public class Chapter extends ActContent {
             }
         }
         return rtn;
+    }
+
+    public boolean isEmptyChapter() {
+        return "".equals(mNumber) && "".equals(mContent);
     }
 }

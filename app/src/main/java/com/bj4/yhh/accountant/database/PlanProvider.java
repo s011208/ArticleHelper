@@ -161,6 +161,7 @@ public class PlanProvider extends ContentProvider {
                     + TestItem.PLAN_ID + " INTEGER,"
                     + TestItem.HAS_FAILED + " INTEGER,"
                     + TestItem.IS_ANSWER + " INTEGER,"
+                    + TestItem.IS_READ + " INTEGER,"
                     + TestItem.DISPLAY_DAY + " INTEGER,"
                     + TestItem.ACT_ID + " INTEGER,"
                     + TestItem.CHAPTER_ID + " INTEGER,"

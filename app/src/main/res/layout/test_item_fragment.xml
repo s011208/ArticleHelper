@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/title_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/outline_btn"
+            android:layout_width="@dimen/plan_mode_fragment_outline_icon_size"
+            android:layout_height="@dimen/plan_mode_fragment_outline_icon_size"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/orange_outline" />
+
+        <TextView
+            android:id="@+id/act_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/outline_btn"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/test_item_fragment_act_title_text_size" />
+
+        <TextView
+            android:id="@+id/act_detail_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/act_title"
+            android:layout_toLeftOf="@+id/outline_btn"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/test_item_fragment_act_title_text_size" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/button_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/yes"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/on_click_background"
+            android:gravity="center"
+            android:text="@android:string/yes" />
+
+        <Button
+            android:id="@+id/no"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/on_click_background"
+            android:gravity="center"
+            android:text="@android:string/no" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/remain_test_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_area" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/remain_test_items"
+        android:layout_below="@+id/title_area">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/question_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ListView
+                android:id="@+id/answer_llist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></ListView>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by yenhsunhuang on 15/7/10.
  */
 public class RetrieveActDataService extends IntentService {
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private static final String TAG = "RetrieveActDataService";
     private static final String ACTION_RETRIEVE_ACT = "action_retrieve_act";
 
@@ -102,12 +102,14 @@ public class RetrieveActDataService extends IntentService {
         final ArrayList<ContentValues> articleCvs = new ArrayList<ContentValues>();
         boolean usingEmptyChapter = false;
         Chapter emptyChapter = null;
+        boolean hasAnyChapters = false;
 
         for (int i = 0; i < elements.size(); i++) {
             final Element element = elements.get(i);
             Chapter chapter = isChapter(element);
             final boolean isChapter = chapter != null;
             if (isChapter) {
+                hasAnyChapters = true;
                 chapter.mOrder = chapterOrder++;
                 chapterId = insertChapterDataIntoProvider(chapter, actId);
                 articleOrder = 0;
@@ -115,9 +117,10 @@ public class RetrieveActDataService extends IntentService {
                     Log.v(TAG, "chapterId: " + chapterId);
                 }
             } else {
-                if (chapter == null) {
+                if (chapter == null && !hasAnyChapters) {
+                    if(DEBUG) Log.i(TAG, "user empty chapter");
                     if (usingEmptyChapter) {
-                        chapter = emptyChapter;
+//                        chapterId = emptyChapter.mId;
                     } else {
                         // no chapter data, create an empty one
                         emptyChapter = new Chapter("", "", ActDatabase.NO_ID);
@@ -167,6 +170,7 @@ public class RetrieveActDataService extends IntentService {
             String number = wholeContent.substring(0, lastIndexSpace);
             String content = wholeContent.substring(lastIndexSpace + 1);
             rtn = new Chapter(number, content, ActDatabase.NO_ID);
+            if (DEBUG) Log.i(TAG, "isChapter, chapter: " + rtn);
         }
         return rtn;
     }

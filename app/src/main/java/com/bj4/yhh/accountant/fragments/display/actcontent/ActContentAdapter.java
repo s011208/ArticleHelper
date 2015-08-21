@@ -31,7 +31,7 @@ public class ActContentAdapter extends BaseAdapter {
         void onQueryDone();
     }
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private static final String TAG = "ActContentAdapter";
     private final Act mAct;
     private final Context mContext;
@@ -225,7 +225,7 @@ public class ActContentAdapter extends BaseAdapter {
         protected Void doInBackground(Void... params) {
             Act.queryAllActContent(context, act);
             for (Chapter chapter : act.getChapters()) {
-                if ("".equals(chapter.mNumber) && "".equals(chapter.mContent)) {
+                if (chapter.isEmptyChapter()) {
                     // ignore empty chapter
                 } else {
                     tempData.add(chapter);
