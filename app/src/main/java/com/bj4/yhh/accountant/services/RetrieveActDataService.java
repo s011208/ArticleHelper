@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by yenhsunhuang on 15/7/10.
  */
 public class RetrieveActDataService extends IntentService {
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final String TAG = "RetrieveActDataService";
     private static final String ACTION_RETRIEVE_ACT = "action_retrieve_act";
 

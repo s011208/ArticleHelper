@@ -32,7 +32,7 @@ import java.util.Random;
  */
 public class AddPlanFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = "AddPlanFragment";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private Act mSelectedAct;
     private int mTotalPlanDay = 7;
@@ -145,8 +145,11 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
                 // TODO show add new act toast
                 return;
             }
-            final int totalProgress = mTotalArticleCount / mTotalPlanDay + 1;
-            Plan plan = new Plan(mSelectedAct.getId(), mOrderBy, totalProgress, 0, mTotalArticleCount, 0);
+            if (mTotalPlanDay <= 0) {
+                mTotalPlanDay = 1;
+            }
+
+            Plan plan = new Plan(mSelectedAct.getId(), mOrderBy, mTotalPlanDay, 0, mTotalArticleCount, 0);
             if (DEBUG) Log.v(TAG, "plan: " + plan.toString());
             Plan.insertOrUpdate(getActivity(), plan);
             new InsertTestItemTask(getActivity(), plan, mTotalPlanDay, mOrderBy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
