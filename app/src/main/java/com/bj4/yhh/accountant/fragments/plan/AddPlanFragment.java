@@ -48,7 +48,7 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
         Button btnCancel = (Button) root.findViewById(R.id.cancel);
         btnCancel.setOnClickListener(this);
 
-        final TextView articleCount = (TextView) root.findViewById(R.id.total_article_counr);
+        final TextView articleCount = (TextView) root.findViewById(R.id.total_article_count);
         Spinner actSpinner = (Spinner) root.findViewById(R.id.act_spinner);
         final ArrayList<Act> acts = Act.query(getActivity(), null, null, null, null);
         final ArrayList<Plan> plans = Plan.query(getActivity());

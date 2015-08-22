@@ -35,7 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@+id/button_area"
-        android:layout_marginBottom="@dimen/add_plan_fragment_container_padding"
         android:layout_marginTop="@dimen/add_plan_fragment_container_padding"
         android:background="@color/main_title_color"></View>
 
@@ -140,7 +139,7 @@
                     android:textSize="@dimen/add_plan_fragment_item_text_size" />
 
                 <TextView
-                    android:id="@+id/total_article_counr"
+                    android:id="@+id/total_article_count"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
