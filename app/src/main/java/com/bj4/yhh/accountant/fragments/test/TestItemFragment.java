@@ -61,6 +61,7 @@ public class TestItemFragment extends BaseFragment {
     private TextView mQuestions;
     private ListView mAnswers;
     private TestAnswerAdapter mTestAnswerAdapter;
+    private boolean mAnswerClickable = true;
 
     private static int getTestBy() {
         return (int) ((Math.random() * 10000) % 2);
@@ -290,7 +291,7 @@ public class TestItemFragment extends BaseFragment {
             public void onClick(View v) {
                 TestItem.update(getActivity(), mCurrentTestItem);
                 moveToNextItem();
-                mAnswers.setEnabled(true);
+                mAnswerClickable = true;
             }
         });
 
@@ -301,6 +302,7 @@ public class TestItemFragment extends BaseFragment {
         mAnswers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!mAnswerClickable) return;
                 final boolean isCorrect = mTestAnswerAdapter.checkIsCorrect(position);
                 if (isCorrect) {
                     mCurrentTestItem.mIsAnswer = true;
@@ -313,7 +315,7 @@ public class TestItemFragment extends BaseFragment {
                     mCurrentTestItem.mHasFailed = true;
                     TestItem.update(getActivity(), mCurrentTestItem);
                     updateButtonsVisibility();
-                    mAnswers.setEnabled(false);
+                    mAnswerClickable = false;
                 }
             }
         });
