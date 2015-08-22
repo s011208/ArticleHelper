@@ -54,4 +54,6 @@
     </array>
 
     <string name="init_data_fragment_percentage">"loading... %s %%"</string>
+
+    <string name="test_item_fragment">Remain %s items</string>
 </resources>

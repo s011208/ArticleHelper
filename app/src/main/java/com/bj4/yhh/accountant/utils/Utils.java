@@ -3,6 +3,8 @@ package com.bj4.yhh.accountant.utils;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
@@ -67,5 +69,30 @@ public class Utils {
         }
     }
 
+    public static boolean haveInternet(Context ctx) {
+        NetworkInfo info = (NetworkInfo) ((ConnectivityManager) ctx
+                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
+        if (info == null || !info.isConnected()) {
+            return false;
+        }
+        if (info.isRoaming()) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isWifiConnected(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        return ((netInfo != null) && netInfo.isConnected());
+    }
+
+    public static boolean isMobileConnected(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        return ((netInfo != null) && netInfo.isConnected());
+    }
 }

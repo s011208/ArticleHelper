@@ -20,6 +20,11 @@ public class TestItem {
     public static final String ID = "_id";
     public static final String PLAN_ID = "plan_id";
     public static final String ACT_ID = "act_id";
+
+    // TODO change chapter id to array list
+    /**
+     * may have more than one chapter
+     */
     public static final String CHAPTER_ID = "chapter_id";
     public static final String ARTICLE_ID = "article_id";
     public static final String HAS_FAILED = "has_failed";

@@ -40,6 +40,13 @@
             android:textSize="@dimen/test_item_fragment_act_title_text_size" />
     </RelativeLayout>
 
+    <View
+        android:id="@+id/title_area_sep"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/title_area"
+        android:background="@color/main_title_color"></View>
+
     <LinearLayout
         android:id="@+id/button_area"
         android:layout_width="match_parent"
@@ -66,32 +73,36 @@
             android:text="@android:string/no" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/button_area_sep"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/button_area"
+        android:background="@color/main_title_color"></View>
+
     <TextView
         android:id="@+id/remain_test_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_area" />
+        android:layout_above="@+id/button_area_sep"
+        android:gravity="center_horizontal"
+        android:padding="3dp" />
 
-    <ScrollView
+    <TextView
+        android:id="@+id/question_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/title_area_sep"
+        android:padding="5dp"
+        android:textSize="@dimen/test_item_content_text_size" />
+
+    <ListView
+        android:id="@+id/answer_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/remain_test_items"
-        android:layout_below="@+id/title_area">
+        android:layout_below="@+id/question_text"
+        android:padding="5dp"></ListView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/question_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ListView
-                android:id="@+id/answer_llist"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></ListView>
-        </LinearLayout>
-    </ScrollView>
 </RelativeLayout>

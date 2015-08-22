@@ -1,11 +1,13 @@
 package com.bj4.yhh.accountant.fragments.test;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -32,8 +34,9 @@ public class TestItemFragment extends BaseFragment {
     private static final String TAG = "TestItemFragment";
     private static final boolean DEBUG = true;
 
-    private static final int TEST_BY_NUMBER = 0;
-    private static final int TEST_BY_CONTENT = 1;
+    static final int TEST_BY_NUMBER = 0;
+    static final int TEST_BY_CONTENT = 1;
+    private int mTestBy = TEST_BY_NUMBER;
 
     private Callback mCallback;
     private Plan mPlan;
@@ -42,16 +45,20 @@ public class TestItemFragment extends BaseFragment {
     private int mCurrentDay;
     private boolean mIsInReadingMode = true;
     private TestItem mCurrentTestItem;
+    private Article mCurrentArticle;
+    private Chapter mCurrentChapter;
 
     private TextView mActTitle, mActInfo;
     private ImageView mOutlineBtn;
 
+    private View mButtonArea;
     private Button mYes, mNo;
 
     private TextView mRemainTestItems;
 
     private TextView mQuestions;
     private ListView mAnswers;
+    private TestAnswerAdapter mTestAnswerAdapter;
 
     private static int getTestBy() {
         return (int) ((Math.random() * 10000) % 2);
@@ -88,72 +95,180 @@ public class TestItemFragment extends BaseFragment {
         return root;
     }
 
-    private boolean moveToNextItem() {
+    private void moveToNextItem() {
+        nextItem();
+        updateActInfo();
+        updateRemainItemCount();
+        updateQuestionText();
+        updateAnswerList();
+    }
+
+    private void setCurrentData(TestItem testItem) {
+        mCurrentTestItem = testItem;
+        mCurrentChapter = getTestItemChapter(getActivity(), testItem);
+        mCurrentArticle = getTestItemArticle(getActivity(), testItem);
+    }
+
+    public static Chapter getTestItemChapter(Context context, TestItem testItem) {
+        Chapter rtn = null;
+        ArrayList<Chapter> chapters = Chapter.queryChapterByChapterId(context, testItem.mChapterId);
+        if (!chapters.isEmpty()) {
+            rtn = chapters.get(0);
+        }
+        return rtn;
+    }
+
+    public static Article getTestItemArticle(Context context, TestItem testItem) {
+        Article rtn = null;
+        ArrayList<Article> articles = Article.quertArticleByArticleId(context, testItem.mArticleId);
+        if (!articles.isEmpty()) {
+            rtn = articles.get(0);
+        }
+        return rtn;
+    }
+
+    private void resetCurrentData() {
         mCurrentTestItem = null;
+        mCurrentArticle = null;
+        mCurrentChapter = null;
+    }
+
+    private boolean nextItem() {
+        boolean rtn = false;
+        resetCurrentData();
         if (mIsInReadingMode) {
             for (TestItem testItem : mTestScopeItems) {
                 if (!testItem.mIsRead) {
                     mIsInReadingMode = true;
-                    mCurrentTestItem = testItem;
-                    return true;
+                    setCurrentData(testItem);
+                    mTestScopeItems.remove(testItem);
+                    mTestScopeItems.add(testItem);
+                    rtn = true;
+                    break;
                 }
 
             }
-        }
-        mIsInReadingMode = false;
-        for (TestItem testItem : mTestScopeItems) {
-            if (!testItem.mIsAnswer) {
-                mCurrentTestItem = testItem;
-                return true;
-
+            if (!rtn) {
+                mIsInReadingMode = false;
+                loadTestScope();
             }
         }
-        return false;
+        if (!mIsInReadingMode) {
+            for (TestItem testItem : mTestScopeItems) {
+                if (!testItem.mIsAnswer) {
+                    setCurrentData(testItem);
+                    mTestScopeItems.remove(testItem);
+                    mTestScopeItems.add(testItem);
+                    rtn = true;
+                    break;
+
+                }
+            }
+        }
+        mButtonArea.setVisibility(mIsInReadingMode ? View.VISIBLE : View.INVISIBLE);
+        return rtn;
     }
 
     private void updateActInfo() {
         if (mCurrentTestItem != null) {
             Log.i(TAG, "test item: " + mCurrentTestItem);
-            ArrayList<Chapter> chapters = Chapter.queryChapterByChapterId(getActivity(), mCurrentTestItem.mChapterId);
-            if (chapters.isEmpty()) return;
-            ArrayList<Article> articles = Article.quertArticleByArticleId(getActivity(), mCurrentTestItem.mArticleId);
-            if (articles.isEmpty()) return;
-            Chapter chapter = chapters.get(0);
-            Article article = articles.get(0);
-            mActInfo.setText(chapter.mNumber + ", " + article.mNumber);
-            if (DEBUG) {
-                Log.d(TAG, "chapter: " + chapter);
-                Log.d(TAG, "article: " + article);
+
+            if (mCurrentChapter.isEmptyChapter()) {
+                mActInfo.setText(null);
+            } else {
+                mActInfo.setText(mCurrentChapter.mNumber);
             }
+            if (DEBUG) {
+                Log.d(TAG, "chapter: " + mCurrentChapter);
+            }
+        } else {
+            mActInfo.setText(null);
+        }
+        if (DEBUG) Log.d(TAG, "updateActInfo, mIsInReadingMode: " + mIsInReadingMode);
+    }
+
+    private void updateRemainItemCount() {
+        int count = mTestScopeItems.size();
+        if (mIsInReadingMode) {
+            for (TestItem item : mTestScopeItems) {
+                if (item.mIsRead) --count;
+            }
+        } else {
+            for (TestItem item : mTestScopeItems) {
+                if (item.mIsAnswer) --count;
+            }
+        }
+        mRemainTestItems.setText(getActivity().getResources().getString(R.string.test_item_fragment, String.valueOf(count)));
+    }
+
+    private void updateQuestionText() {
+        if (mCurrentTestItem != null) {
+            if (mIsInReadingMode) {
+                mTestBy = getTestBy();
+                switch (mTestBy) {
+                    case TEST_BY_CONTENT:
+                        mQuestions.setText(mCurrentArticle.mContent);
+                        break;
+                    case TEST_BY_NUMBER:
+                        mQuestions.setText(mCurrentArticle.mNumber);
+                        break;
+                }
+            } else {
+            }
+        } else {
+            mQuestions.setText(null);
+        }
+    }
+
+    private void updateAnswerList() {
+        if (mIsInReadingMode) {
+            mAnswers.setVisibility(View.INVISIBLE);
+        } else {
+            mAnswers.setVisibility(View.VISIBLE);
+            mTestAnswerAdapter.updateListByCurrentData(mTestBy, mCurrentTestItem);
         }
     }
 
     private void initComponents(View root) {
-        moveToNextItem();
         mActTitle = (TextView) root.findViewById(R.id.act_title);
         mActInfo = (TextView) root.findViewById(R.id.act_detail_info);
         mOutlineBtn = (ImageView) root.findViewById(R.id.outline_btn);
 
         mActTitle.setText(mPlan.getActTitle());
-        updateActInfo();
 
+        mButtonArea = root.findViewById(R.id.button_area);
         mYes = (Button) root.findViewById(R.id.yes);
         mYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCurrentTestItem == null)
+                if (mCurrentTestItem == null)
                     return;
                 mCurrentTestItem.mIsRead = true;
                 moveToNextItem();
-                updateActInfo();
             }
         });
         mNo = (Button) root.findViewById(R.id.no);
+        mNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveToNextItem();
+            }
+        });
 
         mRemainTestItems = (TextView) root.findViewById(R.id.remain_test_items);
 
         mQuestions = (TextView) root.findViewById(R.id.question_text);
-        mAnswers = (ListView) root.findViewById(R.id.answer_llist);
+        mAnswers = (ListView) root.findViewById(R.id.answer_list);
+        mAnswers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+        mTestAnswerAdapter = new TestAnswerAdapter(getActivity(), mAllTestItems, mTestScopeItems);
+        mAnswers.setAdapter(mTestAnswerAdapter);
+
+        moveToNextItem();
     }
 
     @Override

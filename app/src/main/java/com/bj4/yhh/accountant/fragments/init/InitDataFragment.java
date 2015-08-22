@@ -12,6 +12,7 @@ import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.activity.MainActivity;
 import com.bj4.yhh.accountant.fragments.entry.MainEntryFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
+import com.bj4.yhh.accountant.utils.Utils;
 
 /**
  * Created by Yen-Hsun_Huang on 2015/8/20.
@@ -31,10 +32,17 @@ public class InitDataFragment extends BaseFragment implements AccountDataHelper.
         if (DEBUG) {
             Log.d(TAG, "mAccountDataHelper.isRetrieveDataSuccess(): " + mAccountDataHelper.isRetrieveDataSuccess());
         }
-        if (mAccountDataHelper.isRetrieveDataSuccess()) {
-            getFragmentManager().beginTransaction().replace(MainActivity.getMainFragmentContainerId(), new MainEntryFragment()).commit();
+        if (Utils.haveInternet(getActivity())) {
+            if (DEBUG) Log.d(TAG, "have internet");
+            if (mAccountDataHelper.isRetrieveDataSuccess()) {
+                gotoMainEntryFragment(false);
+            } else {
+                mAccountDataHelper.parseAllActListFromParse();
+            }
         } else {
-            mAccountDataHelper.parseAllActListFromParse();
+            if (DEBUG) Log.w(TAG, "Don't have internet");
+            // TODO toast connect to wifi to update
+            gotoMainEntryFragment(false);
         }
     }
 
@@ -52,6 +60,14 @@ public class InitDataFragment extends BaseFragment implements AccountDataHelper.
         return root;
     }
 
+    private void gotoMainEntryFragment(final boolean withAnimation) {
+        if (withAnimation) {
+            getFragmentManager().beginTransaction().setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out).replace(MainActivity.getMainFragmentContainerId(), new MainEntryFragment()).commit();
+        } else {
+            getFragmentManager().beginTransaction().replace(MainActivity.getMainFragmentContainerId(), new MainEntryFragment()).commit();
+        }
+    }
+
     @Override
     public boolean onBackPress() {
         return false;
@@ -65,7 +81,7 @@ public class InitDataFragment extends BaseFragment implements AccountDataHelper.
     @Override
     public void onFinishRetrieveAllActDataFromParse() {
         if (DEBUG) Log.d(TAG, "onFinishRetrieveAllActDataFromParse");
-        getFragmentManager().beginTransaction().setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out).replace(MainActivity.getMainFragmentContainerId(), new MainEntryFragment()).commit();
+        gotoMainEntryFragment(true);
     }
 
     @Override
