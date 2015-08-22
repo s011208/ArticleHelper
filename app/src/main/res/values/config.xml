@@ -3,4 +3,7 @@
     <integer name="activity_act_editor_grid_column_count">5</integer>
 
     <integer name="activity_image_wallpaper_preview_count">4</integer>
+
+    <integer name="test_item_fragment_maximum_question_line_when_reading">16</integer>
+    <integer name="test_item_fragment_maximum_question_line_when_testing">8</integer>
 </resources>

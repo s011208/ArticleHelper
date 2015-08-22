@@ -108,7 +108,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_area_sep"
         android:gravity="center_horizontal"
+        android:maxLines="10"
+        android:minLines="2"
         android:padding="5dp"
+        android:scrollbars="vertical"
         android:textSize="@dimen/test_item_content_text_size" />
 
     <ListView

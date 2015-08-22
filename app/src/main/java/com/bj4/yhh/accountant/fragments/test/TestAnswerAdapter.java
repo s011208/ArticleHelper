@@ -125,6 +125,12 @@ public class TestAnswerAdapter extends BaseAdapter {
         } else {
             holder.mAnswer.setTextColor(Color.BLACK);
         }
+
+        if (DEBUG) {
+            if (mCurrentItemIndex == position) {
+                holder.mAnswer.setTextColor(Color.rgb(0x01, 0xb4, 0x68));
+            }
+        }
         return convertView;
     }
 

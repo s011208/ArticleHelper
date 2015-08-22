@@ -3,6 +3,7 @@ package com.bj4.yhh.accountant.fragments.test;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,9 +63,21 @@ public class TestItemFragment extends BaseFragment {
     private ListView mAnswers;
     private TestAnswerAdapter mTestAnswerAdapter;
     private boolean mAnswerClickable = true;
+    private int mMaximumQuestionDisplayLineWhenReading, mMaximumQuestionDisplayLineWhenTesting;
 
     private static int getTestBy() {
         return (int) ((Math.random() * 10000) % 2);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mMaximumQuestionDisplayLineWhenReading = getActivity().getResources().getInteger(R.integer.test_item_fragment_maximum_question_line_when_reading);
+        mMaximumQuestionDisplayLineWhenTesting = getActivity().getResources().getInteger(R.integer.test_item_fragment_maximum_question_line_when_testing);
+        if (DEBUG) {
+            Log.d(TAG, "max read lines: " + mMaximumQuestionDisplayLineWhenReading
+                    + ", max test lines: " + mMaximumQuestionDisplayLineWhenTesting);
+        }
     }
 
     @Override
@@ -250,6 +263,14 @@ public class TestItemFragment extends BaseFragment {
         } else {
             mQuestions.setText(null);
         }
+        if (mIsInReadingMode) {
+            mQuestions.setMaxLines(mMaximumQuestionDisplayLineWhenReading);
+        } else {
+            mQuestions.setMaxLines(mMaximumQuestionDisplayLineWhenTesting);
+        }
+        mQuestions.scrollTo(mQuestions.getScrollX(), 0);
+
+        if (DEBUG) Log.v(TAG, "mCurrentArticle: " + mCurrentArticle);
     }
 
     private void updateAnswerList() {
@@ -258,6 +279,7 @@ public class TestItemFragment extends BaseFragment {
         } else {
             mAnswers.setVisibility(View.VISIBLE);
             mTestAnswerAdapter.updateListByCurrentData(mTestBy, mCurrentTestItem);
+            mAnswers.setSelection(0);
         }
     }
 
@@ -298,6 +320,7 @@ public class TestItemFragment extends BaseFragment {
         mRemainTestItems = (TextView) root.findViewById(R.id.remain_test_items);
 
         mQuestions = (TextView) root.findViewById(R.id.question_text);
+        mQuestions.setMovementMethod(new ScrollingMovementMethod());
         mAnswers = (ListView) root.findViewById(R.id.answer_list);
         mAnswers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
