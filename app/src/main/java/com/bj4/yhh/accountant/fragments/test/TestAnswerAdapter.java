@@ -1,6 +1,7 @@
 package com.bj4.yhh.accountant.fragments.test;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,9 @@ public class TestAnswerAdapter extends BaseAdapter {
     private final LayoutInflater mInflater;
     private final ArrayList<String> mAnswers = new ArrayList<String>();
 
+    private int mCurrentItemIndex;
+    private int mClickItemIndex;
+
     public TestAnswerAdapter(Context context, ArrayList<TestItem> allTestItems, ArrayList<TestItem> testScopeItems) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -35,7 +39,19 @@ public class TestAnswerAdapter extends BaseAdapter {
         mTestScopeItems = testScopeItems;
     }
 
+    public boolean checkIsCorrect(int clickPosition) {
+        boolean rtn = false;
+        mClickItemIndex = clickPosition;
+        if (mClickItemIndex == mCurrentItemIndex) {
+            rtn = true;
+        } else {
+            notifyDataSetChanged();
+        }
+        return rtn;
+    }
+
     public void updateListByCurrentData(int testBy, TestItem currentTestItem) {
+        mCurrentItemIndex = mClickItemIndex = -1;
         mAnswers.clear();
         ArrayList<TestItem> tempTestScope = new ArrayList<TestItem>(mTestScopeItems);
         if (tempTestScope.size() < MAXIMUM_ANSWER_ITEMS) {
@@ -44,13 +60,28 @@ public class TestAnswerAdapter extends BaseAdapter {
         }
         tempTestScope.remove(currentTestItem);
         Collections.shuffle(tempTestScope, new Random(System.nanoTime()));
-        for (int i = 0; i < tempTestScope.size() && i < MAXIMUM_ANSWER_ITEMS; i++) {
+        final Article currentItemArticle = TestItemFragment.getTestItemArticle(mContext, currentTestItem);
+        String currentItemAnswer = null;
+        if (testBy == TestItemFragment.TEST_BY_CONTENT) {
+            currentItemAnswer = currentItemArticle.mNumber;
+        } else if (testBy == TestItemFragment.TEST_BY_NUMBER) {
+            currentItemAnswer = currentItemArticle.mContent;
+        }
+        if (currentItemAnswer == null) throw new RuntimeException("answer cannot be null");
+        mAnswers.add(currentItemAnswer);
+        for (int i = 0; i < tempTestScope.size() && i < MAXIMUM_ANSWER_ITEMS && mAnswers.size() < MAXIMUM_ANSWER_ITEMS; i++) {
             final TestItem item = tempTestScope.get(i);
             final Article itemArticle = TestItemFragment.getTestItemArticle(mContext, item);
             if (testBy == TestItemFragment.TEST_BY_CONTENT) {
                 mAnswers.add(itemArticle.mNumber);
             } else if (testBy == TestItemFragment.TEST_BY_NUMBER) {
                 mAnswers.add(itemArticle.mContent);
+            }
+        }
+        Collections.shuffle(mAnswers, new Random(System.nanoTime()));
+        for (int i = 0; i < mAnswers.size(); i++) {
+            if (mAnswers.get(i).equals(currentItemAnswer)) {
+                mCurrentItemIndex = i;
             }
         }
         notifyDataSetChanged();
@@ -83,6 +114,17 @@ public class TestAnswerAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.mAnswer.setText(getItem(position));
+        if (mClickItemIndex == position) {
+            holder.mAnswer.setTextColor(Color.RED);
+        } else if (mCurrentItemIndex == position) {
+            if (mClickItemIndex != -1) {
+                holder.mAnswer.setTextColor(Color.rgb(0x01, 0xb4, 0x68));
+            } else {
+                holder.mAnswer.setTextColor(Color.BLACK);
+            }
+        } else {
+            holder.mAnswer.setTextColor(Color.BLACK);
+        }
         return convertView;
     }
 

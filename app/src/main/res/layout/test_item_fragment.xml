@@ -47,31 +47,45 @@
         android:layout_below="@+id/title_area"
         android:background="@color/main_title_color"></View>
 
-    <LinearLayout
+    <ViewSwitcher
         android:id="@+id/button_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/yes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/on_click_background"
+                android:gravity="center"
+                android:text="@android:string/yes" />
+
+            <Button
+                android:id="@+id/no"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/on_click_background"
+                android:gravity="center"
+                android:text="@android:string/no" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/yes"
-            android:layout_width="0dp"
+            android:id="@+id/next"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@drawable/on_click_background"
             android:gravity="center"
-            android:text="@android:string/yes" />
-
-        <Button
-            android:id="@+id/no"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/on_click_background"
-            android:gravity="center"
-            android:text="@android:string/no" />
-    </LinearLayout>
+            android:text="@string/test_item_fragment_next_button" />
+    </ViewSwitcher>
 
     <View
         android:id="@+id/button_area_sep"
@@ -92,8 +106,8 @@
         android:id="@+id/question_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:layout_below="@+id/title_area_sep"
+        android:gravity="center_horizontal"
         android:padding="5dp"
         android:textSize="@dimen/test_item_content_text_size" />
 
@@ -103,6 +117,9 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/remain_test_items"
         android:layout_below="@+id/question_text"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        android:listSelector="#00000000"
         android:padding="5dp"></ListView>
 
 </RelativeLayout>

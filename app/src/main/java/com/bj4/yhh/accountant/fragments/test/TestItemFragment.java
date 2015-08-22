@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.act.Article;
@@ -51,8 +52,9 @@ public class TestItemFragment extends BaseFragment {
     private TextView mActTitle, mActInfo;
     private ImageView mOutlineBtn;
 
-    private View mButtonArea;
-    private Button mYes, mNo;
+    private ViewSwitcher mButtonArea;
+    private Button mYes, mNo, mNext;
+    private boolean mIsWrongAnswer = false;
 
     private TextView mRemainTestItems;
 
@@ -96,17 +98,23 @@ public class TestItemFragment extends BaseFragment {
     }
 
     private void moveToNextItem() {
+        mIsWrongAnswer = false;
         nextItem();
         updateActInfo();
         updateRemainItemCount();
         updateQuestionText();
         updateAnswerList();
+        updateButtonsVisibility();
     }
 
     private void setCurrentData(TestItem testItem) {
         mCurrentTestItem = testItem;
         mCurrentChapter = getTestItemChapter(getActivity(), testItem);
         mCurrentArticle = getTestItemArticle(getActivity(), testItem);
+    }
+
+    private TestItem getCurrentTestItem() {
+        return mCurrentTestItem;
     }
 
     public static Chapter getTestItemChapter(Context context, TestItem testItem) {
@@ -131,6 +139,16 @@ public class TestItemFragment extends BaseFragment {
         mCurrentTestItem = null;
         mCurrentArticle = null;
         mCurrentChapter = null;
+    }
+
+    private void updateButtonsVisibility() {
+        if (mIsInReadingMode) {
+            mButtonArea.setDisplayedChild(0);
+            mButtonArea.setVisibility(View.VISIBLE);
+        } else {
+            mButtonArea.setDisplayedChild(1);
+            mButtonArea.setVisibility(mIsWrongAnswer ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 
     private boolean nextItem() {
@@ -165,7 +183,10 @@ public class TestItemFragment extends BaseFragment {
                 }
             }
         }
-        mButtonArea.setVisibility(mIsInReadingMode ? View.VISIBLE : View.INVISIBLE);
+        if (getCurrentTestItem() == null) {
+            rtn = false;
+            // TODO update plan & exit fragment
+        }
         return rtn;
     }
 
@@ -198,7 +219,7 @@ public class TestItemFragment extends BaseFragment {
                 if (item.mIsAnswer) --count;
             }
         }
-        mRemainTestItems.setText(getActivity().getResources().getString(R.string.test_item_fragment, String.valueOf(count)));
+        mRemainTestItems.setText(getActivity().getResources().getString(R.string.test_item_fragment_remain_item_text, String.valueOf(count)));
     }
 
     private void updateQuestionText() {
@@ -236,13 +257,11 @@ public class TestItemFragment extends BaseFragment {
 
         mActTitle.setText(mPlan.getActTitle());
 
-        mButtonArea = root.findViewById(R.id.button_area);
+        mButtonArea = (ViewSwitcher) root.findViewById(R.id.button_area);
         mYes = (Button) root.findViewById(R.id.yes);
         mYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mCurrentTestItem == null)
-                    return;
                 mCurrentTestItem.mIsRead = true;
                 moveToNextItem();
             }
@@ -254,6 +273,15 @@ public class TestItemFragment extends BaseFragment {
                 moveToNextItem();
             }
         });
+        mNext = (Button) root.findViewById(R.id.next);
+        mNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentTestItem.mHasFailed = true;
+                moveToNextItem();
+                mAnswers.setEnabled(true);
+            }
+        });
 
         mRemainTestItems = (TextView) root.findViewById(R.id.remain_test_items);
 
@@ -262,7 +290,15 @@ public class TestItemFragment extends BaseFragment {
         mAnswers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                final boolean isCorrect = mTestAnswerAdapter.checkIsCorrect(position);
+                if (isCorrect) {
+                    mCurrentTestItem.mIsAnswer = true;
+                    moveToNextItem();
+                } else {
+                    mIsWrongAnswer = true;
+                    updateButtonsVisibility();
+                    mAnswers.setEnabled(false);
+                }
             }
         });
         mTestAnswerAdapter = new TestAnswerAdapter(getActivity(), mAllTestItems, mTestScopeItems);

@@ -55,5 +55,6 @@
 
     <string name="init_data_fragment_percentage">"loading... %s %%"</string>
 
-    <string name="test_item_fragment">Remain %s items</string>
+    <string name="test_item_fragment_remain_item_text">Remain %s items</string>
+    <string name="test_item_fragment_next_button">Next</string>
 </resources>

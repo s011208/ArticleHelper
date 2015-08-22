@@ -3,6 +3,7 @@
     android:id="@+id/answer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/display_act_content_item_bg"
     android:gravity="center_vertical"
     android:textSize="@dimen/test_item_answer_text_size">
 
