@@ -12,14 +12,16 @@ import android.widget.ListView;
 import android.widget.ViewSwitcher;
 
 import com.bj4.yhh.accountant.R;
+import com.bj4.yhh.accountant.act.Act;
 import com.bj4.yhh.accountant.activity.MainActivity;
 import com.bj4.yhh.accountant.activity.TestActivity;
+import com.bj4.yhh.accountant.dialogs.OutlineDialogFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
 
 /**
  * Created by yenhsunhuang on 15/8/17.
  */
-public class PlanModeFragment extends BaseFragment implements View.OnClickListener {
+public class PlanModeFragment extends BaseFragment implements View.OnClickListener, PlanListAdapter.Callback {
     private static final String TAG = "PlanModeFragment";
     private static final boolean DEBUG = true;
     private PlanListAdapter mPlanListAdapter;
@@ -34,7 +36,7 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
 
         ViewSwitcher topArea = (ViewSwitcher) root.findViewById(R.id.top_area);
         ListView planList = (ListView) root.findViewById(R.id.plan_list);
-        mPlanListAdapter = new PlanListAdapter(getActivity());
+        mPlanListAdapter = new PlanListAdapter(getActivity(), this);
         planList.setAdapter(mPlanListAdapter);
         planList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -90,5 +92,10 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
                 mPlanListAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    @Override
+    public void onOutlineButtonClick(Act act) {
+        OutlineDialogFragment.showDialog(act, getFragmentManager());
     }
 }

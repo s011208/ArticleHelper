@@ -16,8 +16,10 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.bj4.yhh.accountant.R;
+import com.bj4.yhh.accountant.act.Act;
 import com.bj4.yhh.accountant.act.Article;
 import com.bj4.yhh.accountant.act.Chapter;
+import com.bj4.yhh.accountant.dialogs.OutlineDialogFragment;
 import com.bj4.yhh.accountant.fragments.plan.Plan;
 import com.bj4.yhh.accountant.utils.BaseFragment;
 
@@ -287,6 +289,13 @@ public class TestItemFragment extends BaseFragment {
         mActTitle = (TextView) root.findViewById(R.id.act_title);
         mActInfo = (TextView) root.findViewById(R.id.act_detail_info);
         mOutlineBtn = (ImageView) root.findViewById(R.id.outline_btn);
+        mOutlineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Act act = mPlan.getAct();
+                OutlineDialogFragment.showDialog(act, getFragmentManager());
+            }
+        });
 
         mActTitle.setText(mPlan.getActTitle());
 

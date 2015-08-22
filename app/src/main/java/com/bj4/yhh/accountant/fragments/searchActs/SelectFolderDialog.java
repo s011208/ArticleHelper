@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class SelectFolderDialog extends BaseDialogFragment {
     private static final String TAG = "SelectFolderDialog";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private TextView mCustomTitle;
 
     private View mCustomMessage;

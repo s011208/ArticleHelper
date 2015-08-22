@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bj4.yhh.accountant.R;
+import com.bj4.yhh.accountant.act.Act;
 
 import java.util.ArrayList;
 
@@ -17,13 +18,20 @@ import java.util.ArrayList;
  * Created by yenhsunhuang on 15/8/18.
  */
 public class PlanListAdapter extends BaseAdapter {
+    public interface Callback {
+        void onOutlineButtonClick(Act act);
+    }
+
+    private Callback mCallback;
+
     private final ArrayList<Plan> mData = new ArrayList<>();
     private final Context mContext;
     private final LayoutInflater mInflater;
 
-    public PlanListAdapter(Context context) {
+    public PlanListAdapter(Context context, Callback cb) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mCallback = cb;
         updateContent();
     }
 
@@ -67,7 +75,7 @@ public class PlanListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Plan item = getItem(position);
+        final Plan item = getItem(position);
 
         holder.mActTitle.setText(item.getActTitle());
         int orderTextRes = 0;
@@ -87,6 +95,15 @@ public class PlanListAdapter extends BaseAdapter {
         holder.mPlanDay.setText(item.mCurrentPlanProgress + " / " + item.mTotalPlanProgress);
         holder.mPlanProgress.setMax(item.mTotalItems);
         holder.mPlanProgress.setProgress(item.mFinishedItem);
+        holder.mOutlineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Act planAct = item.getAct();
+                if (mCallback != null) {
+                    mCallback.onOutlineButtonClick(planAct);
+                }
+            }
+        });
         return convertView;
     }
 
