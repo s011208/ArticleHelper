@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bj4.yhh.accountant.R;
@@ -60,6 +61,7 @@ public class PlanListAdapter extends BaseAdapter {
             holder.mOutlineButton = (ImageView) convertView.findViewById(R.id.outline_btn);
             holder.mActItem = (TextView) convertView.findViewById(R.id.act_item);
             holder.mPlanDay = (TextView) convertView.findViewById(R.id.plan_day);
+            holder.mPlanProgress = (ProgressBar) convertView.findViewById(R.id.plan_progress);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -83,7 +85,8 @@ public class PlanListAdapter extends BaseAdapter {
 
         holder.mActItem.setText(item.mFinishedItem + " / " + item.mTotalItems);
         holder.mPlanDay.setText(item.mCurrentPlanProgress + " / " + item.mTotalPlanProgress);
-
+        holder.mPlanProgress.setMax(item.mTotalItems);
+        holder.mPlanProgress.setProgress(item.mFinishedItem);
         return convertView;
     }
 
@@ -93,5 +96,6 @@ public class PlanListAdapter extends BaseAdapter {
         ImageView mOutlineButton;
         TextView mActItem;
         TextView mPlanDay;
+        ProgressBar mPlanProgress;
     }
 }

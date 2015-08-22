@@ -99,7 +99,8 @@ public class TestItemFragment extends BaseFragment {
 
     private void moveToNextItem() {
         mIsWrongAnswer = false;
-        nextItem();
+        final boolean moveToNext = nextItem();
+        if (!moveToNext) return;
         updateActInfo();
         updateRemainItemCount();
         updateQuestionText();
@@ -111,6 +112,11 @@ public class TestItemFragment extends BaseFragment {
         mCurrentTestItem = testItem;
         mCurrentChapter = getTestItemChapter(getActivity(), testItem);
         mCurrentArticle = getTestItemArticle(getActivity(), testItem);
+        if (DEBUG) {
+            Log.v(TAG, "mCurrentTestItem is null: " + (mCurrentTestItem == null));
+            Log.v(TAG, "mCurrentChapter is null: " + (mCurrentChapter == null));
+            Log.v(TAG, "mCurrentArticle is null: " + (mCurrentArticle == null));
+        }
     }
 
     private TestItem getCurrentTestItem() {
@@ -185,9 +191,15 @@ public class TestItemFragment extends BaseFragment {
         }
         if (getCurrentTestItem() == null) {
             rtn = false;
-            // TODO update plan & exit fragment
+            updatePlanAndExit();
         }
         return rtn;
+    }
+
+    private void updatePlanAndExit() {
+        ++mPlan.mCurrentPlanProgress;
+        Plan.insertOrUpdate(getActivity(), mPlan);
+        getActivity().onBackPressed();
     }
 
     private void updateActInfo() {
@@ -205,7 +217,8 @@ public class TestItemFragment extends BaseFragment {
         } else {
             mActInfo.setText(null);
         }
-        if (DEBUG) Log.d(TAG, "updateActInfo, mIsInReadingMode: " + mIsInReadingMode);
+        if (DEBUG) Log.d(TAG, "updateActInfo, mIsInReadingMode: " + mIsInReadingMode
+                + ", mActInfo text: " + mActInfo.getText());
     }
 
     private void updateRemainItemCount() {
@@ -223,18 +236,15 @@ public class TestItemFragment extends BaseFragment {
     }
 
     private void updateQuestionText() {
-        if (mCurrentTestItem != null) {
-            if (mIsInReadingMode) {
-                mTestBy = getTestBy();
-                switch (mTestBy) {
-                    case TEST_BY_CONTENT:
-                        mQuestions.setText(mCurrentArticle.mContent);
-                        break;
-                    case TEST_BY_NUMBER:
-                        mQuestions.setText(mCurrentArticle.mNumber);
-                        break;
-                }
-            } else {
+        if (mCurrentArticle != null) {
+            mTestBy = getTestBy();
+            switch (mTestBy) {
+                case TEST_BY_CONTENT:
+                    mQuestions.setText(mCurrentArticle.mContent);
+                    break;
+                case TEST_BY_NUMBER:
+                    mQuestions.setText(mCurrentArticle.mNumber);
+                    break;
             }
         } else {
             mQuestions.setText(null);
@@ -263,6 +273,7 @@ public class TestItemFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 mCurrentTestItem.mIsRead = true;
+                TestItem.update(getActivity(), mCurrentTestItem);
                 moveToNextItem();
             }
         });
@@ -277,7 +288,7 @@ public class TestItemFragment extends BaseFragment {
         mNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentTestItem.mHasFailed = true;
+                TestItem.update(getActivity(), mCurrentTestItem);
                 moveToNextItem();
                 mAnswers.setEnabled(true);
             }
@@ -293,9 +304,14 @@ public class TestItemFragment extends BaseFragment {
                 final boolean isCorrect = mTestAnswerAdapter.checkIsCorrect(position);
                 if (isCorrect) {
                     mCurrentTestItem.mIsAnswer = true;
+                    TestItem.update(getActivity(), mCurrentTestItem);
+                    ++mPlan.mFinishedItem;
+                    Plan.insertOrUpdate(getActivity(), mPlan);
                     moveToNextItem();
                 } else {
                     mIsWrongAnswer = true;
+                    mCurrentTestItem.mHasFailed = true;
+                    TestItem.update(getActivity(), mCurrentTestItem);
                     updateButtonsVisibility();
                     mAnswers.setEnabled(false);
                 }
