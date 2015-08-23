@@ -57,6 +57,8 @@
 
     <string name="test_item_fragment_remain_item_text">Remain %s items</string>
     <string name="test_item_fragment_next_button">Next</string>
+    <string name="test_item_fragment_know_button">I know</string>
+    <string name="test_item_fragment_do_not_know_button">"I don't know"</string>
 
     <string name="outline_dialog_fragment_title">%s outline</string>
     <string name="outline_dialog_fragment_no_outline">No outline</string>

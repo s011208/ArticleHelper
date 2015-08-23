@@ -66,7 +66,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/on_click_background"
                 android:gravity="center"
-                android:text="@android:string/yes" />
+                android:text="@string/test_item_fragment_know_button" />
 
             <Button
                 android:id="@+id/no"
@@ -75,7 +75,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/on_click_background"
                 android:gravity="center"
-                android:text="@android:string/no" />
+                android:text="@string/test_item_fragment_do_not_know_button" />
         </LinearLayout>
 
         <Button
