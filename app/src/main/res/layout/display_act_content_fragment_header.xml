@@ -1,40 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/act_area"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/main_title_color"
-    android:orientation="vertical">
+    android:background="@color/main_title_color">
 
-    <TextView
-        android:id="@+id/act_title"
-        style="@style/AppBaseTextView"
+    <ImageView
+        android:id="@+id/outline_btn"
+        android:layout_width="@dimen/plan_mode_fragment_outline_icon_size"
+        android:layout_height="@dimen/plan_mode_fragment_outline_icon_size"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/white_outline_icon" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="1"
-        android:paddingTop="3dp"
-        android:singleLine="true"
-        android:textSize="@dimen/display_act_content_fragment_act_title_textsize" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/outline_btn"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/plan_mode_fragment_outline_icon_size">
 
-    <TextView
-        android:id="@+id/act_amenddate"
-        style="@style/AppBaseTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textSize="@dimen/display_act_content_fragment_act_sub_title_textsize" />
+        <TextView
+            android:id="@+id/act_title"
+            style="@style/AppBaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingTop="3dp"
+            android:singleLine="true"
+            android:textSize="@dimen/display_act_content_fragment_act_title_textsize" />
 
-    <TextView
-        android:id="@+id/act_category"
-        style="@style/AppBaseTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="1"
-        android:paddingBottom="3dp"
-        android:singleLine="true"
-        android:textSize="@dimen/display_act_content_fragment_act_sub_title_textsize" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/act_amenddate"
+            style="@style/AppBaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="@dimen/display_act_content_fragment_act_sub_title_textsize" />
+
+        <TextView
+            android:id="@+id/act_category"
+            style="@style/AppBaseTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:singleLine="true"
+            android:textSize="@dimen/display_act_content_fragment_act_sub_title_textsize" />
+    </LinearLayout>
+</RelativeLayout>

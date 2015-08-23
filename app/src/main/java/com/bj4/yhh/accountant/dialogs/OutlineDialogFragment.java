@@ -1,8 +1,10 @@
 package com.bj4.yhh.accountant.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -28,6 +30,26 @@ public class OutlineDialogFragment extends BaseDialogFragment {
     private TextView mCustomTitle;
 
     private final ArrayList<String> mIndentList = new ArrayList<String>();
+
+    private final ArrayList<Chapter> mChapters = new ArrayList<Chapter>();
+
+    public interface Callback {
+        void onItemClick(long chapterId);
+    }
+
+    private Callback mCallback;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof Callback) {
+            mCallback = (Callback) activity;
+        }
+    }
+
+    public void setCallback(Callback cb) {
+        mCallback = cb;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,13 +86,21 @@ public class OutlineDialogFragment extends BaseDialogFragment {
         if (items == null || items.length == 0) {
             builder.setMessage(R.string.outline_dialog_fragment_no_outline);
         } else {
-            builder.setItems(items, null);
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (mCallback != null) {
+                        mCallback.onItemClick(mChapters.get(which).mId);
+                    }
+                }
+            });
         }
         return builder.create();
     }
 
     private CharSequence[] generateItemList() {
         CharSequence[] rtn = null;
+        mChapters.clear();
         Act.queryAllActContent(getActivity(), mAct);
         final ArrayList<CharSequence> items = new ArrayList<CharSequence>();
         int startIndexOfArticle = 1;
@@ -87,6 +117,7 @@ public class OutlineDialogFragment extends BaseDialogFragment {
                 prefix += "    ";
             }
             items.add(prefix + chapter.mNumber + "  " + chapter.mContent + " ＃" + startIndexOfArticle);
+            mChapters.add(chapter);
             int size = 0;
             for (Article article : chapter.getArticles()) {
                 /**
@@ -105,11 +136,16 @@ public class OutlineDialogFragment extends BaseDialogFragment {
     }
 
     public static void showDialog(Act act, FragmentManager fm) {
+        showDialog(act, fm, null);
+    }
+
+    public static void showDialog(Act act, FragmentManager fm, Callback cb) {
         if (act == null) return;
         OutlineDialogFragment dialog = new OutlineDialogFragment();
         Bundle args = new Bundle();
         args.putString(OutlineDialogFragment.OUTLINE_ACT, act.toString());
         dialog.setArguments(args);
+        dialog.setCallback(cb);
         dialog.show(fm, OutlineDialogFragment.class.getName());
     }
 }

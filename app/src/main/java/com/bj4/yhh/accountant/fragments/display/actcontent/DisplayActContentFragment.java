@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ import com.bj4.yhh.accountant.act.ActContent;
 import com.bj4.yhh.accountant.activity.ActEditorActivity;
 import com.bj4.yhh.accountant.activity.BaseActivity;
 import com.bj4.yhh.accountant.activity.MainActivity;
+import com.bj4.yhh.accountant.dialogs.OutlineDialogFragment;
 import com.bj4.yhh.accountant.fragments.display.ActFragment;
 import com.bj4.yhh.accountant.utils.FloatingActionButton;
 import com.bj4.yhh.accountant.utils.TranslationHeaderLayout;
@@ -34,7 +34,7 @@ import com.bj4.yhh.accountant.utils.TranslationHeaderLayout;
 /**
  * Created by yenhsunhuang on 15/7/18.
  */
-public class DisplayActContentFragment extends ActFragment implements TranslationHeaderLayout.Callback, ActContentAdapter.Callback {
+public class DisplayActContentFragment extends ActFragment implements TranslationHeaderLayout.Callback, ActContentAdapter.Callback, OutlineDialogFragment.Callback {
     private static final boolean DEBUG = false;
     private static final String TAG = "DisplayActContent";
     private static final int QUERY_INTERVAL = 300;
@@ -42,11 +42,12 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
     private int mTouchedX;
 
     private TextView mActTitle, mActAmendDate, mActCategory;
-    private LinearLayout mActArea;
+    private View mActArea;
     private TranslationHeaderLayout mTranslationHeader;
     private RelativeLayout mRoot;
     private ListView mActContent;
     private ActContentAdapter mActContentAdapter;
+    private ImageView mOutlineButton;
 
     private FloatingActionButton mFloatingActionButton;
 
@@ -88,7 +89,14 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
         mRoot = (RelativeLayout) inflater.inflate(R.layout.display_act_content_fragment, null);
         mTranslationHeader = (TranslationHeaderLayout) mRoot.findViewById(R.id.translation_header_layout);
         mTranslationHeader.setCallback(this);
-        mActArea = (LinearLayout) inflater.inflate(R.layout.display_act_content_fragment_header, null);
+        mActArea = inflater.inflate(R.layout.display_act_content_fragment_header, null);
+        mOutlineButton = (ImageView) mActArea.findViewById(R.id.outline_btn);
+        mOutlineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OutlineDialogFragment.showDialog(mAct, getFragmentManager(), DisplayActContentFragment.this);
+            }
+        });
         mActTitle = (TextView) mActArea.findViewById(R.id.act_title);
         mActAmendDate = (TextView) mActArea.findViewById(R.id.act_amenddate);
         mActCategory = (TextView) mActArea.findViewById(R.id.act_category);
@@ -401,5 +409,12 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
     @Override
     public void onQueryDone() {
 
+    }
+
+    @Override
+    public void onItemClick(long chapterId) {
+        int indexOfChapter = mActContentAdapter.getChapterItemIndex(chapterId);
+        if (indexOfChapter == -1) return;
+        mActContent.setSelection(indexOfChapter);
     }
 }

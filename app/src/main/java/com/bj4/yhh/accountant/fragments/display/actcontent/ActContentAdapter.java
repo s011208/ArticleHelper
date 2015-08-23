@@ -329,4 +329,14 @@ public class ActContentAdapter extends BaseAdapter {
         ImageView mArticleImportant, mArticleHasTextNote, mArticleHasImageNote;
     }
 
+    public int getChapterItemIndex(long chapterId) {
+        for (ActContent content : mQueryData) {
+            if (content instanceof Chapter) {
+                if (((Chapter) content).mId == chapterId) {
+                    return mQueryData.indexOf(content);
+                }
+            }
+        }
+        return -1;
+    }
 }
