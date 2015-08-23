@@ -59,4 +59,11 @@
     <string name="test_item_fragment_next_button">Next</string>
 
     <string name="outline_dialog_fragment_title">%s outline</string>
+    <string name="outline_dialog_fragment_no_outline">No outline</string>
+
+    <string name="confirm_dialog_fragment_delete_all_title">Delete all plans</string>
+    <string name="confirm_dialog_fragment_delete_all_message">Sure to delete all plans?</string>
+
+    <string name="confirm_dialog_fragment_delete_plan_title">Delete plan</string>
+    <string name="confirm_dialog_fragment_delete_plan_message">Sure to delete %s?</string>
 </resources>

@@ -60,7 +60,12 @@ public class OutlineDialogFragment extends BaseDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mCustomTitle.setText(getActivity().getResources().getString(R.string.outline_dialog_fragment_title, mAct.getTitle()));
         AlertDialog.Builder builder = getDialogBuilder();
-        builder.setItems(generateItemList(), null);
+        final CharSequence[] items = generateItemList();
+        if (items == null || items.length == 0) {
+            builder.setMessage(R.string.outline_dialog_fragment_no_outline);
+        } else {
+            builder.setItems(items, null);
+        }
         return builder.create();
     }
 

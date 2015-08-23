@@ -118,6 +118,11 @@ public class Plan {
         context.getContentResolver().delete(getBaseUri(), null, null);
     }
 
+    public static void deletePlan(Context context, long planId) {
+        context.getContentResolver().delete(getBaseUri(), Plan.ID + "=" + planId, null);
+    }
+
+
     public ContentValues toContentValues() {
         ContentValues cv = new ContentValues();
         if (mId != NO_ID) {
