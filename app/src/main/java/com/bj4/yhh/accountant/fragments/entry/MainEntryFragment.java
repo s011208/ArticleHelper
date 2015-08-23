@@ -1,5 +1,6 @@
 package com.bj4.yhh.accountant.fragments.entry;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.bj4.yhh.accountant.R;
+import com.bj4.yhh.accountant.activity.ReviewModeActivity;
 import com.bj4.yhh.accountant.fragments.plan.PlanModeFragment;
 import com.bj4.yhh.accountant.fragments.searchActs.SearchActFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
@@ -57,6 +59,8 @@ public class MainEntryFragment extends BaseFragment implements AdapterView.OnIte
                 getFragmentManager().beginTransaction().replace(R.id.container, new PlanModeFragment()).addToBackStack(null).commit();
                 break;
             case MainEntryGridAdapter.REVIEW_MODE:
+                Intent intent = new Intent(getActivity(), ReviewModeActivity.class);
+                startActivity(intent);
                 break;
             case MainEntryGridAdapter.TEST_MODE:
                 break;

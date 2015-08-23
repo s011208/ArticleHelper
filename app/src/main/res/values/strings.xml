@@ -69,4 +69,6 @@
 
     <string name="confirm_dialog_fragment_delete_plan_title">Delete plan</string>
     <string name="confirm_dialog_fragment_delete_plan_message">Sure to delete %s?</string>
+
+    <string name="review_mode_fragment_title">Select a review act</string>
 </resources>

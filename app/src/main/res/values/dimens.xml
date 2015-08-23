@@ -70,4 +70,7 @@
     <dimen name="test_item_fragment_act_title_text_size">22sp</dimen>
     <dimen name="test_item_content_text_size">20sp</dimen>
     <dimen name="test_item_answer_text_size">18sp</dimen>
+
+    <dimen name="review_mode_fragment_padding_v">5dp</dimen>
+    <integer name="review_mode_fragment_text_size">22</integer>
 </resources>
