@@ -57,6 +57,13 @@ public class InitDataFragment extends BaseFragment implements AccountDataHelper.
         View root = inflater.inflate(R.layout.init_data_fragment, null);
         mProgressText = (TextView) root.findViewById(R.id.progress_text);
         mProgressText.setText(getActivity().getString(R.string.init_data_fragment_percentage, "0"));
+        TextView mSkip = (TextView) root.findViewById(R.id.skip_loading);
+        mSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoMainEntryFragment(true);
+            }
+        });
         return root;
     }
 

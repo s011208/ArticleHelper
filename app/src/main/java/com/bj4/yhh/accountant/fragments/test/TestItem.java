@@ -27,7 +27,7 @@ public class TestItem {
      */
     public static final String CHAPTER_ID = "chapter_id";
     public static final String ARTICLE_ID = "article_id";
-    public static final String HAS_FAILED = "has_failed";
+    public static final String FAILED_TIME = "failed_time";
     public static final String IS_READ = "is_read";
     public static final String IS_ANSWER = "is_answer";
     public static final String DISPLAY_DAY = "display_day";
@@ -41,22 +41,22 @@ public class TestItem {
     public long mActId = NO_ID;
     public long mChapterId = NO_ID;
     public long mArticleId = NO_ID;
-    public boolean mHasFailed = false;
+    public int mFailedTime = 0;
     public boolean mIsRead = false;
     public boolean mIsAnswer = false;
     public int mDisplayDay = -1;
 
     public TestItem(long planId, long actId, long chapterId, long articleId, int displayDay) {
-        this(NO_ID, planId, actId, chapterId, articleId, false, false, false, displayDay);
+        this(NO_ID, planId, actId, chapterId, articleId, 0, false, false, displayDay);
     }
 
-    public TestItem(long id, long planId, long actId, long chapterId, long articleId, boolean hasFailed, boolean isAnswer, boolean isRead, int displayDay) {
+    public TestItem(long id, long planId, long actId, long chapterId, long articleId, int failedTime, boolean isAnswer, boolean isRead, int displayDay) {
         mId = id;
         mPlanId = planId;
         mActId = actId;
         mChapterId = chapterId;
         mArticleId = articleId;
-        mHasFailed = hasFailed;
+        mFailedTime = failedTime;
         mIsAnswer = isAnswer;
         mIsRead = isRead;
         mDisplayDay = displayDay;
@@ -71,7 +71,7 @@ public class TestItem {
         cv.put(ACT_ID, mActId);
         cv.put(CHAPTER_ID, mChapterId);
         cv.put(ARTICLE_ID, mArticleId);
-        cv.put(HAS_FAILED, mHasFailed ? TRUE : FALSE);
+        cv.put(FAILED_TIME, mFailedTime);
         cv.put(IS_ANSWER, mIsAnswer ? TRUE : FALSE);
         cv.put(IS_READ, mIsRead ? TRUE : FALSE);
         cv.put(DISPLAY_DAY, mDisplayDay);
@@ -86,7 +86,7 @@ public class TestItem {
             json.put(ACT_ID, mActId);
             json.put(CHAPTER_ID, mChapterId);
             json.put(ARTICLE_ID, mArticleId);
-            json.put(HAS_FAILED, mHasFailed ? TRUE : FALSE);
+            json.put(FAILED_TIME, mFailedTime);
             json.put(IS_ANSWER, mIsAnswer ? TRUE : FALSE);
             json.put(IS_READ, mIsRead ? TRUE : FALSE);
             json.put(DISPLAY_DAY, mDisplayDay);
@@ -136,7 +136,7 @@ public class TestItem {
                 final int indexOfActId = data.getColumnIndex(ACT_ID);
                 final int indexOfChapterId = data.getColumnIndex(CHAPTER_ID);
                 final int indexOfArticleId = data.getColumnIndex(ARTICLE_ID);
-                final int indexOfHasFailed = data.getColumnIndex(HAS_FAILED);
+                final int indexOfHasFailed = data.getColumnIndex(FAILED_TIME);
                 final int indexOfIsAnswer = data.getColumnIndex(IS_ANSWER);
                 final int indexOfIsRead = data.getColumnIndex(IS_READ);
                 final int indexOfDisplayDay = data.getColumnIndex(DISPLAY_DAY);
@@ -146,7 +146,7 @@ public class TestItem {
                             , data.getLong(indexOfActId)
                             , data.getLong(indexOfChapterId)
                             , data.getLong(indexOfArticleId)
-                            , data.getInt(indexOfHasFailed) == TRUE
+                            , data.getInt(indexOfHasFailed)
                             , data.getInt(indexOfIsAnswer) == TRUE
                             , data.getInt(indexOfIsRead) == TRUE
                             , data.getInt(indexOfDisplayDay)));

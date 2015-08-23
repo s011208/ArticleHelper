@@ -344,7 +344,7 @@ public class TestItemFragment extends BaseFragment {
                     moveToNextItem();
                 } else {
                     mIsWrongAnswer = true;
-                    mCurrentTestItem.mHasFailed = true;
+                    mCurrentTestItem.mFailedTime++;
                     TestItem.update(getActivity(), mCurrentTestItem);
                     updateButtonsVisibility();
                     mAnswerClickable = false;

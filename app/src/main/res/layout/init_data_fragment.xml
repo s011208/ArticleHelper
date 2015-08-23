@@ -10,4 +10,14 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColor="#ffffff" />
+
+    <TextView
+        android:id="@+id/skip_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:gravity="center_horizontal"
+        android:text="@string/init_data_fragment_skip_loading_text"
+        android:textColor="#ffffff" />
 </RelativeLayout>

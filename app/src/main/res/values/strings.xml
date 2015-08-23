@@ -53,7 +53,8 @@
         <item>@string/add_plan_fragment_order_by_random</item>
     </array>
 
-    <string name="init_data_fragment_percentage">"loading... %s %%"</string>
+    <string name="init_data_fragment_percentage">"sync acts list... %s %%"</string>
+    <string name="init_data_fragment_skip_loading_text">or click me to skip</string>
 
     <string name="test_item_fragment_remain_item_text">Remain %s items</string>
     <string name="test_item_fragment_next_button">Next</string>

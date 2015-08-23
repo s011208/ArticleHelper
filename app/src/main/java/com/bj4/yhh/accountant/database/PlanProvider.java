@@ -159,7 +159,7 @@ public class PlanProvider extends ContentProvider {
             database.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TEST_ITEM + " ("
                     + TestItem.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + TestItem.PLAN_ID + " INTEGER,"
-                    + TestItem.HAS_FAILED + " INTEGER,"
+                    + TestItem.FAILED_TIME + " INTEGER,"
                     + TestItem.IS_ANSWER + " INTEGER,"
                     + TestItem.IS_READ + " INTEGER,"
                     + TestItem.DISPLAY_DAY + " INTEGER,"
