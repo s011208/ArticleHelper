@@ -38,6 +38,10 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
     private static final boolean DEBUG = false;
     private static final String TAG = "DisplayActContent";
     private static final int QUERY_INTERVAL = 300;
+    public static final String ARGUS_DISPLAY_TYPE = "display_type";
+    public static final int ARGUS_DISPLAY_TYPE_REVIEW_MODE = 1000;
+    private int mDisplayType = -1;
+
     private String mQueryString = "";
     private int mTouchedX;
 
@@ -82,6 +86,7 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mDisplayType = getArguments().getInt(ARGUS_DISPLAY_TYPE, -1);
         mRoot = (RelativeLayout) inflater.inflate(R.layout.display_act_content_fragment, null);
         mTranslationHeader = (TranslationHeaderLayout) mRoot.findViewById(R.id.translation_header_layout);
         mTranslationHeader.setCallback(this);
@@ -94,12 +99,15 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
             }
         });
         mSortingButton = (ImageView) mActArea.findViewById(R.id.sorting_btn);
-        mSortingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        if (mDisplayType == ARGUS_DISPLAY_TYPE_REVIEW_MODE) {
+            mSortingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-            }
-        });
+                }
+            });
+            mSortingButton.setVisibility(View.VISIBLE);
+        }
         mActTitle = (TextView) mActArea.findViewById(R.id.act_title);
         mActAmendDate = (TextView) mActArea.findViewById(R.id.act_amenddate);
         mActCategory = (TextView) mActArea.findViewById(R.id.act_category);

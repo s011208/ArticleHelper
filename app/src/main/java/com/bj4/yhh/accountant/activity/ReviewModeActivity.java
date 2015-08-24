@@ -34,6 +34,7 @@ public class ReviewModeActivity extends BaseActivity implements SimpleActFragmen
         DisplayActContentFragment frag = new DisplayActContentFragment();
         Bundle args = new Bundle();
         args.putString(DisplayActContentFragment.ARGUMENT_JSON_ACT, act.toString());
+        args.putInt(DisplayActContentFragment.ARGUS_DISPLAY_TYPE, DisplayActContentFragment.ARGUS_DISPLAY_TYPE_REVIEW_MODE);
         frag.setArguments(args);
         getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), frag).commit();
     }
