@@ -11,10 +11,21 @@
         android:layout_height="@dimen/plan_mode_fragment_outline_icon_size"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
-        android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
         android:scaleType="centerInside"
         android:src="@drawable/white_outline_icon" />
+
+    <ImageView
+        android:id="@+id/sorting_btn"
+        android:layout_width="@dimen/plan_mode_fragment_outline_icon_size"
+        android:layout_height="@dimen/plan_mode_fragment_outline_icon_size"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/outline_btn"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/white_sorting"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -20,12 +20,12 @@ public class SimpleActListAdapter extends BaseAdapter {
     private final ArrayList<Act> mActs = new ArrayList<Act>();
     private final Context mContext;
     private final int mTextSize;
-    private final int mTextPaddingV;
+    private final int mTextPadding;
 
     public SimpleActListAdapter(Context context) {
         mContext = context;
         mTextSize = context.getResources().getInteger(R.integer.review_mode_fragment_text_size);
-        mTextPaddingV = context.getResources().getDimensionPixelSize(R.dimen.review_mode_fragment_padding_v);
+        mTextPadding = context.getResources().getDimensionPixelSize(R.dimen.review_mode_fragment_padding);
         updateContent();
     }
 
@@ -55,7 +55,7 @@ public class SimpleActListAdapter extends BaseAdapter {
             convertView = new TextView(mContext);
             final TextView text = (TextView) convertView;
             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, mTextSize);
-            text.setPadding(text.getPaddingLeft(), mTextPaddingV, text.getPaddingRight(), mTextPaddingV);
+            text.setPadding(mTextPadding, mTextPadding, mTextPadding, mTextPadding);
         }
 
         final TextView text = (TextView) convertView;

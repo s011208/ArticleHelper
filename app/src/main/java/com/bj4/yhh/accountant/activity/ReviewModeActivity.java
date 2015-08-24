@@ -5,11 +5,12 @@ import android.os.Bundle;
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.act.Act;
 import com.bj4.yhh.accountant.fragments.SimpleActFragment;
+import com.bj4.yhh.accountant.fragments.display.actcontent.DisplayActContentFragment;
 
 /**
  * Created by yenhsunhuang on 15/8/23.
  */
-public class ReviewModeActivity extends BaseActivity implements SimpleActFragment.Callback{
+public class ReviewModeActivity extends BaseActivity implements SimpleActFragment.Callback {
     private static int sContainerId;
 
     @Override
@@ -19,7 +20,7 @@ public class ReviewModeActivity extends BaseActivity implements SimpleActFragmen
         setContentView(R.layout.activity_review_mode);
         SimpleActFragment frag = new SimpleActFragment();
         Bundle args = new Bundle();
-        args.putInt(com.bj4.yhh.accountant.fragments.SimpleActFragment.ARGUS_TITLE_RESOURCE, R.string.review_mode_fragment_title);
+        args.putInt(SimpleActFragment.ARGUS_TITLE_RESOURCE, R.string.review_mode_fragment_title);
         frag.setArguments(args);
         getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), frag).commit();
     }
@@ -30,6 +31,10 @@ public class ReviewModeActivity extends BaseActivity implements SimpleActFragmen
 
     @Override
     public void onActClicked(Act act) {
-
+        DisplayActContentFragment frag = new DisplayActContentFragment();
+        Bundle args = new Bundle();
+        args.putString(DisplayActContentFragment.ARGUMENT_JSON_ACT, act.toString());
+        frag.setArguments(args);
+        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), frag).commit();
     }
 }

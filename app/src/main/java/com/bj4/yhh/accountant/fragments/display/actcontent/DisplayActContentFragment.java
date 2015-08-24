@@ -48,6 +48,7 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
     private ListView mActContent;
     private ActContentAdapter mActContentAdapter;
     private ImageView mOutlineButton;
+    private ImageView mSortingButton;
 
     private FloatingActionButton mFloatingActionButton;
 
@@ -56,11 +57,6 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
     private float mCalculatedDeltaY;
 
     private Handler mHandler = new Handler();
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public void onResume() {
@@ -95,6 +91,13 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
             @Override
             public void onClick(View v) {
                 OutlineDialogFragment.showDialog(mAct, getFragmentManager(), DisplayActContentFragment.this);
+            }
+        });
+        mSortingButton = (ImageView) mActArea.findViewById(R.id.sorting_btn);
+        mSortingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
         mActTitle = (TextView) mActArea.findViewById(R.id.act_title);
