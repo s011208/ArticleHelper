@@ -2,6 +2,7 @@ package com.bj4.yhh.accountant.fragments.display.actcontent;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -28,6 +29,7 @@ import com.bj4.yhh.accountant.activity.BaseActivity;
 import com.bj4.yhh.accountant.activity.MainActivity;
 import com.bj4.yhh.accountant.dialogs.OutlineDialogFragment;
 import com.bj4.yhh.accountant.fragments.display.ActFragment;
+import com.bj4.yhh.accountant.fragments.review.ReviewModeSortingDialog;
 import com.bj4.yhh.accountant.utils.FloatingActionButton;
 import com.bj4.yhh.accountant.utils.TranslationHeaderLayout;
 
@@ -42,6 +44,8 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
     public static final int ARGUS_DISPLAY_TYPE_REVIEW_MODE = 1000;
     public static final int ARGUS_DISPLAY_TYPE_NONE = -1;
     private int mDisplayType = ARGUS_DISPLAY_TYPE_NONE;
+
+    private static final int REQUEST_SORTING = 3000;
 
     private String mQueryString = "";
     private int mTouchedX;
@@ -104,7 +108,9 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
             mSortingButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    ReviewModeSortingDialog dialog = new ReviewModeSortingDialog();
+                    dialog.setTargetFragment(DisplayActContentFragment.this, REQUEST_SORTING);
+                    dialog.show(getFragmentManager(), dialog.getClass().getName());
                 }
             });
             mSortingButton.setVisibility(View.VISIBLE);
@@ -163,6 +169,17 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
         return mRoot;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SORTING) {
+            if (resultCode == Activity.RESULT_OK) {
+                final int sortingType = data.getIntExtra("sorting_type", ActContentAdapter.SORT_BY_ARTICLE);
+                if (mActContentAdapter != null) {
+                    mActContentAdapter.setSortingType(sortingType);
+                }
+            }
+        }
+    }
 
     private RelativeLayout mMenuPanel;
     private View mMenuBackground;

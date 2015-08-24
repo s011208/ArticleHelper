@@ -23,6 +23,7 @@ public abstract class ActContent implements Comparable<ActContent> {
     public boolean mHasHighLight;
     public boolean mHasTextNote, mHasImageNote;
     public SpannableString mSpannableContent;
+    public int mFailedTime = -1;
 
     public ActContent(String number, String content, int order, long id, boolean hasHightLight) {
         mNumber = number;
@@ -58,6 +59,7 @@ public abstract class ActContent implements Comparable<ActContent> {
             json.put(ActDatabase.HIGHLIGHT, mHasHighLight);
             json.put(ActDatabase.HAS_TEXT_NOTE, mHasTextNote);
             json.put(ActDatabase.HAS_IMAGE_NOTE, mHasImageNote);
+            json.put("mFailedTime", mFailedTime);
         } catch (JSONException e) {
         }
         return json;

@@ -71,4 +71,9 @@
     <string name="confirm_dialog_fragment_delete_plan_message">Sure to delete %s?</string>
 
     <string name="review_mode_fragment_title">Select a review act</string>
+    <string name="review_mode_fragment_sorting_dialog_title">Sort article by</string>
+    <array name="review_mode_fragment_sorting_dialog_items">
+        <item>Wrong time</item>
+        <item>Article</item>
+    </array>
 </resources>

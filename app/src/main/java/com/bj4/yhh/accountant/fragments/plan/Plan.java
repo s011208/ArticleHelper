@@ -142,8 +142,19 @@ public class Plan {
     }
 
     public static ArrayList<Plan> query(Context context) {
+        return query(context, null, null, null, null);
+    }
+
+    public static Plan queryByActId(Context context, long actId) {
+        ArrayList<Plan> rtn = new ArrayList<Plan>();
+        rtn.addAll(query(context, null, ACT_ID + "=" + actId, null, null));
+        if (!rtn.isEmpty()) return rtn.get(0);
+        else return null;
+    }
+
+    public static ArrayList<Plan> query(Context context, String[] projection, String selection, String[] selectionArgus, String sortOrder) {
         final ArrayList<Plan> rtn = new ArrayList<Plan>();
-        Cursor data = context.getContentResolver().query(getBaseUri(), null, null, null, null, null);
+        Cursor data = context.getContentResolver().query(getBaseUri(), projection, selection, selectionArgus, sortOrder);
         if (data != null) {
             try {
                 final int indexOfId = data.getColumnIndex(ID);

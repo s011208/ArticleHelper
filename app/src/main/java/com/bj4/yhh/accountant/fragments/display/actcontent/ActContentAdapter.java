@@ -18,9 +18,14 @@ import android.widget.ViewSwitcher;
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.act.Act;
 import com.bj4.yhh.accountant.act.ActContent;
+import com.bj4.yhh.accountant.act.Article;
 import com.bj4.yhh.accountant.act.Chapter;
+import com.bj4.yhh.accountant.fragments.plan.Plan;
+import com.bj4.yhh.accountant.fragments.test.TestItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 /**
@@ -31,12 +36,17 @@ public class ActContentAdapter extends BaseAdapter {
         void onQueryDone();
     }
 
+    public static final int SORT_BY_WRONG_TIME = 0;
+    public static final int SORT_BY_ARTICLE = 1;
+
     private static final boolean DEBUG = true;
     private static final String TAG = "ActContentAdapter";
     private final Act mAct;
     private final Context mContext;
     private final LayoutInflater mInflater;
     private final int mDisplayType;
+
+    private int mSortingType = SORT_BY_ARTICLE;
 
     private String mQueryString = "";
 
@@ -63,6 +73,12 @@ public class ActContentAdapter extends BaseAdapter {
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mLikeBackgroundColor = context.getResources().getColor(R.color.main_title_color);
         initData();
+    }
+
+    public void setSortingType(int sortingType) {
+        if (DEBUG) Log.d(TAG, "sortingType: " + sortingType);
+        mSortingType = sortingType;
+        queryAsync();
     }
 
     public void queryHighLight(boolean query) {
@@ -125,8 +141,13 @@ public class ActContentAdapter extends BaseAdapter {
         final boolean queryHighLight, queryImageNote, queryTextNote;
         final int likeBackgroundColor;
         final ActContentAdapter actContentAdapter;
+        final int sortingType;
+        final Context context;
+        final Act act;
 
-        AsyncQuery(ActContentAdapter actContentAdapter, ArrayList<ActContent> queryData, ArrayList<ActContent> allData, String queryString, boolean queryHighLight, boolean queryImageNote, boolean queryTextNote, int likeBackgroundColor) {
+        AsyncQuery(ActContentAdapter actContentAdapter, ArrayList<ActContent> queryData, ArrayList<ActContent> allData,
+                   String queryString, boolean queryHighLight, boolean queryImageNote, boolean queryTextNote,
+                   int likeBackgroundColor, int sortingType, Context context, Act act) {
             this.queryString = queryString;
             this.queryHighLight = queryHighLight;
             this.queryImageNote = queryImageNote;
@@ -134,6 +155,9 @@ public class ActContentAdapter extends BaseAdapter {
             this.likeBackgroundColor = likeBackgroundColor;
             this.queryData = queryData;
             this.actContentAdapter = actContentAdapter;
+            this.sortingType = sortingType;
+            this.context = context;
+            this.act = act;
             tempQueryData.addAll(allData);
         }
 
@@ -201,12 +225,48 @@ public class ActContentAdapter extends BaseAdapter {
                     }
                 }
             }
+
+            if (sortingType == SORT_BY_WRONG_TIME) {
+                Plan plan = Plan.queryByActId(context, act.getId());
+                if (plan != null) {
+                    ArrayList<TestItem> testItems = TestItem.queryTestItem(context, null, TestItem.PLAN_ID + "=" + plan.mId, null, TestItem.FAILED_TIME);
+                    if (testItems != null && !testItems.isEmpty()) {
+                        Iterator<ActContent> actContentIter = tempQueryData.iterator();
+                        while (actContentIter.hasNext()) {
+                            final ActContent content = actContentIter.next();
+                            for (TestItem item : testItems) {
+                                if (content instanceof Chapter) {
+                                    if (item.mChapterId == content.mId) {
+                                        content.mFailedTime = item.mFailedTime;
+                                    }
+                                } else if (content instanceof Article) {
+                                    if (item.mArticleId == content.mId) {
+                                        content.mFailedTime = item.mFailedTime;
+                                        Log.d(TAG, "failedTime: " + content.mFailedTime);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Collections.sort(tempQueryData, new Comparator<ActContent>() {
+                        @Override
+                        public int compare(ActContent lhs, ActContent rhs) {
+                            if (lhs.mFailedTime < rhs.mFailedTime) return 1;
+                            else if (lhs.mFailedTime > rhs.mFailedTime) return -1;
+                            else return 0;
+                        }
+                    });
+                }
+            }
+
+
             return null;
         }
     }
 
     private void queryAsync() {
-        new AsyncQuery(this, mQueryData, mData, mQueryString, mQueryHighLight, mQueryImageNote, mQueryTextNote, mLikeBackgroundColor).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new AsyncQuery(this, mQueryData, mData, mQueryString, mQueryHighLight, mQueryImageNote,
+                mQueryTextNote, mLikeBackgroundColor, mSortingType, mContext, mAct).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void setCallback(Callback cb) {
