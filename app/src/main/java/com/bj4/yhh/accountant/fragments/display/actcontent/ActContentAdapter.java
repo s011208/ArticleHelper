@@ -226,37 +226,37 @@ public class ActContentAdapter extends BaseAdapter {
                 }
             }
 
-            if (sortingType == SORT_BY_WRONG_TIME) {
-                Plan plan = Plan.queryByActId(context, act.getId());
-                if (plan != null) {
-                    ArrayList<TestItem> testItems = TestItem.queryTestItem(context, null, TestItem.PLAN_ID + "=" + plan.mId, null, TestItem.FAILED_TIME);
-                    if (testItems != null && !testItems.isEmpty()) {
-                        Iterator<ActContent> actContentIter = tempQueryData.iterator();
-                        while (actContentIter.hasNext()) {
-                            final ActContent content = actContentIter.next();
-                            for (TestItem item : testItems) {
-                                if (content instanceof Chapter) {
-                                    if (item.mChapterId == content.mId) {
-                                        content.mFailedTime = item.mFailedTime;
-                                    }
-                                } else if (content instanceof Article) {
-                                    if (item.mArticleId == content.mId) {
-                                        content.mFailedTime = item.mFailedTime;
-                                        Log.d(TAG, "failedTime: " + content.mFailedTime);
-                                    }
+            Plan plan = Plan.queryByActId(context, act.getId());
+            if (plan != null) {
+                ArrayList<TestItem> testItems = TestItem.queryTestItem(context, null, TestItem.PLAN_ID + "=" + plan.mId, null, TestItem.FAILED_TIME);
+                if (testItems != null && !testItems.isEmpty()) {
+                    Iterator<ActContent> actContentIter = tempQueryData.iterator();
+                    while (actContentIter.hasNext()) {
+                        final ActContent content = actContentIter.next();
+                        for (TestItem item : testItems) {
+                            if (content instanceof Chapter) {
+                                if (item.mChapterId == content.mId) {
+                                    content.mFailedTime = item.mFailedTime;
+                                }
+                            } else if (content instanceof Article) {
+                                if (item.mArticleId == content.mId) {
+                                    content.mFailedTime = item.mFailedTime;
+                                    Log.d(TAG, "failedTime: " + content.mFailedTime);
                                 }
                             }
                         }
                     }
-                    Collections.sort(tempQueryData, new Comparator<ActContent>() {
-                        @Override
-                        public int compare(ActContent lhs, ActContent rhs) {
-                            if (lhs.mFailedTime < rhs.mFailedTime) return 1;
-                            else if (lhs.mFailedTime > rhs.mFailedTime) return -1;
-                            else return 0;
-                        }
-                    });
                 }
+            }
+            if (sortingType == SORT_BY_WRONG_TIME) {
+                Collections.sort(tempQueryData, new Comparator<ActContent>() {
+                    @Override
+                    public int compare(ActContent lhs, ActContent rhs) {
+                        if (lhs.mFailedTime < rhs.mFailedTime) return 1;
+                        else if (lhs.mFailedTime > rhs.mFailedTime) return -1;
+                        else return 0;
+                    }
+                });
             }
 
 
@@ -354,6 +354,7 @@ public class ActContentAdapter extends BaseAdapter {
             holder.mArticleHasTextNote = (ImageView) convertView.findViewById(R.id.article_has_text_note);
             holder.mArticleHasImageNote = (ImageView) convertView.findViewById(R.id.article_has_image_note);
 
+            holder.mArticleWrongTime = (TextView) convertView.findViewById(R.id.txt_article_wrong_time);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -374,6 +375,8 @@ public class ActContentAdapter extends BaseAdapter {
             holder.mArticleContent.setVisibility(View.GONE);
             holder.mArticleNumber.setVisibility(View.GONE);
             holder.mChapterContent.setVisibility(View.VISIBLE);
+
+            holder.mArticleWrongTime.setVisibility(View.GONE);
         } else {
             holder.mContentSwitcher.setDisplayedChild(1);
 
@@ -388,6 +391,14 @@ public class ActContentAdapter extends BaseAdapter {
             holder.mArticleContent.setVisibility(View.VISIBLE);
             holder.mArticleNumber.setVisibility(View.VISIBLE);
             holder.mChapterContent.setVisibility(View.GONE);
+
+            if (item.mFailedTime <= 0) {
+                holder.mArticleWrongTime.setVisibility(View.GONE);
+                holder.mArticleWrongTime.setText(null);
+            } else {
+                holder.mArticleWrongTime.setVisibility(View.VISIBLE);
+                holder.mArticleWrongTime.setText(mContext.getResources().getString(R.string.act_content_adapter_wrong_time, String.valueOf(item.mFailedTime)));
+            }
         }
         return convertView;
     }
@@ -398,6 +409,7 @@ public class ActContentAdapter extends BaseAdapter {
         ViewSwitcher mContentSwitcher;
         ImageView mChapterImportant, mChapterHasTextNote, mChapterHasImageNote;
         ImageView mArticleImportant, mArticleHasTextNote, mArticleHasImageNote;
+        TextView mArticleWrongTime;
     }
 
     public int getChapterItemIndex(long chapterId) {
