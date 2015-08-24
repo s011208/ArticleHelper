@@ -36,6 +36,7 @@ public class ActContentAdapter extends BaseAdapter {
     private final Act mAct;
     private final Context mContext;
     private final LayoutInflater mInflater;
+    private final int mDisplayType;
 
     private String mQueryString = "";
 
@@ -52,8 +53,13 @@ public class ActContentAdapter extends BaseAdapter {
     private final ArrayList<ActContent> mQueryData = new ArrayList<ActContent>();
 
     public ActContentAdapter(Context context, Act act) {
+        this(context, act, DisplayActContentFragment.ARGUS_DISPLAY_TYPE_NONE);
+    }
+
+    public ActContentAdapter(Context context, Act act, int displayType) {
         mAct = act;
         mContext = context;
+        mDisplayType = displayType;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mLikeBackgroundColor = context.getResources().getColor(R.color.main_title_color);
         initData();
@@ -213,12 +219,14 @@ public class ActContentAdapter extends BaseAdapter {
         final ArrayList<ActContent> data;
         final ActContentAdapter adapter;
         final ArrayList<ActContent> tempData = new ArrayList<ActContent>();
+        final int displayType;
 
-        public AsyncInitData(Act act, Context context, ArrayList<ActContent> data, ActContentAdapter adapter) {
+        public AsyncInitData(Act act, Context context, ArrayList<ActContent> data, ActContentAdapter adapter, int displayType) {
             this.act = act;
             this.context = context;
             this.data = data;
             this.adapter = adapter;
+            this.displayType = displayType;
         }
 
         @Override
@@ -228,7 +236,10 @@ public class ActContentAdapter extends BaseAdapter {
                 if (chapter.isEmptyChapter()) {
                     // ignore empty chapter
                 } else {
-                    tempData.add(chapter);
+                    if (displayType == DisplayActContentFragment.ARGUS_DISPLAY_TYPE_REVIEW_MODE) {
+                    } else {
+                        tempData.add(chapter);
+                    }
                 }
                 tempData.addAll(chapter.getArticles());
             }
@@ -247,7 +258,7 @@ public class ActContentAdapter extends BaseAdapter {
     }
 
     private void initData() {
-        new AsyncInitData(mAct, mContext, mData, this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new AsyncInitData(mAct, mContext, mData, this, mDisplayType).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override

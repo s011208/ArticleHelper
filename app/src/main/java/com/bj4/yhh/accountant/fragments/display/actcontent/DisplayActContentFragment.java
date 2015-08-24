@@ -40,7 +40,8 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
     private static final int QUERY_INTERVAL = 300;
     public static final String ARGUS_DISPLAY_TYPE = "display_type";
     public static final int ARGUS_DISPLAY_TYPE_REVIEW_MODE = 1000;
-    private int mDisplayType = -1;
+    public static final int ARGUS_DISPLAY_TYPE_NONE = -1;
+    private int mDisplayType = ARGUS_DISPLAY_TYPE_NONE;
 
     private String mQueryString = "";
     private int mTouchedX;
@@ -115,7 +116,7 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
         mActAmendDate.setText(mAct.getAmendedDate());
         mActCategory.setText(mAct.getCategory());
         mActContent = (ListView) inflater.inflate(R.layout.display_act_content_fragment_footer, null);
-        mActContentAdapter = new ActContentAdapter(getActivity(), mAct);
+        mActContentAdapter = new ActContentAdapter(getActivity(), mAct, mDisplayType);
         mActContentAdapter.setCallback(this);
         mActContent.setAdapter(mActContentAdapter);
         mTranslationHeader.setHeader(mActArea);
