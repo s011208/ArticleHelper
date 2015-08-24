@@ -39,7 +39,7 @@ public class ActContentAdapter extends BaseAdapter {
     public static final int SORT_BY_WRONG_TIME = 0;
     public static final int SORT_BY_ARTICLE = 1;
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final String TAG = "ActContentAdapter";
     private final Act mAct;
     private final Context mContext;
