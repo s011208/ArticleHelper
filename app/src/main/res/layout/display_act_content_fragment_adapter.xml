@@ -95,6 +95,20 @@
                     android:singleLine="true"
                     android:textSize="@dimen/display_act_content_fragment_article_content_textsize" />
 
+                <TextView
+                    android:id="@+id/txt_article_wrong_time"
+                    style="@style/AppBaseTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/display_act_content_adapter_article_title_height"
+                    android:layout_marginRight="15dp"
+                    android:layout_toLeftOf="@+id/txt_article_number"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingBottom="3dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="@dimen/display_act_content_fragment_article_content_textsize" />
+
                 <ImageView
                     android:id="@+id/article_is_important"
                     android:layout_width="@dimen/display_act_content_adapter_chapter_status_icon_size"

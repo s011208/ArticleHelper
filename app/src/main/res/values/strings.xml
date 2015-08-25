@@ -76,4 +76,6 @@
         <item>Wrong time</item>
         <item>Article</item>
     </array>
+
+    <string name="act_content_adapter_wrong_time">Wrong: %s times</string>
 </resources>

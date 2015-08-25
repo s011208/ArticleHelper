@@ -226,29 +226,29 @@ public class ActContentAdapter extends BaseAdapter {
                 }
             }
 
-            Plan plan = Plan.queryByActId(context, act.getId());
-            if (plan != null) {
-                ArrayList<TestItem> testItems = TestItem.queryTestItem(context, null, TestItem.PLAN_ID + "=" + plan.mId, null, TestItem.FAILED_TIME);
-                if (testItems != null && !testItems.isEmpty()) {
-                    Iterator<ActContent> actContentIter = tempQueryData.iterator();
-                    while (actContentIter.hasNext()) {
-                        final ActContent content = actContentIter.next();
-                        for (TestItem item : testItems) {
-                            if (content instanceof Chapter) {
-                                if (item.mChapterId == content.mId) {
-                                    content.mFailedTime = item.mFailedTime;
-                                }
-                            } else if (content instanceof Article) {
-                                if (item.mArticleId == content.mId) {
-                                    content.mFailedTime = item.mFailedTime;
-                                    Log.d(TAG, "failedTime: " + content.mFailedTime);
+            if (sortingType == SORT_BY_WRONG_TIME) {
+                Plan plan = Plan.queryByActId(context, act.getId());
+                if (plan != null) {
+                    ArrayList<TestItem> testItems = TestItem.queryTestItem(context, null, TestItem.PLAN_ID + "=" + plan.mId, null, TestItem.FAILED_TIME);
+                    if (testItems != null && !testItems.isEmpty()) {
+                        Iterator<ActContent> actContentIter = tempQueryData.iterator();
+                        while (actContentIter.hasNext()) {
+                            final ActContent content = actContentIter.next();
+                            for (TestItem item : testItems) {
+                                if (content instanceof Chapter) {
+                                    if (item.mChapterId == content.mId) {
+                                        content.mFailedTime = item.mFailedTime;
+                                    }
+                                } else if (content instanceof Article) {
+                                    if (item.mArticleId == content.mId) {
+                                        content.mFailedTime = item.mFailedTime;
+                                        Log.d(TAG, "failedTime: " + content.mFailedTime);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            if (sortingType == SORT_BY_WRONG_TIME) {
                 Collections.sort(tempQueryData, new Comparator<ActContent>() {
                     @Override
                     public int compare(ActContent lhs, ActContent rhs) {
