@@ -142,12 +142,13 @@ public class ActContentAdapter extends BaseAdapter {
         final int likeBackgroundColor;
         final ActContentAdapter actContentAdapter;
         final int sortingType;
+        final int displayType;
         final Context context;
         final Act act;
 
         AsyncQuery(ActContentAdapter actContentAdapter, ArrayList<ActContent> queryData, ArrayList<ActContent> allData,
                    String queryString, boolean queryHighLight, boolean queryImageNote, boolean queryTextNote,
-                   int likeBackgroundColor, int sortingType, Context context, Act act) {
+                   int likeBackgroundColor, int sortingType, int displayType, Context context, Act act) {
             this.queryString = queryString;
             this.queryHighLight = queryHighLight;
             this.queryImageNote = queryImageNote;
@@ -156,6 +157,7 @@ public class ActContentAdapter extends BaseAdapter {
             this.queryData = queryData;
             this.actContentAdapter = actContentAdapter;
             this.sortingType = sortingType;
+            this.displayType = displayType;
             this.context = context;
             this.act = act;
             tempQueryData.addAll(allData);
@@ -226,7 +228,7 @@ public class ActContentAdapter extends BaseAdapter {
                 }
             }
 
-            if (sortingType == SORT_BY_WRONG_TIME) {
+            if (displayType == DisplayActContentFragment.ARGUS_DISPLAY_TYPE_REVIEW_MODE) {
                 Plan plan = Plan.queryByActId(context, act.getId());
                 if (plan != null) {
                     ArrayList<TestItem> testItems = TestItem.queryTestItem(context, null, TestItem.PLAN_ID + "=" + plan.mId, null, TestItem.FAILED_TIME);
@@ -249,6 +251,8 @@ public class ActContentAdapter extends BaseAdapter {
                         }
                     }
                 }
+            }
+            if (sortingType == SORT_BY_WRONG_TIME) {
                 Collections.sort(tempQueryData, new Comparator<ActContent>() {
                     @Override
                     public int compare(ActContent lhs, ActContent rhs) {
@@ -266,7 +270,7 @@ public class ActContentAdapter extends BaseAdapter {
 
     private void queryAsync() {
         new AsyncQuery(this, mQueryData, mData, mQueryString, mQueryHighLight, mQueryImageNote,
-                mQueryTextNote, mLikeBackgroundColor, mSortingType, mContext, mAct).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                mQueryTextNote, mLikeBackgroundColor, mSortingType, mDisplayType, mContext, mAct).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void setCallback(Callback cb) {
