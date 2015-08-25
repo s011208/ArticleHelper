@@ -78,4 +78,6 @@
     </array>
 
     <string name="act_content_adapter_wrong_time">Wrong: %s times</string>
+
+    <string name="test_mode_fragment_title">Select a test act</string>
 </resources>

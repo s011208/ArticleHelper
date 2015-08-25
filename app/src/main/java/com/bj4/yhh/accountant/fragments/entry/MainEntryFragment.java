@@ -11,6 +11,7 @@ import android.widget.GridView;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.activity.ReviewModeActivity;
+import com.bj4.yhh.accountant.activity.TestModeActivity;
 import com.bj4.yhh.accountant.fragments.plan.PlanModeFragment;
 import com.bj4.yhh.accountant.fragments.searchActs.SearchActFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
@@ -59,10 +60,12 @@ public class MainEntryFragment extends BaseFragment implements AdapterView.OnIte
                 getFragmentManager().beginTransaction().replace(R.id.container, new PlanModeFragment()).addToBackStack(null).commit();
                 break;
             case MainEntryGridAdapter.REVIEW_MODE:
-                Intent intent = new Intent(getActivity(), ReviewModeActivity.class);
-                startActivity(intent);
+                Intent startReviewModeIntent = new Intent(getActivity(), ReviewModeActivity.class);
+                startActivity(startReviewModeIntent);
                 break;
             case MainEntryGridAdapter.TEST_MODE:
+                Intent startTestModeIntent = new Intent(getActivity(), TestModeActivity.class);
+                startActivity(startTestModeIntent);
                 break;
             case MainEntryGridAdapter.UPDATE_ACTS:
                 break;
