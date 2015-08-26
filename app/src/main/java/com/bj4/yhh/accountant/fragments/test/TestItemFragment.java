@@ -136,6 +136,7 @@ public class TestItemFragment extends BaseFragment {
         if (mTestMode) {
             for (TestItem item : mAllTestItems) {
                 item.mIsRead = true;
+                item.mIsAnswer = false;
             }
         }
 
