@@ -108,6 +108,14 @@ public class TestItem {
         return Uri.parse("content://" + PlanProvider.AUTHORITY + "/" + PlanProvider.PATH_TEST_ITEM);
     }
 
+    public static void deleteAllTestItem(Context context) {
+        context.getContentResolver().delete(getBaseUri(), null, null);
+    }
+
+    public static void deleteTestItemByPlanId(Context context, long planId) {
+        context.getContentResolver().delete(getBaseUri(), PLAN_ID + "=" + planId, null);
+    }
+
     public static int bulkInsert(Context context, ArrayList<TestItem> items) {
         ContentValues[] cvs = new ContentValues[items.size()];
         for (int i = 0; i < items.size(); i++) {

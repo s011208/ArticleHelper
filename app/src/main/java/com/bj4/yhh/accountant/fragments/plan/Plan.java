@@ -9,6 +9,7 @@ import android.net.Uri;
 import com.bj4.yhh.accountant.act.Act;
 import com.bj4.yhh.accountant.database.ActDatabase;
 import com.bj4.yhh.accountant.database.PlanProvider;
+import com.bj4.yhh.accountant.fragments.test.TestItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -116,10 +117,12 @@ public class Plan {
 
     public static void deleteAllPlans(Context context) {
         context.getContentResolver().delete(getBaseUri(), null, null);
+        TestItem.deleteAllTestItem(context);
     }
 
     public static void deletePlan(Context context, long planId) {
         context.getContentResolver().delete(getBaseUri(), Plan.ID + "=" + planId, null);
+        TestItem.deleteTestItemByPlanId(context, planId);
     }
 
 
