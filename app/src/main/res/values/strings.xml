@@ -80,4 +80,10 @@
     <string name="act_content_adapter_wrong_time">Wrong: %s times</string>
 
     <string name="test_mode_fragment_title">Select a test act</string>
+    <string name="test_mode_type_dialog_title">Select an action</string>
+    <array name="test_mode_type_dialog_items">
+        <item>Plan review test</item>
+        <item>All article test</item>
+        <item>All article test (randomly)</item>
+    </array>
 </resources>
