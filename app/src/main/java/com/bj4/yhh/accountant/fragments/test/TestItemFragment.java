@@ -26,6 +26,7 @@ import com.bj4.yhh.accountant.utils.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -133,13 +134,22 @@ public class TestItemFragment extends BaseFragment {
                     }
                 }
         }
-        if (mTestMode) {
-            for (TestItem item : mAllTestItems) {
+        Iterator<TestItem> testItemIterator = mTestScopeItems.iterator();
+        while (testItemIterator.hasNext()) {
+            TestItem item = testItemIterator.next();
+            final Article itemArticle = TestItemFragment.getTestItemArticle(getActivity(), item);
+            if (itemArticle != null && itemArticle.mContent.contains(TestItem.DELETE_ITEM_STRING)) {
+                item.mIsRead = true;
+                item.mIsAnswer = true;
+                TestItem.update(getActivity(), item);
+                testItemIterator.remove();
+                continue;
+            }
+            if (mTestMode) {
                 item.mIsRead = true;
                 item.mIsAnswer = false;
             }
         }
-
     }
 
     @Override
@@ -222,7 +232,6 @@ public class TestItemFragment extends BaseFragment {
                     rtn = true;
                     break;
                 }
-
             }
             if (!rtn) {
                 mIsInReadingMode = false;

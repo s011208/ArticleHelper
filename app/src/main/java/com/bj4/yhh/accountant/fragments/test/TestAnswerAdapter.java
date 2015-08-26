@@ -72,6 +72,7 @@ public class TestAnswerAdapter extends BaseAdapter {
         for (int i = 0; i < tempTestScope.size() && i < MAXIMUM_ANSWER_ITEMS && mAnswers.size() < MAXIMUM_ANSWER_ITEMS; i++) {
             final TestItem item = tempTestScope.get(i);
             final Article itemArticle = TestItemFragment.getTestItemArticle(mContext, item);
+            if (itemArticle.mContent.contains(TestItem.DELETE_ITEM_STRING)) continue;
             if (testBy == TestItemFragment.TEST_BY_CONTENT) {
                 mAnswers.add(itemArticle.mNumber);
             } else if (testBy == TestItemFragment.TEST_BY_NUMBER) {

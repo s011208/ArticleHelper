@@ -17,6 +17,9 @@ import java.util.ArrayList;
  * Created by Yen-Hsun_Huang on 2015/8/20.
  */
 public class TestItem {
+
+    public static final String DELETE_ITEM_STRING = "（刪除）";
+
     public static final String ID = "_id";
     public static final String PLAN_ID = "plan_id";
     public static final String ACT_ID = "act_id";
