@@ -45,6 +45,10 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final Plan plan = mPlanListAdapter.getItem(i);
+                if (plan.mTotalPlanProgress == plan.mCurrentPlanProgress) {
+                    //TODO show cannot test toast
+                    return;
+                }
                 Intent intent = new Intent(getActivity(), TestActivity.class);
                 intent.putExtra(TestActivity.EXTRA_PLAN, plan.toString());
                 getActivity().startActivity(intent);
