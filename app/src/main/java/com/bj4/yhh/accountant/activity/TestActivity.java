@@ -7,6 +7,7 @@ import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.fragments.plan.Plan;
 import com.bj4.yhh.accountant.fragments.test.TestItem;
 import com.bj4.yhh.accountant.fragments.test.TestItemFragment;
+import com.bj4.yhh.accountant.fragments.testmode.TestModeItemFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
 
 import org.json.JSONException;
@@ -23,6 +24,8 @@ public class TestActivity extends BaseActivity implements TestItemFragment.Callb
 
     public static final String EXTRA_PLAN = "extra_plan";
 
+    private int mTestType = TestModeItemFragment.TEST_TYPE_BY_DEFAULT;
+
     private static int sContainerId;
     private Plan mPlan;
     private ArrayList<TestItem> mTestItems;
@@ -35,6 +38,7 @@ public class TestActivity extends BaseActivity implements TestItemFragment.Callb
             mPlan = new Plan(new JSONObject(getIntent().getStringExtra(EXTRA_PLAN)));
             mPlan.initAct(this);
             mTestItems = TestItem.queryTestItemByPlan(this, mPlan);
+            mTestType = getIntent().getIntExtra(TestModeItemFragment.EXTRA_TEST_TYPE, TestModeItemFragment.TEST_TYPE_BY_DEFAULT);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -53,6 +57,11 @@ public class TestActivity extends BaseActivity implements TestItemFragment.Callb
     @Override
     public ArrayList<TestItem> getTestItems() {
         return mTestItems;
+    }
+
+    @Override
+    public int getTestType() {
+        return mTestType;
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.bj4.yhh.accountant.utils.BaseFragment;
  * Created by yenhsunhuang on 15/8/25.
  */
 public class TestModeItemFragment extends BaseFragment {
+    public static final int TEST_TYPE_BY_DEFAULT = -1;
     public static final int TEST_TYPE_BY_PLAN = 0;
     public static final int TEST_TYPE_BY_ALL = 1;
     public static final int TEST_TYPE_BY_ALL_RANDOMLY = 2;
@@ -55,10 +56,11 @@ public class TestModeItemFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SELECT_TEST_TYPE) {
             if (resultCode == Activity.RESULT_OK) {
-                final int testType = data.getIntExtra(EXTRA_TEST_TYPE, TEST_TYPE_BY_ALL);
+                final int testType = data.getIntExtra(EXTRA_TEST_TYPE, TEST_TYPE_BY_DEFAULT);
                 Plan plan = mSimplePlanListAdapter.getItem(mSelectPlanIndex);
 
                 Intent startTestIntent = new Intent(getActivity(), TestActivity.class);
+                startTestIntent.putExtra(EXTRA_TEST_TYPE, testType);
                 startTestIntent.putExtra(TestActivity.EXTRA_PLAN, plan.toString());
                 startActivity(startTestIntent);
             }

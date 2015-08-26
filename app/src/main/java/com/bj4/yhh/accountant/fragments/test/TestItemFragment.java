@@ -21,9 +21,12 @@ import com.bj4.yhh.accountant.act.Article;
 import com.bj4.yhh.accountant.act.Chapter;
 import com.bj4.yhh.accountant.dialogs.OutlineDialogFragment;
 import com.bj4.yhh.accountant.fragments.plan.Plan;
+import com.bj4.yhh.accountant.fragments.testmode.TestModeItemFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  * Created by yenhsunhuang on 15/8/20.
@@ -33,6 +36,8 @@ public class TestItemFragment extends BaseFragment {
         Plan getPlan();
 
         ArrayList<TestItem> getTestItems();
+
+        int getTestType();
     }
 
     private static final String TAG = "TestItemFragment";
@@ -67,6 +72,8 @@ public class TestItemFragment extends BaseFragment {
     private boolean mAnswerClickable = true;
     private int mMaximumQuestionDisplayLineWhenReading, mMaximumQuestionDisplayLineWhenTesting;
 
+    private boolean mTestMode = false;
+
     private static int getTestBy() {
         return (int) ((Math.random() * 10000) % 2);
     }
@@ -99,11 +106,39 @@ public class TestItemFragment extends BaseFragment {
 
     private void loadTestScope() {
         mTestScopeItems.clear();
-        for (TestItem item : mAllTestItems) {
-            if (item.mDisplayDay == mCurrentDay) {
-                mTestScopeItems.add(item);
+        final int type = mCallback == null ? TestModeItemFragment.TEST_TYPE_BY_DEFAULT : mCallback.getTestType();
+        switch (type) {
+            case TestModeItemFragment.TEST_TYPE_BY_PLAN:
+                mTestMode = true;
+                for (TestItem item : mAllTestItems) {
+                    if (item.mDisplayDay <= mCurrentDay) {
+                        mTestScopeItems.add(item);
+                    }
+                }
+                break;
+            case TestModeItemFragment.TEST_TYPE_BY_ALL:
+                mTestMode = true;
+                mTestScopeItems.addAll(mAllTestItems);
+                break;
+            case TestModeItemFragment.TEST_TYPE_BY_ALL_RANDOMLY:
+                mTestMode = true;
+                mTestScopeItems.addAll(mAllTestItems);
+                Collections.shuffle(mTestScopeItems, new Random(System.nanoTime()));
+                break;
+            default:
+                mTestMode = false;
+                for (TestItem item : mAllTestItems) {
+                    if (item.mDisplayDay == mCurrentDay) {
+                        mTestScopeItems.add(item);
+                    }
+                }
+        }
+        if (mTestMode) {
+            for (TestItem item : mAllTestItems) {
+                item.mIsRead = true;
             }
         }
+
     }
 
     @Override
@@ -338,9 +373,11 @@ public class TestItemFragment extends BaseFragment {
                 final boolean isCorrect = mTestAnswerAdapter.checkIsCorrect(position);
                 if (isCorrect) {
                     mCurrentTestItem.mIsAnswer = true;
-                    TestItem.update(getActivity(), mCurrentTestItem);
-                    ++mPlan.mFinishedItem;
-                    Plan.insertOrUpdate(getActivity(), mPlan);
+                    if (!mTestMode) {
+                        TestItem.update(getActivity(), mCurrentTestItem);
+                        ++mPlan.mFinishedItem;
+                        Plan.insertOrUpdate(getActivity(), mPlan);
+                    }
                     moveToNextItem();
                 } else {
                     mIsWrongAnswer = true;
