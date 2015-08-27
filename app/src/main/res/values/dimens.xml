@@ -76,4 +76,11 @@
 
     <dimen name="base_dialog_fragment_title_left_margin">8dp</dimen>
     <dimen name="base_dialog_fragment_message_left_margin">12dp</dimen>
+
+    <dimen name="base_toast_y_offset">80dp</dimen>
+    <dimen name="base_toast_drawable_padding">10dp</dimen>
+    <dimen name="base_toast_margin_h">12dp</dimen>
+    <dimen name="base_toast_margin_v">6dp</dimen>
+    <dimen name="base_toast_background_corner">12dp</dimen>
+    <dimen name="base_toast_text_size">20sp</dimen>
 </resources>
