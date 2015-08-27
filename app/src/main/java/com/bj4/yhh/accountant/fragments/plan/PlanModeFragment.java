@@ -17,6 +17,7 @@ import com.bj4.yhh.accountant.activity.MainActivity;
 import com.bj4.yhh.accountant.activity.TestActivity;
 import com.bj4.yhh.accountant.dialogs.OutlineDialogFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
+import com.bj4.yhh.accountant.utils.BaseToast;
 import com.bj4.yhh.accountant.utils.dialogs.ConfirmDialogFragment;
 
 /**
@@ -46,7 +47,7 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final Plan plan = mPlanListAdapter.getItem(i);
                 if (plan.mTotalPlanProgress == plan.mCurrentPlanProgress) {
-                    //TODO show cannot test toast
+                    BaseToast.showToast(getActivity(), getActivity().getResources().getString(R.string.plan_mode_finish_plan_toast));
                     return;
                 }
                 Intent intent = new Intent(getActivity(), TestActivity.class);
