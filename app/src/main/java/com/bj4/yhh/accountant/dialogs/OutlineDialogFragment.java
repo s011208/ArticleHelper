@@ -7,7 +7,6 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.act.Act;
@@ -26,8 +25,6 @@ import java.util.ArrayList;
 public class OutlineDialogFragment extends BaseDialogFragment {
     public static final String OUTLINE_ACT = "outline_act";
     private Act mAct;
-
-    private TextView mCustomTitle;
 
     private final ArrayList<String> mIndentList = new ArrayList<String>();
 
@@ -63,24 +60,22 @@ public class OutlineDialogFragment extends BaseDialogFragment {
     }
 
     @Override
-    public int getTitleTextId() {
-        return mCustomTitle.getId();
-    }
-
-    @Override
-    public View getCustomTitle() {
-        mCustomTitle = (TextView) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_title, null);
-        return mCustomTitle;
-    }
-
-    @Override
     public View getCustomMessage() {
         return null;
     }
 
     @Override
+    public int getTitleTextResources() {
+        return 0;
+    }
+
+    @Override
+    public String getTitleText() {
+        return getActivity().getResources().getString(R.string.outline_dialog_fragment_title, mAct.getTitle());
+    }
+
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mCustomTitle.setText(getActivity().getResources().getString(R.string.outline_dialog_fragment_title, mAct.getTitle()));
         AlertDialog.Builder builder = getDialogBuilder();
         final CharSequence[] items = generateItemList();
         if (items == null || items.length == 0) {

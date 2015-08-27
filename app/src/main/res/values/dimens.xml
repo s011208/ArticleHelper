@@ -73,4 +73,7 @@
 
     <dimen name="review_mode_fragment_padding">5dp</dimen>
     <integer name="review_mode_fragment_text_size">22</integer>
+
+    <dimen name="base_dialog_fragment_title_left_margin">8dp</dimen>
+    <dimen name="base_dialog_fragment_message_left_margin">12dp</dimen>
 </resources>

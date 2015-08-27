@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.act.ActsFolder;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 public class SelectFolderDialog extends BaseDialogFragment {
     private static final String TAG = "SelectFolderDialog";
     private static final boolean DEBUG = false;
-    private TextView mCustomTitle;
 
     private View mCustomMessage;
     private ListView mFolderList;
@@ -33,18 +31,6 @@ public class SelectFolderDialog extends BaseDialogFragment {
     private ArrayList<ActsFolder> mActFolders;
 
     private int mRequestCode = 0;
-
-    @Override
-    public int getTitleTextId() {
-        return mCustomTitle.getId();
-    }
-
-    @Override
-    public View getCustomTitle() {
-        mCustomTitle = (TextView) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_title, null);
-        mCustomTitle.setText(R.string.select_folder_dialog_title);
-        return mCustomTitle;
-    }
 
     private String[] getFolders() {
         mActFolders = new ArrayList<ActsFolder>();
@@ -95,6 +81,16 @@ public class SelectFolderDialog extends BaseDialogFragment {
             }
         });
         return mCustomMessage;
+    }
+
+    @Override
+    public int getTitleTextResources() {
+        return R.string.select_folder_dialog_title;
+    }
+
+    @Override
+    public String getTitleText() {
+        return null;
     }
 
     @Override

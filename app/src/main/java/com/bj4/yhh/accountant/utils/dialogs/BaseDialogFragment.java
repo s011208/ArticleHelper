@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bj4.yhh.accountant.R;
@@ -17,12 +19,13 @@ import com.bj4.yhh.accountant.R;
 public abstract class BaseDialogFragment extends DialogFragment {
 
     private View mTitle, mMessage;
-
-    public abstract int getTitleTextId();
-
-    public abstract View getCustomTitle();
+    private TextView mTitleText;
 
     public abstract View getCustomMessage();
+
+    public abstract int getTitleTextResources();
+
+    public abstract String getTitleText();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,26 +33,27 @@ public abstract class BaseDialogFragment extends DialogFragment {
         initComponents();
     }
 
-    public void setCustomTitle(View title) {
-        if (title == null) return;
-        mTitle = title;
+    private void setCustomTitle() {
+        mTitle = getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_title, null);
         mTitle.setBackgroundColor(getActivity().getResources().getColor(R.color.main_title_color));
-        if (getTitleTextId() > 0) {
-            View titleText = mTitle.findViewById(getTitleTextId());
-            if (titleText != null && titleText instanceof TextView) {
-                ((TextView) titleText).setTextColor(getActivity().getResources().getColor(R.color.white));
+        mTitleText = (TextView) mTitle.findViewById(R.id.base_fragment_title);
+        if (mTitleText != null) {
+            mTitleText.setTextColor(getActivity().getResources().getColor(R.color.white));
+            if (getTitleTextResources() > 0) {
+                mTitleText.setText(getTitleTextResources());
+            } else if (getTitleText() != null) {
+                mTitleText.setText(getTitleText());
             }
         }
     }
 
-    public void setCustomMessage(View msg) {
+    private void setCustomMessage(View msg) {
         if (msg == null) return;
         mMessage = msg;
     }
 
     private void initComponents() {
         onInitComponents();
-        setCustomTitle(getCustomTitle());
         setCustomMessage(getCustomMessage());
     }
 
@@ -57,12 +61,16 @@ public abstract class BaseDialogFragment extends DialogFragment {
     }
 
     public AlertDialog.Builder getDialogBuilder() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        if (mTitle != null) {
-            dialogBuilder.setCustomTitle(mTitle);
-        }
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+        setCustomTitle();
+        dialogBuilder.setCustomTitle(mTitle);
         if (mMessage != null) {
-            dialogBuilder.setView(mMessage);
+            LinearLayout msgRoot = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_message, null);
+            LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            final int margin = getActivity().getResources().getDimensionPixelSize(R.dimen.base_dialog_fragment_message_left_margin);
+            ll.setMargins(margin, 0, margin, 0);
+            msgRoot.addView(mMessage, ll);
+            dialogBuilder.setView(msgRoot);
         }
         return dialogBuilder;
     }
@@ -83,6 +91,16 @@ public abstract class BaseDialogFragment extends DialogFragment {
         setButtonsBackground(DialogInterface.BUTTON_POSITIVE);
         setButtonsBackground(DialogInterface.BUTTON_NEGATIVE);
         setButtonsBackground(DialogInterface.BUTTON_NEUTRAL);
+        setMessagePadding();
+    }
+
+    private void setMessagePadding() {
+        if (mMessage != null) return;
+        final TextView messageView = (TextView) getDialog().findViewById(android.R.id.message);
+        if (messageView == null) return;
+        FrameLayout.LayoutParams fl = (FrameLayout.LayoutParams) messageView.getLayoutParams();
+        final int margin = getActivity().getResources().getDimensionPixelSize(R.dimen.base_dialog_fragment_message_left_margin);
+        fl.setMargins(margin, 0, margin, 0);
     }
 
     private void setButtonsBackground(int buttonId) {

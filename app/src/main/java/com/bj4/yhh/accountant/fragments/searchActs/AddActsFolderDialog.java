@@ -19,25 +19,22 @@ import com.bj4.yhh.accountant.utils.dialogs.BaseDialogFragment;
  */
 public class AddActsFolderDialog extends BaseDialogFragment {
 
-    private TextView mCustomTitle;
     private EditText mCustomMessage;
-
-    @Override
-    public int getTitleTextId() {
-        return mCustomTitle.getId();
-    }
-
-    @Override
-    public View getCustomTitle() {
-        mCustomTitle = (TextView) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_title, null);
-        mCustomTitle.setText(R.string.add_acts_folder_title_dialog_title);
-        return mCustomTitle;
-    }
 
     @Override
     public View getCustomMessage() {
         mCustomMessage = (EditText) getActivity().getLayoutInflater().inflate(R.layout.editor_note_edittext, null);
         return mCustomMessage;
+    }
+
+    @Override
+    public int getTitleTextResources() {
+        return R.string.add_acts_folder_title_dialog_title;
+    }
+
+    @Override
+    public String getTitleText() {
+        return null;
     }
 
     @Override

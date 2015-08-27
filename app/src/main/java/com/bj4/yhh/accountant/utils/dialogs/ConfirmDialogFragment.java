@@ -5,11 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-
-import com.bj4.yhh.accountant.R;
 
 /**
  * Created by yenhsunhuang on 15/8/22.
@@ -25,7 +21,6 @@ public class ConfirmDialogFragment extends BaseDialogFragment {
         String getTitle();
     }
 
-    private TextView mCustomTitle;
     private Callback mCallback;
 
     @Override
@@ -40,16 +35,6 @@ public class ConfirmDialogFragment extends BaseDialogFragment {
         mCallback = cb;
     }
 
-    @Override
-    public int getTitleTextId() {
-        return mCustomTitle.getId();
-    }
-
-    @Override
-    public View getCustomTitle() {
-        mCustomTitle = (TextView) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_title, null);
-        return mCustomTitle;
-    }
 
     @Override
     public View getCustomMessage() {
@@ -57,8 +42,17 @@ public class ConfirmDialogFragment extends BaseDialogFragment {
     }
 
     @Override
+    public int getTitleTextResources() {
+        return 0;
+    }
+
+    @Override
+    public String getTitleText() {
+        return mCallback.getTitle();
+    }
+
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mCustomTitle.setText(mCallback.getTitle());
         AlertDialog.Builder builder = getDialogBuilder();
         builder.setMessage(mCallback.getMessageText());
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

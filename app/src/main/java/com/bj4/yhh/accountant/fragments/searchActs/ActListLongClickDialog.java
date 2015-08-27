@@ -36,20 +36,6 @@ public class ActListLongClickDialog extends BaseDialogFragment {
     private long mActId = ActDatabase.NO_ID;
     private int mItemSelectionsId;
 
-    private TextView mCustomTitle;
-
-    @Override
-    public int getTitleTextId() {
-        return mCustomTitle.getId();
-    }
-
-    @Override
-    public View getCustomTitle() {
-        mCustomTitle = (TextView) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_title, null);
-        mCustomTitle.setText(R.string.act_list_long_click_dialog);
-        return mCustomTitle;
-    }
-
     @Override
     public View getCustomMessage() {
         ListView listview = new ListView(getActivity());
@@ -99,6 +85,16 @@ public class ActListLongClickDialog extends BaseDialogFragment {
             }
         });
         return listview;
+    }
+
+    @Override
+    public int getTitleTextResources() {
+        return R.string.act_list_long_click_dialog;
+    }
+
+    @Override
+    public String getTitleText() {
+        return null;
     }
 
     @Override

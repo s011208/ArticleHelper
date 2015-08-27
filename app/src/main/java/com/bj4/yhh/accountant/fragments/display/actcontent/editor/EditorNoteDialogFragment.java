@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.utils.dialogs.BaseDialogFragment;
@@ -18,8 +17,6 @@ import com.bj4.yhh.accountant.utils.dialogs.BaseDialogFragment;
  */
 public class EditorNoteDialogFragment extends BaseDialogFragment {
     public static final String TAG = "EditorNoteDialogFragment";
-
-    private TextView mCustomTitle;
 
     private EditText mCustomMessage;
 
@@ -32,21 +29,19 @@ public class EditorNoteDialogFragment extends BaseDialogFragment {
     }
 
     @Override
-    public int getTitleTextId() {
-        return mCustomTitle.getId();
-    }
-
-    @Override
-    public View getCustomTitle() {
-        mCustomTitle = (TextView) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_title, null);
-        mCustomTitle.setText(R.string.activity_act_editor_edit_note_dialog_title);
-        return mCustomTitle;
-    }
-
-    @Override
     public View getCustomMessage() {
         mCustomMessage = (EditText) getActivity().getLayoutInflater().inflate(R.layout.editor_note_edittext, null);
         return mCustomMessage;
+    }
+
+    @Override
+    public int getTitleTextResources() {
+        return R.string.activity_act_editor_edit_note_dialog_title;
+    }
+
+    @Override
+    public String getTitleText() {
+        return null;
     }
 
     public interface Callback {

@@ -16,22 +16,19 @@ import com.bj4.yhh.accountant.utils.dialogs.BaseDialogFragment;
  * Created by yenhsunhuang on 15/8/26.
  */
 public class TestModeTypeDialog extends BaseDialogFragment {
-    private TextView mCustomTitle;
-
-    @Override
-    public int getTitleTextId() {
-        return mCustomTitle.getId();
-    }
-
-    @Override
-    public View getCustomTitle() {
-        mCustomTitle = (TextView) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_title, null);
-        mCustomTitle.setText(R.string.test_mode_type_dialog_title);
-        return mCustomTitle;
-    }
 
     @Override
     public View getCustomMessage() {
+        return null;
+    }
+
+    @Override
+    public int getTitleTextResources() {
+        return R.string.test_mode_type_dialog_title;
+    }
+
+    @Override
+    public String getTitleText() {
         return null;
     }
 
