@@ -22,6 +22,7 @@ import com.bj4.yhh.accountant.act.Article;
 import com.bj4.yhh.accountant.act.Chapter;
 import com.bj4.yhh.accountant.fragments.test.TestItem;
 import com.bj4.yhh.accountant.utils.BaseFragment;
+import com.bj4.yhh.accountant.utils.BaseToast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +44,7 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.add_plan_fragment, null);
-        Button btnOk = (Button) root.findViewById(R.id.ok);
+        final Button btnOk = (Button) root.findViewById(R.id.ok);
         btnOk.setOnClickListener(this);
         Button btnCancel = (Button) root.findViewById(R.id.cancel);
         btnCancel.setOnClickListener(this);
@@ -64,8 +65,12 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
         for (Act act : acts) {
             actsName.add(act.getTitle());
         }
-        if (!acts.isEmpty())
+        if (!acts.isEmpty()) {
             mSelectedAct = acts.get(0);
+        } else {
+            btnOk.setEnabled(false);
+            BaseToast.showToast(getActivity(), getActivity().getResources().getString(R.string.add_plan_fragment_not_more_acts_toast));
+        }
         ArrayAdapter<String> actSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, actsName);
         actSpinner.setAdapter(actSpinnerAdapter);
         actSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
