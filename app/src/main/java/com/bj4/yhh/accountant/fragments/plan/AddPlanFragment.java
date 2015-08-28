@@ -190,11 +190,39 @@ public class AddPlanFragment extends BaseFragment implements View.OnClickListene
             final long planId = mPlan.mId;
             final long actId = act.getId();
             final ArrayList<TestItem> testItems = new ArrayList<TestItem>();
+            ArrayList<Long> chapterIds = new ArrayList<Long>();
+            final ArrayList<String> layerList = new ArrayList<String>();
             for (Chapter chapter : act.getChapters()) {
                 final long chapterId = chapter.mId;
+                if (!chapter.isEmptyChapter()) {
+                    String layer = chapter.mNumber.substring(chapter.mNumber.length() - 1);
+                    int indexOfLayer = layerList.indexOf(layer);
+                    if (DEBUG)
+                        Log.v(TAG, "indexOfLayer: " + indexOfLayer);
+                    if (indexOfLayer != -1) {
+                        ArrayList<Long> tempChapterIds = new ArrayList<Long>(chapterIds);
+                        if (DEBUG)
+                            Log.d(TAG, "tempChapterIds size: " + tempChapterIds.size()
+                                    + ", indexOfLayer: " + indexOfLayer);
+                        for (int i = tempChapterIds.size() - 1; i >= indexOfLayer; --i) {
+                            tempChapterIds.remove(i);
+                            if (DEBUG)
+                                Log.d(TAG, "remove: " + i);
+                        }
+
+                        chapterIds = tempChapterIds;
+                    } else {
+                        layerList.add(layer);
+                    }
+                } else {
+                    chapterIds = new ArrayList<Long>();
+                }
+                chapterIds.add(chapterId);
+                if (DEBUG)
+                    Log.d(TAG, "chapterIds size: " + chapterIds.size());
                 for (Article article : chapter.getArticles()) {
                     final long articleId = article.mId;
-                    testItems.add(new TestItem(planId, actId, chapterId, articleId, -1));
+                    testItems.add(new TestItem(planId, actId, chapterIds, articleId, -1));
                     if (DEBUG) Log.v(TAG, "article: " + article);
                 }
                 if (DEBUG) {

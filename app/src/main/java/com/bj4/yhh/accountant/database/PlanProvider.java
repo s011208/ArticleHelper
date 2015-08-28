@@ -164,7 +164,7 @@ public class PlanProvider extends ContentProvider {
                     + TestItem.IS_READ + " INTEGER,"
                     + TestItem.DISPLAY_DAY + " INTEGER,"
                     + TestItem.ACT_ID + " INTEGER,"
-                    + TestItem.CHAPTER_ID + " INTEGER,"
+                    + TestItem.CHAPTER_IDS + " TEXT,"
                     + TestItem.ARTICLE_ID + " INTEGER)");
         }
 

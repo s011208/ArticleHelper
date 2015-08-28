@@ -238,8 +238,10 @@ public class ActContentAdapter extends BaseAdapter {
                             final ActContent content = actContentIter.next();
                             for (TestItem item : testItems) {
                                 if (content instanceof Chapter) {
-                                    if (item.mChapterId == content.mId) {
-                                        content.mFailedTime = item.mFailedTime;
+                                    for (Long chapterId : item.mChapterIds) {
+                                        if (chapterId == content.mId) {
+                                            content.mFailedTime = item.mFailedTime;
+                                        }
                                     }
                                 } else if (content instanceof Article) {
                                     if (item.mArticleId == content.mId) {

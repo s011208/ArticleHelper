@@ -8,6 +8,7 @@ import android.net.Uri;
 import com.bj4.yhh.accountant.database.PlanProvider;
 import com.bj4.yhh.accountant.fragments.plan.Plan;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +29,7 @@ public class TestItem {
     /**
      * may have more than one chapter
      */
-    public static final String CHAPTER_ID = "chapter_id";
+    public static final String CHAPTER_IDS = "chapter_id";
     public static final String ARTICLE_ID = "article_id";
     public static final String FAILED_TIME = "failed_time";
     public static final String IS_READ = "is_read";
@@ -42,22 +43,43 @@ public class TestItem {
     public long mId = NO_ID;
     public long mPlanId = NO_ID;
     public long mActId = NO_ID;
-    public long mChapterId = NO_ID;
+    public ArrayList<Long> mChapterIds;
     public long mArticleId = NO_ID;
     public int mFailedTime = 0;
     public boolean mIsRead = false;
     public boolean mIsAnswer = false;
     public int mDisplayDay = -1;
 
-    public TestItem(long planId, long actId, long chapterId, long articleId, int displayDay) {
-        this(NO_ID, planId, actId, chapterId, articleId, 0, false, false, displayDay);
+    public static String convertJsonFromChapterIds(ArrayList<Long> ids) {
+        JSONArray json = new JSONArray();
+        for (Long id : ids) {
+            json.put(id);
+        }
+        return json.toString();
     }
 
-    public TestItem(long id, long planId, long actId, long chapterId, long articleId, int failedTime, boolean isAnswer, boolean isRead, int displayDay) {
+    public static ArrayList<Long> convertChapterIdsFromJson(String jsonArrayString) {
+        final ArrayList<Long> rtn = new ArrayList<Long>();
+        try {
+            JSONArray json = new JSONArray(jsonArrayString);
+            for (int i = 0; i < json.length(); i++) {
+                rtn.add(json.getLong(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return rtn;
+    }
+
+    public TestItem(long planId, long actId, ArrayList<Long> chapterIds, long articleId, int displayDay) {
+        this(NO_ID, planId, actId, chapterIds, articleId, 0, false, false, displayDay);
+    }
+
+    public TestItem(long id, long planId, long actId, ArrayList<Long> chapterIds, long articleId, int failedTime, boolean isAnswer, boolean isRead, int displayDay) {
         mId = id;
         mPlanId = planId;
         mActId = actId;
-        mChapterId = chapterId;
+        mChapterIds = chapterIds;
         mArticleId = articleId;
         mFailedTime = failedTime;
         mIsAnswer = isAnswer;
@@ -72,7 +94,7 @@ public class TestItem {
         }
         cv.put(PLAN_ID, mPlanId);
         cv.put(ACT_ID, mActId);
-        cv.put(CHAPTER_ID, mChapterId);
+        cv.put(CHAPTER_IDS, convertJsonFromChapterIds(mChapterIds));
         cv.put(ARTICLE_ID, mArticleId);
         cv.put(FAILED_TIME, mFailedTime);
         cv.put(IS_ANSWER, mIsAnswer ? TRUE : FALSE);
@@ -87,7 +109,7 @@ public class TestItem {
             json.put(ID, mId);
             json.put(PLAN_ID, mPlanId);
             json.put(ACT_ID, mActId);
-            json.put(CHAPTER_ID, mChapterId);
+            json.put(CHAPTER_IDS, convertJsonFromChapterIds(mChapterIds));
             json.put(ARTICLE_ID, mArticleId);
             json.put(FAILED_TIME, mFailedTime);
             json.put(IS_ANSWER, mIsAnswer ? TRUE : FALSE);
@@ -145,7 +167,7 @@ public class TestItem {
                 final int indexOfId = data.getColumnIndex(ID);
                 final int indexOfPlanId = data.getColumnIndex(PLAN_ID);
                 final int indexOfActId = data.getColumnIndex(ACT_ID);
-                final int indexOfChapterId = data.getColumnIndex(CHAPTER_ID);
+                final int indexOfChapterId = data.getColumnIndex(CHAPTER_IDS);
                 final int indexOfArticleId = data.getColumnIndex(ARTICLE_ID);
                 final int indexOfHasFailed = data.getColumnIndex(FAILED_TIME);
                 final int indexOfIsAnswer = data.getColumnIndex(IS_ANSWER);
@@ -155,7 +177,7 @@ public class TestItem {
                     rtn.add(new TestItem(data.getLong(indexOfId)
                             , data.getLong(indexOfPlanId)
                             , data.getLong(indexOfActId)
-                            , data.getLong(indexOfChapterId)
+                            , convertChapterIdsFromJson(data.getString(indexOfChapterId))
                             , data.getLong(indexOfArticleId)
                             , data.getInt(indexOfHasFailed)
                             , data.getInt(indexOfIsAnswer) == TRUE

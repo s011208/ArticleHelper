@@ -56,7 +56,7 @@ public class TestItemFragment extends BaseFragment {
     private boolean mIsInReadingMode = true;
     private TestItem mCurrentTestItem;
     private Article mCurrentArticle;
-    private Chapter mCurrentChapter;
+    private ArrayList<Chapter> mCurrentChapters;
 
     private TextView mActTitle, mActInfo;
     private ImageView mOutlineBtn;
@@ -172,11 +172,11 @@ public class TestItemFragment extends BaseFragment {
 
     private void setCurrentData(TestItem testItem) {
         mCurrentTestItem = testItem;
-        mCurrentChapter = getTestItemChapter(getActivity(), testItem);
+        mCurrentChapters = getTestItemChapter(getActivity(), testItem);
         mCurrentArticle = getTestItemArticle(getActivity(), testItem);
         if (DEBUG) {
             Log.v(TAG, "mCurrentTestItem is null: " + (mCurrentTestItem == null));
-            Log.v(TAG, "mCurrentChapter is null: " + (mCurrentChapter == null));
+            Log.v(TAG, "mCurrentChapter is null: " + (mCurrentChapters == null));
             Log.v(TAG, "mCurrentArticle is null: " + (mCurrentArticle == null));
         }
     }
@@ -185,13 +185,13 @@ public class TestItemFragment extends BaseFragment {
         return mCurrentTestItem;
     }
 
-    public static Chapter getTestItemChapter(Context context, TestItem testItem) {
+    public static ArrayList<Chapter> getTestItemChapter(Context context, TestItem testItem) {
         Chapter rtn = null;
-        ArrayList<Chapter> chapters = Chapter.queryChapterByChapterId(context, testItem.mChapterId);
-        if (!chapters.isEmpty()) {
-            rtn = chapters.get(0);
+        ArrayList<Chapter> chapters = new ArrayList<Chapter>();
+        for (Long chapterIds : testItem.mChapterIds) {
+            chapters.addAll(Chapter.queryChapterByChapterId(context, chapterIds));
         }
-        return rtn;
+        return chapters;
     }
 
     public static Article getTestItemArticle(Context context, TestItem testItem) {
@@ -206,7 +206,7 @@ public class TestItemFragment extends BaseFragment {
     private void resetCurrentData() {
         mCurrentTestItem = null;
         mCurrentArticle = null;
-        mCurrentChapter = null;
+        mCurrentChapters = null;
     }
 
     private void updateButtonsVisibility() {
@@ -266,14 +266,15 @@ public class TestItemFragment extends BaseFragment {
     private void updateActInfo() {
         if (mCurrentTestItem != null) {
             Log.i(TAG, "test item: " + mCurrentTestItem);
-
-            if (mCurrentChapter.isEmptyChapter()) {
-                mActInfo.setText(null);
-            } else {
-                mActInfo.setText(mCurrentChapter.mNumber);
+            String actInfo = "";
+            for (Chapter chapter : mCurrentChapters) {
+                if (chapter.isEmptyChapter()) continue;
+                actInfo += chapter.mNumber + " ";
             }
+            mActInfo.setText(actInfo);
+
             if (DEBUG) {
-                Log.d(TAG, "chapter: " + mCurrentChapter);
+                Log.d(TAG, "actInfo: " + actInfo + ", mCurrentChapters size: " + mCurrentChapters.size());
             }
         } else {
             mActInfo.setText(null);
