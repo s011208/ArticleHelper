@@ -59,6 +59,7 @@ public class ActListLongClickDialog extends BaseDialogFragment {
                             copyToDialog.show(getFragmentManager(), copyToDialog.getClass().getName());
                             break;
                         case 2: // Remove
+                            // TODO confirm dialog to delete
                             ActsFolder.removeActsFolderContentById(getActivity(), mActsFolder.mId, mActId);
                             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
                             dismiss();
