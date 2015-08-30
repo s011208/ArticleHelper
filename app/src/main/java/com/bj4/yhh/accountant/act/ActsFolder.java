@@ -99,6 +99,19 @@ public class ActsFolder {
         ActsFolder folder = items.get(0);
         folder.mActIds.remove(actId);
         update(context, folder);
+
+        // remove act without folder
+        boolean findActsInOtherFolders = false;
+        ArrayList<ActsFolder> folders = query(context, null, null, null, null);
+        for (ActsFolder f : folders) {
+            if (f.mActIds.contains(actId)) {
+                findActsInOtherFolders = true;
+                break;
+            }
+        }
+        if (!findActsInOtherFolders) {
+            Act.deleteActById(context, actId);
+        }
     }
 
     public static void updateActsFolderContentById(Context context, long actsFolderId, long actId) {

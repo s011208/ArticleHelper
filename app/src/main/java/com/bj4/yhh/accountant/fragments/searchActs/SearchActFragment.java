@@ -25,8 +25,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bj4.yhh.accountant.AccountDataHelper;
@@ -49,8 +47,8 @@ import java.util.ArrayList;
  * Created by yenhsunhuang on 15/7/9.
  */
 public class SearchActFragment extends BaseFragment implements AccountDataHelper.Callback {
-    private static final boolean DEBUG = true;
-    private static final String TAG = "TestMainFragment";
+    private static final boolean DEBUG = false;
+    private static final String TAG = "SearchActFragment";
 
     public static final int REQUEST_ADD_TITLE = 1000;
     public static final int REQUEST_SELECT_FOLDER = 1001;
@@ -402,6 +400,8 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
                 final ArrayList<String> actListTitle = new ArrayList<String>();
                 for (Act act : actList) {
                     actListTitle.add(act.getTitle());
+                    if (DEBUG)
+                        Log.d(TAG, "act: " + act.getTitle());
                 }
 
                 Cursor allActList = activity.getContentResolver().query(Uri.parse("content://" + ActProvider.AUTHORITY + "/" + ActProvider.PATH_ALL_ACTS_LIST), null, null, null, null);
@@ -471,9 +471,12 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
         } else if (requestCode == REQUEST_UPDATE_EXPANDABLE_ITEMS) {
             if (resultCode == Activity.RESULT_OK) {
                 setActData();
+                setAutoCompleteTextViewItem();
             }
         }
         mPendingActTitle = null;
+        if (DEBUG)
+            Log.d(TAG, "requestCode: " + requestCode + ", resultCode: " + resultCode);
     }
 
     private void onAddAct(long folderId) {

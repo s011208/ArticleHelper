@@ -212,6 +212,12 @@ public class Act implements Comparable<Act> {
         }
     }
 
+    public static void deleteActById(Context context, long actId) {
+        Act act = queryActById(context, actId);
+        if (act == null) return;
+        deleteAct(context, act);
+    }
+
     public static int getArticleCount(Context context
             , Act act) {
         if (act.getChapters().isEmpty()) {
