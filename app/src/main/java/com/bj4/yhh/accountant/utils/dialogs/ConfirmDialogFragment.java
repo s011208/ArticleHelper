@@ -11,14 +11,16 @@ import android.view.View;
  * Created by yenhsunhuang on 15/8/22.
  */
 public class ConfirmDialogFragment extends BaseDialogFragment {
+    public static final int REQUEST_CONFIRM = 0;
+
+    public static final String ARGUS_TITLE = "title";
+
+    public static final String ARGUS_MESSAGE = "message";
+
     public interface Callback {
         void onConfirm();
 
         void onCancel();
-
-        String getMessageText();
-
-        String getTitle();
     }
 
     private Callback mCallback;
@@ -29,10 +31,6 @@ public class ConfirmDialogFragment extends BaseDialogFragment {
         if (activity instanceof Callback) {
             mCallback = (Callback) activity;
         }
-    }
-
-    public void setCallback(Callback cb) {
-        mCallback = cb;
     }
 
 
@@ -48,23 +46,31 @@ public class ConfirmDialogFragment extends BaseDialogFragment {
 
     @Override
     public String getTitleText() {
-        return mCallback.getTitle();
+        return getArguments().getString(ARGUS_TITLE, null);
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = getDialogBuilder();
-        builder.setMessage(mCallback.getMessageText());
+        builder.setMessage(getArguments().getString(ARGUS_MESSAGE, null));
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mCallback.onConfirm();
+                if (mCallback != null) {
+                    mCallback.onConfirm();
+                } else {
+                    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
+                }
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mCallback.onCancel();
+                if (mCallback != null) {
+                    mCallback.onCancel();
+                } else {
+                    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, getActivity().getIntent());
+                }
             }
         });
         return builder.create();

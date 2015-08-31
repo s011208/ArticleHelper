@@ -1,5 +1,6 @@
 package com.bj4.yhh.accountant.fragments.plan;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +24,7 @@ import com.bj4.yhh.accountant.utils.dialogs.ConfirmDialogFragment;
 /**
  * Created by yenhsunhuang on 15/8/17.
  */
-public class PlanModeFragment extends BaseFragment implements View.OnClickListener, PlanListAdapter.Callback, ConfirmDialogFragment.Callback {
+public class PlanModeFragment extends BaseFragment implements View.OnClickListener, PlanListAdapter.Callback {
     private static final String TAG = "PlanModeFragment";
     private static final boolean DEBUG = true;
     private PlanListAdapter mPlanListAdapter;
@@ -61,7 +62,11 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
                 mDeleteItem = i;
                 mOnLongClickPlan = mPlanListAdapter.getItem(i);
                 ConfirmDialogFragment dialog = new ConfirmDialogFragment();
-                dialog.setCallback(PlanModeFragment.this);
+                Bundle args = new Bundle();
+                args.putString(ConfirmDialogFragment.ARGUS_TITLE, getTitle());
+                args.putString(ConfirmDialogFragment.ARGUS_MESSAGE, getMessageText());
+                dialog.setArguments(args);
+                dialog.setTargetFragment(PlanModeFragment.this, ConfirmDialogFragment.REQUEST_CONFIRM);
                 dialog.show(getFragmentManager(), dialog.getClass().getName());
                 return true;
             }
@@ -98,8 +103,23 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
             }
             mDeleteItem = -1;
             ConfirmDialogFragment dialog = new ConfirmDialogFragment();
-            dialog.setCallback(this);
+            Bundle args = new Bundle();
+            args.putString(ConfirmDialogFragment.ARGUS_TITLE, getTitle());
+            args.putString(ConfirmDialogFragment.ARGUS_MESSAGE, getMessageText());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PlanModeFragment.this, ConfirmDialogFragment.REQUEST_CONFIRM);
             dialog.show(getFragmentManager(), dialog.getClass().getName());
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ConfirmDialogFragment.REQUEST_CONFIRM) {
+            if (resultCode == Activity.RESULT_OK) {
+                onConfirm();
+            } else {
+                onCancel();
+            }
         }
     }
 
@@ -108,8 +128,7 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
         OutlineDialogFragment.showDialog(act, getFragmentManager());
     }
 
-    @Override
-    public void onConfirm() {
+    private void onConfirm() {
         if (mDeleteItem == -1) {
             Plan.deleteAllPlans(getActivity());
             if (mPlanListAdapter != null) {
@@ -125,13 +144,11 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    @Override
-    public void onCancel() {
+    private void onCancel() {
 
     }
 
-    @Override
-    public String getMessageText() {
+    private String getMessageText() {
         if (mDeleteItem == -1) {
             return getActivity().getResources().getString(R.string.confirm_dialog_fragment_delete_all_message);
         } else if (mDeleteItem >= 0) {
@@ -140,8 +157,7 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
         return null;
     }
 
-    @Override
-    public String getTitle() {
+    private String getTitle() {
         if (mDeleteItem == -1) {
             return getActivity().getResources().getString(R.string.confirm_dialog_fragment_delete_all_title);
         } else if (mDeleteItem >= 0) {
