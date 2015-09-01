@@ -3,19 +3,26 @@ package com.bj4.yhh.accountant.fragments.searchActs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.bj4.yhh.accountant.R;
+import com.bj4.yhh.accountant.act.Act;
 import com.bj4.yhh.accountant.act.ActsFolder;
+import com.bj4.yhh.accountant.act.Note;
 import com.bj4.yhh.accountant.database.ActDatabase;
+import com.bj4.yhh.accountant.fragments.plan.Plan;
 import com.bj4.yhh.accountant.utils.dialogs.BaseDialogFragment;
+import com.bj4.yhh.accountant.utils.dialogs.ConfirmDialogFragment;
+
+import java.util.ArrayList;
 
 /**
  * Created by yenhsunhuang on 15/8/4.
@@ -59,10 +66,16 @@ public class ActListLongClickDialog extends BaseDialogFragment {
                             copyToDialog.show(getFragmentManager(), copyToDialog.getClass().getName());
                             break;
                         case 2: // Remove
-                            // TODO confirm dialog to delete
-                            ActsFolder.removeActsFolderContentById(getActivity(), mActsFolder.mId, mActId);
-                            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
-                            dismiss();
+                            boolean findActsInOtherFolders = findActsInOtherFolders();
+                            if (DEBUG)
+                                Log.d(TAG, "findActsInOtherFolders: " + findActsInOtherFolders);
+                            if (!findActsInOtherFolders) {
+                                showConfirmDialogWhenDeleteAct();
+                            } else {
+                                ActsFolder.removeActsFolderContentById(getActivity(), mActsFolder.mId, mActId);
+                                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
+                                dismiss();
+                            }
                             break;
                         default:
                             if (DEBUG) Log.d(TAG, "none?");
@@ -87,6 +100,55 @@ public class ActListLongClickDialog extends BaseDialogFragment {
         });
         return listview;
     }
+
+    private boolean findActsInOtherFolders() {
+        ArrayList<ActsFolder> folders = ActsFolder.query(getActivity(), null, null, null, null);
+        for (ActsFolder f : folders) {
+            if (f.mId == mActsFolder.mId) {
+                continue;
+            }
+            if (f.mActIds.contains(mActId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void deleteActAndAllRelatedItems() {
+        final Context context = getActivity();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                Act act = Act.queryActById(context, mActId);
+                Plan plan = Plan.queryByActId(context, mActId);
+                // delete plan
+                if (plan != null) {
+                    Plan.deletePlan(context, plan.mId);
+                }
+                // delete note
+                Note.deleteAllNotesByAct(context, act);
+                // delete act
+                Act.deleteActById(context, mActId);
+                return null;
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        // delete act in folder
+        ActsFolder.removeActsFolderContentById(getActivity(), mActsFolder.mId, mActId);
+        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
+        dismiss();
+    }
+
+    private void showConfirmDialogWhenDeleteAct() {
+        ConfirmDialogFragment dialog = new ConfirmDialogFragment();
+        dialog.setTargetFragment(this, ConfirmDialogFragment.REQUEST_CONFIRM);
+        Bundle args = new Bundle();
+        Act act = Act.queryActById(getActivity(), mActId);
+        args.putString(ConfirmDialogFragment.ARGUS_TITLE, getActivity().getResources().getString(R.string.act_list_long_click_dialog_delete_all_act_content_title, act.getTitle()));
+        args.putString(ConfirmDialogFragment.ARGUS_MESSAGE, getActivity().getResources().getString(R.string.act_list_long_click_dialog_delete_all_act_content_message, act.getTitle()));
+        dialog.setArguments(args);
+        dialog.show(getFragmentManager(), ConfirmDialogFragment.class.getName());
+    }
+
 
     @Override
     public int getTitleTextResources() {
@@ -145,6 +207,9 @@ public class ActListLongClickDialog extends BaseDialogFragment {
             ActsFolder.insertOrUpdate(getActivity(), mActsFolder);
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
             dismiss();
+        } else if (requestCode == ConfirmDialogFragment.REQUEST_CONFIRM) {
+            if (DEBUG) Log.d(TAG, "confirm delete dialog");
+            deleteActAndAllRelatedItems();
         }
     }
 }

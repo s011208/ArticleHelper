@@ -13,12 +13,14 @@ import com.bj4.yhh.accountant.database.ActProvider;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by yenhsunhuang on 15/7/24.
  */
 public class Note {
     private static final String TAG = "Note";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public long mId = ActDatabase.NO_ID;
     public int mNoteParentType;
@@ -128,5 +130,51 @@ public class Note {
 
     public static Cursor getNoteData(Context context, int noteType, int parentType, long parentId) {
         return context.getContentResolver().query(Note.getBaseUri(), null, ActDatabase.NOTE_TYPE + "=" + noteType + " and " + ActDatabase.NOTE_PARENT_TYPE + "=" + parentType + " and " + ActDatabase.NOTE_PARENT_ID + "=" + parentId, null, ActDatabase.ID);
+    }
+
+    public static void deleteAllNotesByActId(Context context, long actId) {
+        Act act = Act.queryActById(context, actId);
+        deleteAllNotesByAct(context, act);
+    }
+
+    public static ArrayList<Long> queryNoteIdByParentId(Context context, int notParentType, long parentId) {
+        ArrayList<Long> rtn = new ArrayList<Long>();
+        Cursor data = context.getContentResolver().query(getBaseUri(), new String[]{ActDatabase.ID}, ActDatabase.NOTE_PARENT_TYPE + "=" + notParentType + " and " + ActDatabase.NOTE_PARENT_ID + "=" + parentId, null, null);
+        if (data != null) {
+            try {
+                while (data.moveToNext()) {
+                    rtn.add(data.getLong(0));
+                }
+            } finally {
+                data.close();
+            }
+        }
+        return rtn;
+    }
+
+    public static void deleteAllNotesByAct(final Context context, final Act act) {
+        int deleteItems = 0;
+        Act.queryAllActContent(context, act);
+        for (Chapter chapter : act.getChapters()) {
+            for (Article article : chapter.getArticles()) {
+                ArrayList<Long> noteIds = queryNoteIdByParentId(context, ActDatabase.NOTE_PARENT_TYPE_ARTICLE, article.mId);
+                for (long noteId : noteIds) {
+                    deleteItems += context.getContentResolver().delete(getBaseUri(), ActDatabase.ID + "=" + noteId, null);
+                }
+                if (DEBUG)
+                    Log.d(TAG, "article noteIds size: " + noteIds.size());
+            }
+            ArrayList<Long> noteIds = queryNoteIdByParentId(context, ActDatabase.NOTE_PARENT_TYPE_CHAPTER, chapter.mId);
+            for (long noteId : noteIds) {
+                deleteItems += context.getContentResolver().delete(getBaseUri(), ActDatabase.ID + "=" + noteId, null);
+            }
+            if (DEBUG) Log.d(TAG, "chapter noteIds size: " + noteIds.size());
+        }
+        ArrayList<Long> noteIds = queryNoteIdByParentId(context, ActDatabase.NOTE_PARENT_TYPE_ACT, act.getId());
+        for (long noteId : noteIds) {
+            deleteItems += context.getContentResolver().delete(getBaseUri(), ActDatabase.ID + "=" + noteId, null);
+        }
+        if (DEBUG) Log.d(TAG, "act noteIds size: " + noteIds.size());
+        if (DEBUG) Log.d(TAG, "deleteItems: " + deleteItems);
     }
 }

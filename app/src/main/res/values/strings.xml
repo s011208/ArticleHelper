@@ -88,4 +88,7 @@
         <item>All article test</item>
         <item>All article test (randomly)</item>
     </array>
+
+    <string name="act_list_long_click_dialog_delete_all_act_content_title">Delete %s</string>
+    <string name="act_list_long_click_dialog_delete_all_act_content_message">Are you sure to delete all content related to %s</string>
 </resources>
