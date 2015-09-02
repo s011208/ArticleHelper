@@ -193,7 +193,7 @@ public class ImagePreviewPagerAdapter extends PagerAdapter {
                     if (vto.isAlive()) {
                         vto.removeOnGlobalLayoutListener(this);
                     }
-                    mImageNoteHelper.setMaximumImageSize(image.getWidth(), image.getHeight());
+                    mImageNoteHelper.setImageSize(image.getWidth(), image.getHeight());
                     mImageNoteHelper.getImageLoader().displayImage(note.mNoteContent, image, mImageNoteHelper.getDisplayImageOptions());
                 }
             });

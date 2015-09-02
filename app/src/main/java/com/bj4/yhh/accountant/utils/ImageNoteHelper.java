@@ -70,6 +70,19 @@ public class ImageNoteHelper {
                 .cacheOnDisc(true).resetViewBeforeLoading(true).postProcessor(new BitmapProcessor() {
                     @Override
                     public Bitmap process(Bitmap bmp) {
+                        if (bmp.getHeight() <= h && bmp.getWidth() <= w)
+                            return bmp;
+                        return Bitmap.createScaledBitmap(bmp, w, h, false);
+                    }
+                }).build();
+    }
+
+    public void setImageSize(final int w, final int h) {
+        mOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
+                .showImageOnFail(R.drawable.emoticon_sad)
+                .cacheOnDisc(true).resetViewBeforeLoading(true).postProcessor(new BitmapProcessor() {
+                    @Override
+                    public Bitmap process(Bitmap bmp) {
                         return Bitmap.createScaledBitmap(bmp, w, h, false);
                     }
                 }).build();
