@@ -66,12 +66,12 @@ public abstract class BaseDialogFragment extends DialogFragment {
         setCustomTitle();
         dialogBuilder.setCustomTitle(mTitle);
         if (mMessage != null) {
-            LinearLayout msgRoot = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_message, null);
-            LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            final int margin = getActivity().getResources().getDimensionPixelSize(R.dimen.base_dialog_fragment_message_left_margin);
-            ll.setMargins(margin, 0, margin, 0);
-            msgRoot.addView(mMessage, ll);
-            dialogBuilder.setView(msgRoot);
+//            LinearLayout msgRoot = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_message, null);
+//            LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+//            final int margin = getActivity().getResources().getDimensionPixelSize(R.dimen.base_dialog_fragment_message_left_margin);
+//            ll.setMargins(margin, 0, margin, 0);
+//            msgRoot.addView(mMessage, ll);
+            dialogBuilder.setView(mMessage);
         }
         return dialogBuilder;
     }
