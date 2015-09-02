@@ -3,6 +3,7 @@ package com.bj4.yhh.accountant.activity.image;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,9 @@ import com.bj4.yhh.accountant.act.Chapter;
 import com.bj4.yhh.accountant.act.Note;
 import com.bj4.yhh.accountant.activity.BaseActivity;
 import com.bj4.yhh.accountant.utils.ImageNoteHelper;
+import com.bj4.yhh.accountant.utils.ScaledImageView;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
  * Created by yenhsunhuang on 15/7/25.
@@ -37,7 +41,7 @@ public class ImageWallpaperActivity extends BaseActivity implements ImagePreview
     private Rect mViewRect;
     private int mTouchedX;
 
-    private ImageView mImageView;
+    private ScaledImageView mImageView;
     private ViewPager mPreviewPager;
     private ImagePreviewPagerAdapter mImagePreviewPagerAdapter;
     private RelativeLayout mActionBar;
@@ -104,7 +108,7 @@ public class ImageWallpaperActivity extends BaseActivity implements ImagePreview
 
     private void initComponents() {
         // image preview
-        mImageView = (ImageView) findViewById(R.id.image_view);
+        mImageView = (ScaledImageView) findViewById(R.id.image_view);
         mImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -123,6 +127,7 @@ public class ImageWallpaperActivity extends BaseActivity implements ImagePreview
                 startActionBarAnimation();
             }
         });
+        mImageView.setOnTouchListener(mImageView);
         mPreviewPager = (ViewPager) findViewById(R.id.preview_pager);
         if (isNavBarTintEnabled()) {
             mPreviewPager.setBackgroundColor(0x20ff9900);
@@ -196,7 +201,7 @@ public class ImageWallpaperActivity extends BaseActivity implements ImagePreview
             final Note note = mPreviewImageNoteHelper.getAllImageNotes().get(0);
             onItemClick(note);
         } else {
-            mImageView.setImageDrawable(null);
+            mImageView.setThumbnail(null);
             mCurrentNote = null;
         }
     }
@@ -235,13 +240,52 @@ public class ImageWallpaperActivity extends BaseActivity implements ImagePreview
 
     private void showImageView(String noteUri) {
         mCurrentNote = mImagePreviewPagerAdapter.setFocusDrawable(noteUri);
-        mLargeImageNoteHelper.getImageLoader().displayImage(noteUri, mImageView, mLargeImageNoteHelper.getDisplayImageOptions());
+        mLargeImageNoteHelper.getImageLoader().loadImage(noteUri, mLargeImageNoteHelper.getDisplayImageOptions(), new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
 
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                mImageView.setThumbnail(bitmap);
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
     }
 
     private void showImageView(Note note) {
         mImagePreviewPagerAdapter.setFocusDrawable(note);
-        mLargeImageNoteHelper.getImageLoader().displayImage(note.mNoteContent, mImageView, mLargeImageNoteHelper.getDisplayImageOptions());
+        mLargeImageNoteHelper.getImageLoader().loadImage(note.mNoteContent, mLargeImageNoteHelper.getDisplayImageOptions(), new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                mImageView.setThumbnail(bitmap);
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
     }
 
     @Override
