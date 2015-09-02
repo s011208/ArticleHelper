@@ -77,7 +77,7 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
         initTextNoteData();
         setContentView(R.layout.activity_act_editor);
         initComponents();
-        startOnCreateAnimation();
+//        startOnCreateAnimation();
     }
 
     private void initTextNoteData() {
@@ -98,6 +98,9 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
         }
     }
 
+    /**
+     * not smooth enough in activity
+     */
     private void startOnCreateAnimation() {
         mMainContainer.setPivotY(mViewRect.centerY());
         final int centerX = mTouchedX == -1 ? mViewRect.centerX() : mTouchedX;
