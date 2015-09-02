@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class EditorImageNoteGridAdapter extends ImageNoteAdapter {
     private static final String TAG = "NoteGridAdapter";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private final int mMaximumColumnCount;
     private final int mIconResourcePadding;
@@ -102,7 +102,10 @@ public class EditorImageNoteGridAdapter extends ImageNoteAdapter {
         }
         final Note item = getItem(position);
         if (DEBUG)
-            Log.d(TAG, "position: " + position + ", item.mNoteContent: " + item.mNoteContent);
+            Log.d(TAG, "position: " + position + ", item.mNoteContent: " + item.mNoteContent
+                    + ", item.isMore(): " + item.isMore()
+                    + ", item.isEmptyContent(): " + item.isEmptyContent() + "\nholder: " + holder);
+        getImageLoader().cancelDisplayTask(holder.mImageNote);
         if (item.isMore()) {
             ((FrameLayout) convertView).setForeground(null);
             holder.mSwitcher.setDisplayedChild(1);
@@ -130,12 +133,12 @@ public class EditorImageNoteGridAdapter extends ImageNoteAdapter {
                         public void onLoadingFailed(String s, View view, FailReason failReason) {
                             finalHolder.mSwitcher.setDisplayedChild(1);
                             finalHolder.mImageNote.setPadding(mIconResourcePadding, mIconResourcePadding, mIconResourcePadding, mIconResourcePadding);
-
                         }
 
                         @Override
                         public void onLoadingComplete(String s, View view, Bitmap bitmap) {
                             finalHolder.mSwitcher.setDisplayedChild(1);
+                            if (DEBUG) Log.v(TAG, "finalHolder: " + finalHolder);
                         }
 
                         @Override
