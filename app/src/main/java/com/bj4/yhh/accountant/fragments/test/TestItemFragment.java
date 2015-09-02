@@ -328,6 +328,7 @@ public class TestItemFragment extends BaseFragment {
             mAnswers.setVisibility(View.VISIBLE);
             mTestAnswerAdapter.updateListByCurrentData(mTestBy, mCurrentTestItem);
             mAnswers.setSelection(0);
+            mAnswers.smoothScrollToPosition(0);
         }
     }
 
