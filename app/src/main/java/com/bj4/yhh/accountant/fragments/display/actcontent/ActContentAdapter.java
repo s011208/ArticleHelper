@@ -359,6 +359,8 @@ public class ActContentAdapter extends BaseAdapter {
             holder.mArticleImportant = (ImageView) convertView.findViewById(R.id.article_is_important);
             holder.mArticleHasTextNote = (ImageView) convertView.findViewById(R.id.article_has_text_note);
             holder.mArticleHasImageNote = (ImageView) convertView.findViewById(R.id.article_has_image_note);
+            holder.mChapterHasLinks = (ImageView) convertView.findViewById(R.id.chapter_has_links);
+            holder.mArticleHasLinks = (ImageView) convertView.findViewById(R.id.article_has_links);
 
             holder.mArticleWrongTime = (TextView) convertView.findViewById(R.id.txt_article_wrong_time);
             convertView.setTag(holder);
@@ -377,6 +379,7 @@ public class ActContentAdapter extends BaseAdapter {
             holder.mChapterImportant.setVisibility(item.mHasHighLight ? View.VISIBLE : View.GONE);
             holder.mChapterHasTextNote.setVisibility(item.mHasTextNote ? View.VISIBLE : View.GONE);
             holder.mChapterHasImageNote.setVisibility(item.mHasImageNote ? View.VISIBLE : View.GONE);
+            holder.mChapterHasLinks.setVisibility(!item.mLinks.isEmpty() ? View.VISIBLE : View.GONE);
 
             holder.mArticleContent.setVisibility(View.GONE);
             holder.mArticleNumber.setVisibility(View.GONE);
@@ -393,6 +396,7 @@ public class ActContentAdapter extends BaseAdapter {
             holder.mArticleImportant.setVisibility(item.mHasHighLight ? View.VISIBLE : View.GONE);
             holder.mArticleHasTextNote.setVisibility(item.mHasTextNote ? View.VISIBLE : View.GONE);
             holder.mArticleHasImageNote.setVisibility(item.mHasImageNote ? View.VISIBLE : View.GONE);
+            holder.mArticleHasLinks.setVisibility(!item.mLinks.isEmpty() ? View.VISIBLE : View.GONE);
 
             holder.mArticleContent.setVisibility(View.VISIBLE);
             holder.mArticleNumber.setVisibility(View.VISIBLE);
@@ -416,6 +420,7 @@ public class ActContentAdapter extends BaseAdapter {
         ImageView mChapterImportant, mChapterHasTextNote, mChapterHasImageNote;
         ImageView mArticleImportant, mArticleHasTextNote, mArticleHasImageNote;
         TextView mArticleWrongTime;
+        ImageView mChapterHasLinks, mArticleHasLinks;
     }
 
     public int getChapterItemIndex(long chapterId) {

@@ -9,8 +9,11 @@ import android.text.SpannableString;
 import com.bj4.yhh.accountant.database.ActDatabase;
 import com.bj4.yhh.accountant.database.ActProvider;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by yenhsunhuang on 15/7/19.
@@ -22,15 +25,42 @@ public abstract class ActContent implements Comparable<ActContent> {
     public String mContent;
     public boolean mHasHighLight;
     public boolean mHasTextNote, mHasImageNote;
+    public final ArrayList<String> mLinks = new ArrayList<String>();
     public SpannableString mSpannableContent;
     public int mFailedTime = -1;
 
-    public ActContent(String number, String content, int order, long id, boolean hasHightLight) {
+    public ActContent(String number, String content, int order, long id, boolean hasHightLight, ArrayList<String> links) {
         mNumber = number;
         mContent = content;
         mOrder = order;
         mId = id;
         mHasHighLight = hasHightLight;
+        if (links != null) {
+            mLinks.addAll(links);
+        }
+    }
+
+    public static String convertLinksFromArray(ArrayList<String> links) {
+        JSONArray array = new JSONArray();
+        if (links == null) return array.toString();
+        for (String link : links) {
+            array.put(link);
+        }
+        return array.toString();
+    }
+
+    public static ArrayList<String> convertLinksFromJSON(String jsonArrayString) {
+        final ArrayList<String> rtn = new ArrayList<String>();
+        if (jsonArrayString == null) return rtn;
+        try {
+            JSONArray array = new JSONArray(jsonArrayString);
+            for (int i = 0; i < array.length(); i++) {
+                rtn.add(array.getString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return rtn;
     }
 
     public ActContent(String jsonString) {
@@ -41,6 +71,7 @@ public abstract class ActContent implements Comparable<ActContent> {
             mContent = json.getString(ActDatabase.CONTENT);
             mOrder = json.getInt(ActDatabase.COLUMN_ORDER);
             mHasHighLight = json.getBoolean(ActDatabase.HIGHLIGHT);
+            mLinks.addAll(convertLinksFromJSON(json.getString(ActDatabase.LINKS)));
         } catch (JSONException e) {
         }
     }
@@ -59,6 +90,7 @@ public abstract class ActContent implements Comparable<ActContent> {
             json.put(ActDatabase.HIGHLIGHT, mHasHighLight);
             json.put(ActDatabase.HAS_TEXT_NOTE, mHasTextNote);
             json.put(ActDatabase.HAS_IMAGE_NOTE, mHasImageNote);
+            json.put(ActDatabase.LINKS, convertLinksFromArray(mLinks));
             json.put("mFailedTime", mFailedTime);
         } catch (JSONException e) {
         }

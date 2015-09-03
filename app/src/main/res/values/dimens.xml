@@ -24,7 +24,7 @@
     <dimen name="display_act_content_fragment_article_padding_right">20dp</dimen>
     <dimen name="display_act_content_adapter_chapter_title_height">35dp</dimen>
     <dimen name="display_act_content_adapter_article_title_height">32dp</dimen>
-    <dimen name="display_act_content_adapter_chapter_status_icon_size">25dp</dimen>
+    <dimen name="display_act_content_adapter_chapter_status_icon_size">15dp</dimen>
 
     <dimen name="activity_act_editor_padding">10dp</dimen>
     <dimen name="activity_act_editor_item_margin">5dp</dimen>

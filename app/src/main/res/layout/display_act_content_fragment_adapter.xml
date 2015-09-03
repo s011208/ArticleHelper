@@ -60,6 +60,18 @@
                 android:src="@drawable/orange_image_filter"
                 android:visibility="invisible" />
 
+            <ImageView
+                android:id="@+id/chapter_has_links"
+                android:layout_width="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                android:layout_height="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                android:layout_alignBottom="@+id/txt_chapter_content"
+                android:layout_alignTop="@+id/txt_chapter_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/chapter_has_image_note"
+                android:scaleType="fitCenter"
+                android:src="@drawable/orange_link"
+                android:visibility="invisible" />
+
             <View
                 android:id="@+id/chapter_under_line"
                 android:layout_width="wrap_content"
@@ -138,6 +150,16 @@
                     android:layout_toRightOf="@+id/article_has_text_note"
                     android:scaleType="fitCenter"
                     android:src="@drawable/orange_image_filter" />
+
+                <ImageView
+                    android:id="@+id/article_has_links"
+                    android:layout_width="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                    android:layout_height="@dimen/display_act_content_adapter_chapter_status_icon_size"
+                    android:layout_alignBottom="@+id/txt_article_number"
+                    android:layout_alignTop="@+id/txt_article_number"
+                    android:layout_toRightOf="@+id/article_has_image_note"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/orange_link" />
             </RelativeLayout>
 
             <TextView

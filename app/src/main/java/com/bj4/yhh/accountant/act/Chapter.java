@@ -19,11 +19,11 @@ public class Chapter extends ActContent {
     private final ArrayList<Article> mArticles = new ArrayList<Article>();
 
     public Chapter(String number, String content, int order) {
-        this(number, content, order, ActDatabase.NO_ID, false);
+        this(number, content, order, ActDatabase.NO_ID, false, null);
     }
 
-    public Chapter(String number, String content, int order, long id, boolean hasHighLight) {
-        super(number, content, order, id, hasHighLight);
+    public Chapter(String number, String content, int order, long id, boolean hasHighLight, ArrayList<String> links) {
+        super(number, content, order, id, hasHighLight, links);
     }
 
     public Chapter(String jsonString) {
@@ -86,8 +86,12 @@ public class Chapter extends ActContent {
                 final int contentColumn = data.getColumnIndex(ActDatabase.CONTENT);
                 final int orderColumn = data.getColumnIndex(ActDatabase.COLUMN_ORDER);
                 final int highLightColumn = data.getColumnIndex(ActDatabase.HIGHLIGHT);
+                final int linksColumn = data.getColumnIndex(ActDatabase.LINKS);
                 while (data.moveToNext()) {
-                    rtn.add(new Chapter(data.getString(numberColumn), data.getString(contentColumn), data.getInt(orderColumn), data.getLong(idColumn), data.getInt(highLightColumn) == ActDatabase.TRUE));
+                    rtn.add(new Chapter(data.getString(numberColumn), data.getString(contentColumn)
+                            , data.getInt(orderColumn), data.getLong(idColumn)
+                            , data.getInt(highLightColumn) == ActDatabase.TRUE
+                            , ActContent.convertLinksFromJSON(data.getString(linksColumn))));
                 }
             } finally {
                 data.close();

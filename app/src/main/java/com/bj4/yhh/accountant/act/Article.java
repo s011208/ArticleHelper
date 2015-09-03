@@ -16,11 +16,11 @@ import java.util.ArrayList;
 public class Article extends ActContent {
 
     public Article(String number, String content, int order) {
-        this(number, content, order, ActDatabase.NO_ID, false);
+        this(number, content, order, ActDatabase.NO_ID, false, null);
     }
 
-    public Article(String number, String content, int order, long id, boolean hasHightLight) {
-        super(number, content, order, id, hasHightLight);
+    public Article(String number, String content, int order, long id, boolean hasHighLight, ArrayList<String> links) {
+        super(number, content, order, id, hasHighLight, links);
     }
 
     public Article(String jsonString) {
@@ -68,8 +68,12 @@ public class Article extends ActContent {
                 final int contentColumn = data.getColumnIndex(ActDatabase.CONTENT);
                 final int orderColumn = data.getColumnIndex(ActDatabase.COLUMN_ORDER);
                 final int highLightColumn = data.getColumnIndex(ActDatabase.HIGHLIGHT);
+                final int linksColumn = data.getColumnIndex(ActDatabase.LINKS);
                 while (data.moveToNext()) {
-                    rtn.add(new Article(data.getString(numberColumn), data.getString(contentColumn), data.getInt(orderColumn), data.getLong(idColumn), data.getInt(highLightColumn) == ActDatabase.TRUE));
+                    rtn.add(new Article(data.getString(numberColumn), data.getString(contentColumn)
+                            , data.getInt(orderColumn), data.getLong(idColumn)
+                            , data.getInt(highLightColumn) == ActDatabase.TRUE
+                            , ActContent.convertLinksFromJSON(data.getString(linksColumn))));
                 }
             } finally {
                 data.close();

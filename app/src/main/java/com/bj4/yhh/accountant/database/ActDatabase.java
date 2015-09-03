@@ -55,6 +55,7 @@ public class ActDatabase extends SQLiteOpenHelper {
     public static final String HIGHLIGHT = "high_light";
     public static final String HAS_IMAGE_NOTE = "has_image_note";
     public static final String HAS_TEXT_NOTE = "has_text_note";
+    public static final String LINKS = "links_list";
 
     // acts folder
     public static final String ACT_FOLDER_TITLE = "act_folder_title";
@@ -242,6 +243,7 @@ public class ActDatabase extends SQLiteOpenHelper {
                 + NUMBER + " TEXT,"
                 + COLUMN_ORDER + " INTEGER,"
                 + HIGHLIGHT + " INTEGER,"
+                + LINKS + " TEXT,"
                 + CONTENT + " TEXT)");
     }
 
@@ -256,6 +258,7 @@ public class ActDatabase extends SQLiteOpenHelper {
                 + NUMBER + " TEXT,"
                 + HIGHLIGHT + " INTEGER,"
                 + COLUMN_ORDER + " INTEGER,"
+                + LINKS + " TEXT,"
                 + CONTENT + " TEXT)");
     }
 
