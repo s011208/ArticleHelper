@@ -60,11 +60,20 @@
 
             </RelativeLayout>
 
+            <com.bj4.yhh.accountant.activity.editor.LinksView
+                android:id="@+id/links_view_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_note_area"
+                android:layout_margin="@dimen/activity_act_editor_item_margin">
+
+            </com.bj4.yhh.accountant.activity.editor.LinksView>
+
             <GridView
                 android:id="@+id/image_note_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text_note_area"
+                android:layout_below="@+id/links_view_area"
                 android:layout_margin="@dimen/activity_act_editor_item_margin"
                 android:drawSelectorOnTop="false"
                 android:horizontalSpacing="1dp"

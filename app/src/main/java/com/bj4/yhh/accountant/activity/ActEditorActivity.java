@@ -23,6 +23,7 @@ import com.bj4.yhh.accountant.act.ActContent;
 import com.bj4.yhh.accountant.act.Article;
 import com.bj4.yhh.accountant.act.Chapter;
 import com.bj4.yhh.accountant.act.Note;
+import com.bj4.yhh.accountant.activity.editor.LinksView;
 import com.bj4.yhh.accountant.activity.image.ImageWallpaperActivity;
 import com.bj4.yhh.accountant.database.ActDatabase;
 import com.bj4.yhh.accountant.fragments.display.actcontent.editor.EditorImageNoteGridAdapter;
@@ -66,6 +67,8 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
     private TextView mEditNoteButton;
     private GridView mImageNoteArea;
     private EditorImageNoteGridAdapter mEditorImageNoteGridAdapter;
+
+    private LinksView mLinksView;
 
     private boolean mHasAnyContentChanged = false;
     private boolean mPaused = false;
@@ -224,6 +227,9 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
                 }
             }
         });
+
+        mLinksView = (LinksView) findViewById(R.id.links_view_area);
+        mLinksView.setLinks(mActContent.mLinks);
     }
 
     private void dispatchQueryGalleryImageIntent() {
