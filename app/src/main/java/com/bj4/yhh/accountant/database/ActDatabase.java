@@ -246,8 +246,8 @@ public class ActDatabase extends SQLiteOpenHelper {
                 + COLUMN_ORDER + " INTEGER,"
                 + HIGHLIGHT + " INTEGER,"
                 + LINKS + " TEXT,"
-                + DRAW_LINE_START + " INTEGER,"
-                + DRAW_LINE_END + " INTEGER,"
+                + DRAW_LINE_START + " INTEGER DEFAULT -1,"
+                + DRAW_LINE_END + " INTEGER DEFAULT -1,"
                 + CONTENT + " TEXT)");
     }
 
