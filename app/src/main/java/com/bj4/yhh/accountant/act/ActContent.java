@@ -3,8 +3,12 @@ package com.bj4.yhh.accountant.act;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 
 import com.bj4.yhh.accountant.database.ActDatabase;
 import com.bj4.yhh.accountant.database.ActProvider;
@@ -28,16 +32,20 @@ public abstract class ActContent implements Comparable<ActContent> {
     public final ArrayList<String> mLinks = new ArrayList<String>();
     public SpannableString mSpannableContent;
     public int mFailedTime = -1;
+    private int mDrawLineStart, mDrawLineEnd;
 
-    public ActContent(String number, String content, int order, long id, boolean hasHightLight, ArrayList<String> links) {
+    public ActContent(String number, String content, int order, long id, boolean hasHightLight, ArrayList<String> links, int drawLineStart, int drawLineEnd) {
         mNumber = number;
         mContent = content;
         mOrder = order;
         mId = id;
         mHasHighLight = hasHightLight;
+        mDrawLineStart = drawLineStart;
+        mDrawLineEnd = drawLineEnd;
         if (links != null) {
             mLinks.addAll(links);
         }
+        resetDisplayContent();
     }
 
     public static String convertLinksFromArray(ArrayList<String> links) {
@@ -72,12 +80,16 @@ public abstract class ActContent implements Comparable<ActContent> {
             mOrder = json.getInt(ActDatabase.COLUMN_ORDER);
             mHasHighLight = json.getBoolean(ActDatabase.HIGHLIGHT);
             mLinks.addAll(convertLinksFromJSON(json.getString(ActDatabase.LINKS)));
+            mDrawLineStart = json.getInt(ActDatabase.DRAW_LINE_START);
+            mDrawLineEnd = json.getInt(ActDatabase.DRAW_LINE_END);
         } catch (JSONException e) {
         }
     }
 
     public void resetDisplayContent() {
         mSpannableContent = new SpannableString(mContent);
+        if (mDrawLineStart <= -1 || mDrawLineEnd <= 0) return;
+        mSpannableContent.setSpan(new BackgroundColorSpan(Color.rgb(0xff, 0x99, 0x00)), mDrawLineStart, mDrawLineEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
     }
 
     public JSONObject toJson() {
@@ -91,6 +103,8 @@ public abstract class ActContent implements Comparable<ActContent> {
             json.put(ActDatabase.HAS_TEXT_NOTE, mHasTextNote);
             json.put(ActDatabase.HAS_IMAGE_NOTE, mHasImageNote);
             json.put(ActDatabase.LINKS, convertLinksFromArray(mLinks));
+            json.put(ActDatabase.DRAW_LINE_START, mDrawLineStart);
+            json.put(ActDatabase.DRAW_LINE_END, mDrawLineEnd);
             json.put("mFailedTime", mFailedTime);
         } catch (JSONException e) {
         }
@@ -131,6 +145,22 @@ public abstract class ActContent implements Comparable<ActContent> {
         else return 1;
     }
 
+    public void updateDrawLine(Context context, int drawLineStart, int drawLineEnd) {
+        if (mId == ActDatabase.NO_ID) {
+            return;
+        }
+        mDrawLineStart = drawLineStart;
+        mDrawLineEnd = drawLineEnd;
+        Uri uri = getBaseUriByInstance();
+        if (uri == null) {
+            return;
+        }
+        ContentValues cv = new ContentValues();
+        cv.put(ActDatabase.DRAW_LINE_START, mDrawLineStart);
+        cv.put(ActDatabase.DRAW_LINE_END, mDrawLineEnd);
+        context.getContentResolver().update(uri, cv, ActDatabase.ID + "=" + mId, null);
+        resetDisplayContent();
+    }
 
     public boolean updateHighLight(Context context, boolean highLight) {
         mHasHighLight = highLight;

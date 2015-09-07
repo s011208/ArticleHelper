@@ -173,7 +173,8 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
 
         // content textview
         mContentTextView = (TextView) findViewById(R.id.edit_content_text);
-        mContentTextView.setText(mActContent.mContent);
+        mActContent.resetDisplayContent();
+        mContentTextView.setText(mActContent.mSpannableContent);
         mContentTextView.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -204,6 +205,9 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
                         final CharSequence selectedText = mContentTextView.getText().subSequence(min, max);
                         actionMode.finish();
                         if (DEBUG) Log.d(TAG, "onActionItemClicked, selectedText: " + selectedText);
+                        mActContent.updateDrawLine(ActEditorActivity.this, min, max);
+                        mContentTextView.setText(mActContent.mSpannableContent);
+                        mHasAnyContentChanged = true;
                         return true;
                 }
                 return false;
