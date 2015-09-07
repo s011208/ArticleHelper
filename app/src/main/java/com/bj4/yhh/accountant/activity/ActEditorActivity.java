@@ -15,11 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.act.ActContent;
@@ -64,10 +65,13 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
     private int mTouchedX;
 
     private FrameLayout mMainContainer;
-    private CheckBox mStarCheckBox;
+    private RelativeLayout mStarArea;
+    private ImageView mStarImage;
     private TextView mContentTextView;
+    private ViewSwitcher mTextNoteViewSwitcher;
+    private ImageView mTextNoteEditOk, mTextNoteEditCancel;
+    private RelativeLayout mEditButton;
     private TextView mTextNoteView;
-    private TextView mEditNoteButton;
     private GridView mImageNoteArea;
     private EditorImageNoteGridAdapter mEditorImageNoteGridAdapter;
 
@@ -75,6 +79,7 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
 
     private boolean mHasAnyContentChanged = false;
     private boolean mPaused = false;
+    private boolean isEditingTextNote = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +134,10 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
 
     @Override
     public void onBackPressed() {
+        if (isEditingTextNote) {
+            cancelEditTextNote();
+            return;
+        }
         if (mHasAnyContentChanged) {
             setResult(RESULT_OK);
             finish();
@@ -155,21 +164,47 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
         mPaused = true;
     }
 
+    private void startEditTextNote() {
+        if (mTextNoteViewSwitcher == null) {
+            return;
+        }
+        mTextNoteViewSwitcher.showNext();
+        isEditingTextNote = true;
+    }
+
+    private void cancelEditTextNote() {
+        if (mTextNoteViewSwitcher == null) {
+            return;
+        }
+        mTextNoteViewSwitcher.showNext();
+        isEditingTextNote = false;
+    }
+
+    private void confirmEditTextNote() {
+        if (mTextNoteViewSwitcher == null) {
+            return;
+        }
+        mTextNoteViewSwitcher.showNext();
+        isEditingTextNote = false;
+    }
+
     private void initComponents() {
         // main
         mMainContainer = (FrameLayout) findViewById(R.id.main_container);
 
-        // checkbox
-        mStarCheckBox = (CheckBox) findViewById(R.id.star_checkbox);
-        mStarCheckBox.setChecked(mActContent.mHasStar);
-        mStarCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        // star area
+        mStarArea = (RelativeLayout) findViewById(R.id.star_area);
+        mStarArea.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                boolean result = mActContent.updateHighLight(ActEditorActivity.this, isChecked);
+            public void onClick(View v) {
+                boolean result = mActContent.updateStar(ActEditorActivity.this, !mActContent.mHasStar);
                 mHasAnyContentChanged = true;
                 if (DEBUG) Log.d(TAG, "result: " + result);
+                mStarImage.setImageResource(mActContent.mHasStar ? R.drawable.orange_star : R.drawable.grey_star_outline);
             }
         });
+        mStarImage = (ImageView) findViewById(R.id.star_image);
+        mStarImage.setImageResource(mActContent.mHasStar ? R.drawable.orange_star : R.drawable.grey_star_outline);
 
         // content textview
         mContentTextView = (TextView) findViewById(R.id.edit_content_text);
@@ -220,17 +255,42 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
         });
 
         // text note area
-        mEditNoteButton = (TextView) findViewById(R.id.edit_button);
-        mEditNoteButton.setOnClickListener(new View.OnClickListener() {
+        mTextNoteViewSwitcher = (ViewSwitcher) findViewById(R.id.text_note_area_switcher);
+        mEditButton = (RelativeLayout) findViewById(R.id.edit_button);
+        mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditorNoteDialogFragment dialog = new EditorNoteDialogFragment();
-                Bundle extras = new Bundle();
-                extras.putString("txt", mTextNote == null ? "" : mTextNote.mNoteContent);
-                dialog.setArguments(extras);
-                dialog.show(getFragmentManager(), EditorNoteDialogFragment.TAG);
+                startEditTextNote();
             }
         });
+        mTextNoteEditOk = (ImageView) findViewById(R.id.edit_image_ok);
+        mTextNoteEditOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmEditTextNote();
+            }
+        });
+        mTextNoteEditCancel = (ImageView) findViewById(R.id.edit_image_cancel);
+        mTextNoteEditCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelEditTextNote();
+            }
+        });
+//
+//        mEditNoteButton = (TextView) findViewById(R.id.edit_button);
+//        mEditNoteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                EditorNoteDialogFragment dialog = new EditorNoteDialogFragment();
+//                Bundle extras = new Bundle();
+//                extras.putString("txt", mTextNote == null ? "" : mTextNote.mNoteContent);
+//                dialog.setArguments(extras);
+//                dialog.show(getFragmentManager(), EditorNoteDialogFragment.TAG);
+//            }
+//        });
+
+
         mTextNoteView = (TextView) findViewById(R.id.text_note_view);
         if (mTextNote == null) {
             mTextNoteView.setText(R.string.activity_act_editor_note_default_text);

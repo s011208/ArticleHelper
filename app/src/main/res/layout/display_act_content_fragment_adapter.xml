@@ -33,7 +33,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/txt_chapter_content"
                 android:scaleType="fitCenter"
-                android:src="@drawable/thumb_up"
+                android:src="@drawable/orange_star"
                 android:visibility="invisible" />
 
             <ImageView
@@ -129,7 +129,7 @@
                     android:layout_alignTop="@+id/txt_article_number"
                     android:layout_toRightOf="@+id/txt_article_number"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/thumb_up" />
+                    android:src="@drawable/orange_star" />
 
                 <ImageView
                     android:id="@+id/article_has_text_note"

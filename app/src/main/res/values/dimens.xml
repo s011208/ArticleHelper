@@ -27,10 +27,13 @@
     <dimen name="display_act_content_adapter_chapter_status_icon_size">15dp</dimen>
 
     <dimen name="activity_act_editor_padding">10dp</dimen>
-    <dimen name="activity_act_editor_item_margin">5dp</dimen>
-    <dimen name="activity_act_editor_text_paddingLeft">15dp</dimen>
     <dimen name="activity_act_editor_grid_size">60dp</dimen>
     <dimen name="activity_act_editor_grid_resource_icon_padding">15dp</dimen>
+    <dimen name="activity_act_editor_area_margin">5dp</dimen>
+    <dimen name="activity_act_editor_title_icon_size">30dp</dimen>
+    <dimen name="activity_act_editor_title_text_margin_left">5dp</dimen>
+    <dimen name="activity_act_editor_title_text_size">18sp</dimen>
+    <dimen name="activity_act_editor_item_text_size">16sp</dimen>
 
     <dimen name="dialog_title_padding">10dp</dimen>
     <dimen name="dialog_content_layout_margin_h">13dp</dimen>

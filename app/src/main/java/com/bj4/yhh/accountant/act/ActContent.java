@@ -161,8 +161,8 @@ public abstract class ActContent implements Comparable<ActContent> {
         resetDisplayContent();
     }
 
-    public boolean updateHighLight(Context context, boolean highLight) {
-        mHasStar = highLight;
+    public boolean updateStar(Context context, boolean star) {
+        mHasStar = star;
         if (mId == ActDatabase.NO_ID) {
             return false;
         }
