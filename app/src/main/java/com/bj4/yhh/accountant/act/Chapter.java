@@ -85,7 +85,7 @@ public class Chapter extends ActContent {
                 final int numberColumn = data.getColumnIndex(ActDatabase.NUMBER);
                 final int contentColumn = data.getColumnIndex(ActDatabase.CONTENT);
                 final int orderColumn = data.getColumnIndex(ActDatabase.COLUMN_ORDER);
-                final int highLightColumn = data.getColumnIndex(ActDatabase.HIGHLIGHT);
+                final int highLightColumn = data.getColumnIndex(ActDatabase.HAS_STAR);
                 final int linksColumn = data.getColumnIndex(ActDatabase.LINKS);
                 final int drawLineStartColumn = data.getColumnIndex(ActDatabase.DRAW_LINE_START);
                 final int drawLineEndColumn = data.getColumnIndex(ActDatabase.DRAW_LINE_END);

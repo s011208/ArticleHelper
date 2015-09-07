@@ -204,7 +204,7 @@ public class ActContentAdapter extends BaseAdapter {
                 Iterator<ActContent> actContentIter = tempQueryData.iterator();
                 while (actContentIter.hasNext()) {
                     final ActContent content = actContentIter.next();
-                    if (!content.mHasHighLight) {
+                    if (!content.mHasStar) {
                         actContentIter.remove();
                     }
                 }
@@ -376,7 +376,7 @@ public class ActContentAdapter extends BaseAdapter {
             holder.mArticleContent.setText("");
             holder.mArticleNumber.setText("");
 
-            holder.mChapterImportant.setVisibility(item.mHasHighLight ? View.VISIBLE : View.GONE);
+            holder.mChapterImportant.setVisibility(item.mHasStar ? View.VISIBLE : View.GONE);
             holder.mChapterHasTextNote.setVisibility(item.mHasTextNote ? View.VISIBLE : View.GONE);
             holder.mChapterHasImageNote.setVisibility(item.mHasImageNote ? View.VISIBLE : View.GONE);
             holder.mChapterHasLinks.setVisibility(!item.mLinks.isEmpty() ? View.VISIBLE : View.GONE);
@@ -393,7 +393,7 @@ public class ActContentAdapter extends BaseAdapter {
             holder.mArticleContent.setText(item.mSpannableContent);
             holder.mArticleNumber.setText(item.mNumber);
 
-            holder.mArticleImportant.setVisibility(item.mHasHighLight ? View.VISIBLE : View.GONE);
+            holder.mArticleImportant.setVisibility(item.mHasStar ? View.VISIBLE : View.GONE);
             holder.mArticleHasTextNote.setVisibility(item.mHasTextNote ? View.VISIBLE : View.GONE);
             holder.mArticleHasImageNote.setVisibility(item.mHasImageNote ? View.VISIBLE : View.GONE);
             holder.mArticleHasLinks.setVisibility(!item.mLinks.isEmpty() ? View.VISIBLE : View.GONE);

@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 
 import com.bj4.yhh.accountant.database.ActDatabase;
 import com.bj4.yhh.accountant.database.ActProvider;
@@ -27,19 +26,19 @@ public abstract class ActContent implements Comparable<ActContent> {
     public String mNumber;
     public int mOrder;
     public String mContent;
-    public boolean mHasHighLight;
+    public boolean mHasStar;
     public boolean mHasTextNote, mHasImageNote;
     public final ArrayList<String> mLinks = new ArrayList<String>();
     public SpannableString mSpannableContent;
     public int mFailedTime = -1;
     private int mDrawLineStart, mDrawLineEnd;
 
-    public ActContent(String number, String content, int order, long id, boolean hasHightLight, ArrayList<String> links, int drawLineStart, int drawLineEnd) {
+    public ActContent(String number, String content, int order, long id, boolean hasStar, ArrayList<String> links, int drawLineStart, int drawLineEnd) {
         mNumber = number;
         mContent = content;
         mOrder = order;
         mId = id;
-        mHasHighLight = hasHightLight;
+        mHasStar = hasStar;
         mDrawLineStart = drawLineStart;
         mDrawLineEnd = drawLineEnd;
         if (links != null) {
@@ -78,7 +77,7 @@ public abstract class ActContent implements Comparable<ActContent> {
             mNumber = json.getString(ActDatabase.NUMBER);
             mContent = json.getString(ActDatabase.CONTENT);
             mOrder = json.getInt(ActDatabase.COLUMN_ORDER);
-            mHasHighLight = json.getBoolean(ActDatabase.HIGHLIGHT);
+            mHasStar = json.getBoolean(ActDatabase.HAS_STAR);
             mLinks.addAll(convertLinksFromJSON(json.getString(ActDatabase.LINKS)));
             mDrawLineStart = json.getInt(ActDatabase.DRAW_LINE_START);
             mDrawLineEnd = json.getInt(ActDatabase.DRAW_LINE_END);
@@ -99,7 +98,7 @@ public abstract class ActContent implements Comparable<ActContent> {
             json.put(ActDatabase.NUMBER, mNumber);
             json.put(ActDatabase.CONTENT, mContent);
             json.put(ActDatabase.COLUMN_ORDER, mOrder);
-            json.put(ActDatabase.HIGHLIGHT, mHasHighLight);
+            json.put(ActDatabase.HAS_STAR, mHasStar);
             json.put(ActDatabase.HAS_TEXT_NOTE, mHasTextNote);
             json.put(ActDatabase.HAS_IMAGE_NOTE, mHasImageNote);
             json.put(ActDatabase.LINKS, convertLinksFromArray(mLinks));
@@ -163,7 +162,7 @@ public abstract class ActContent implements Comparable<ActContent> {
     }
 
     public boolean updateHighLight(Context context, boolean highLight) {
-        mHasHighLight = highLight;
+        mHasStar = highLight;
         if (mId == ActDatabase.NO_ID) {
             return false;
         }
@@ -172,7 +171,7 @@ public abstract class ActContent implements Comparable<ActContent> {
             return false;
         }
         ContentValues cv = new ContentValues();
-        cv.put(ActDatabase.HIGHLIGHT, mHasHighLight);
+        cv.put(ActDatabase.HAS_STAR, mHasStar);
         int rtn = context.getContentResolver().update(uri, cv, ActDatabase.ID + "=" + mId, null);
         return rtn > 0;
     }

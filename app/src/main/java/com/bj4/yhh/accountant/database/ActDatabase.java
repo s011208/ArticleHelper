@@ -52,7 +52,7 @@ public class ActDatabase extends SQLiteOpenHelper {
     // columns for chapter & article
     public static final String NUMBER = "number_";
     public static final String CONTENT = "content_";
-    public static final String HIGHLIGHT = "high_light";
+    public static final String HAS_STAR = "high_light";
     public static final String HAS_IMAGE_NOTE = "has_image_note";
     public static final String HAS_TEXT_NOTE = "has_text_note";
     public static final String LINKS = "links_list";
@@ -244,7 +244,7 @@ public class ActDatabase extends SQLiteOpenHelper {
                 + ACT_ID + " INTEGER,"
                 + NUMBER + " TEXT,"
                 + COLUMN_ORDER + " INTEGER,"
-                + HIGHLIGHT + " INTEGER,"
+                + HAS_STAR + " INTEGER,"
                 + LINKS + " TEXT,"
                 + DRAW_LINE_START + " INTEGER DEFAULT -1,"
                 + DRAW_LINE_END + " INTEGER DEFAULT -1,"
@@ -260,7 +260,7 @@ public class ActDatabase extends SQLiteOpenHelper {
                 + CHAPTER_ID + " INTEGER,"
                 + TYPE + " TEXT,"
                 + NUMBER + " TEXT,"
-                + HIGHLIGHT + " INTEGER,"
+                + HAS_STAR + " INTEGER,"
                 + COLUMN_ORDER + " INTEGER,"
                 + LINKS + " TEXT,"
                 + DRAW_LINE_START + " INTEGER,"

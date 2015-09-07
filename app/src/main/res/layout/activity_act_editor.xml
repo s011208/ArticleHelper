@@ -17,11 +17,11 @@
             android:layout_height="match_parent">
 
             <CheckBox
-                android:id="@+id/highlight_checkbox"
+                android:id="@+id/star_checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_act_editor_item_margin"
-                android:button="@drawable/high_light_icon"
+                android:button="@drawable/star_icon"
                 android:gravity="center"
                 android:text="@string/activity_act_editor_add_into_highlight"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -30,7 +30,7 @@
                 android:id="@+id/edit_content_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/highlight_checkbox"
+                android:layout_below="@+id/star_checkbox"
                 android:layout_margin="@dimen/activity_act_editor_item_margin"
                 android:paddingLeft="@dimen/activity_act_editor_text_paddingLeft"
                 android:textIsSelectable="true" />

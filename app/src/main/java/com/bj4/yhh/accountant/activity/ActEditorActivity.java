@@ -64,7 +64,7 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
     private int mTouchedX;
 
     private FrameLayout mMainContainer;
-    private CheckBox mHighLightCheckBox;
+    private CheckBox mStarCheckBox;
     private TextView mContentTextView;
     private TextView mTextNoteView;
     private TextView mEditNoteButton;
@@ -160,9 +160,9 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
         mMainContainer = (FrameLayout) findViewById(R.id.main_container);
 
         // checkbox
-        mHighLightCheckBox = (CheckBox) findViewById(R.id.highlight_checkbox);
-        mHighLightCheckBox.setChecked(mActContent.mHasHighLight);
-        mHighLightCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mStarCheckBox = (CheckBox) findViewById(R.id.star_checkbox);
+        mStarCheckBox.setChecked(mActContent.mHasStar);
+        mStarCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 boolean result = mActContent.updateHighLight(ActEditorActivity.this, isChecked);
