@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
@@ -171,6 +174,46 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
         // content textview
         mContentTextView = (TextView) findViewById(R.id.edit_content_text);
         mContentTextView.setText(mActContent.mContent);
+        mContentTextView.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                if (DEBUG) Log.d(TAG, "onCreateActionMode");
+                menu.add(0, Menu.FIRST, 0, R.string.act_editor_activity_text_view_highlight_action).setIcon(R.drawable.orange_draw_line_icon);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                if (DEBUG) Log.d(TAG, "onPrepareActionMode");
+                return true;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                if (DEBUG) Log.d(TAG, "onActionItemClicked");
+                switch (menuItem.getItemId()) {
+                    case Menu.FIRST:
+                        int min = 0;
+                        int max = mContentTextView.getText().length();
+                        if (mContentTextView.isFocused()) {
+                            final int selStart = mContentTextView.getSelectionStart();
+                            final int selEnd = mContentTextView.getSelectionEnd();
+                            min = Math.max(0, Math.min(selStart, selEnd));
+                            max = Math.max(0, Math.max(selStart, selEnd));
+                        }
+                        final CharSequence selectedText = mContentTextView.getText().subSequence(min, max);
+                        actionMode.finish();
+                        if (DEBUG) Log.d(TAG, "onActionItemClicked, selectedText: " + selectedText);
+                        return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+                if (DEBUG) Log.d(TAG, "onDestroyActionMode");
+            }
+        });
 
         // text note area
         mEditNoteButton = (TextView) findViewById(R.id.edit_button);
