@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -206,9 +207,17 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
         } else {
             mTextNote.mNoteContent = mTextNoteView.getText().toString();
         }
-        boolean updateSuccess = Note.insertOrUpdate(this, mTextNote);
-        if (DEBUG)
-            Log.v(TAG, "newNote: " + mTextNoteView.getText().toString() + ", updateSuccess: " + updateSuccess);
+        if (TextUtils.isEmpty(mTextNote.mNoteContent)) {
+            Note.delete(this, mTextNote);
+            if (DEBUG)
+                Log.d(TAG, "delete note: " + mTextNote);
+            mTextNote = null;
+        } else {
+            boolean updateSuccess = Note.insertOrUpdate(this, mTextNote);
+            if (DEBUG)
+                Log.v(TAG, "newNote: " + mTextNoteView.getText().toString() + ", updateSuccess: " + updateSuccess);
+        }
+
         mHasAnyContentChanged = true;
 
         mTextNoteViewSwitcher.showNext();
