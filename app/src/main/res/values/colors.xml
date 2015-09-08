@@ -6,6 +6,7 @@
     <color name="main_icon_on_title_color">#000000</color>
     <color name="main_title_color">#ff9900</color>
     <color name="main_title_color_dark">#ff8800</color>
+    <color name="main_title_color_translucent">#50ff9900</color>
     <color name="dialog_title_text_color">#eeeeee</color>
     <color name="holo_blue_light">#33b5e5</color>
     <color name="holo_blue_dark">#0099cc</color>
