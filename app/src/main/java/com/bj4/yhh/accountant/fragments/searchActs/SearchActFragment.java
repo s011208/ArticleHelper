@@ -296,7 +296,6 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
 
     @Override
     public void onProgressUpdate(int progress) {
-
     }
 
     @Override

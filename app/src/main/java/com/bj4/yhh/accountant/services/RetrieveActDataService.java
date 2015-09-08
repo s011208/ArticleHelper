@@ -5,7 +5,9 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Handler;
 import android.util.Log;
 
 import com.bj4.yhh.accountant.act.Act;
@@ -21,6 +23,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by yenhsunhuang on 15/7/10.
@@ -34,6 +37,15 @@ public class RetrieveActDataService extends IntentService {
     public static final String EXTRA_RETRIEVE_ACT_DATA_TITLE = ActDatabase.TITLE;
     public static final String EXTRA_RETRIEVE_ACT_DATA_RESULT = "EXTRA_RETRIEVE_ACT_DATA_RESULT";
 
+    public static final String ACTION_REQUEST_TO_CHECK_UNFINISHED_TASKS = "com.bj4.yhh.accountant.services.ACTION_REQUEST_TO_CHECK_UNFINISHED_TASKS";
+
+    private static final String KEY_RETRIEVING_ACT_ITEMS_SET = "key_retrieving_act_items_set";
+    private final ArrayList<String> mRetrievingActItemList = new ArrayList<String>();
+    private final ArrayList<String> mParsingActItemList = new ArrayList<String>();
+    private SharedPreferences mPreferences;
+
+    private final Handler mHandler = new Handler();
+
     public static void retrieveActData(Context context, ActListItem item) {
         Intent retrieveActIntent = new Intent(context, RetrieveActDataService.class);
         retrieveActIntent.putExtra(ActListItem.class.getName(), item.toString());
@@ -41,8 +53,59 @@ public class RetrieveActDataService extends IntentService {
         context.startService(retrieveActIntent);
     }
 
+    public static void requestToCheckUnFinishedTask(Context context) {
+        Intent startServiceIntent = new Intent(context, RetrieveActDataService.class);
+        context.startService(startServiceIntent);
+    }
+
     public RetrieveActDataService() {
         super("RetrieveActDataService");
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mPreferences = getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        scheduleUnFinishTask(0);
+    }
+
+    private final Runnable mScheduleUnFinishTask = new Runnable() {
+        @Override
+        public void run() {
+            synchronized (mRetrievingActItemList) {
+                if (mRetrievingActItemList.isEmpty()) return;
+            }
+            checkUnFinishTasks();
+            scheduleUnFinishTask(60 * 1000);
+        }
+    };
+
+    private void scheduleUnFinishTask(final int delayed) {
+        mHandler.removeCallbacks(mScheduleUnFinishTask);
+        mHandler.postDelayed(mScheduleUnFinishTask, delayed);
+    }
+
+    private void checkUnFinishTasks() {
+        synchronized (mRetrievingActItemList) {
+            mRetrievingActItemList.clear();
+            mRetrievingActItemList.addAll(mPreferences.getStringSet(KEY_RETRIEVING_ACT_ITEMS_SET, new HashSet<String>()));
+            if (!mRetrievingActItemList.isEmpty()) {
+                for (final String json : mRetrievingActItemList) {
+                    final boolean isParsing = isItemParsing(new ActListItem(json));
+                    if (DEBUG) Log.d(TAG, "remain task: " + json + ", isParsing: " + isParsing);
+                    if (isParsing) continue;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final ActListItem item = new ActListItem(json);
+                            retrieveActData(item);
+                        }
+                    }).start();
+                }
+            } else {
+                if (DEBUG) Log.d(TAG, "no remain tasks");
+            }
+        }
     }
 
     @Override
@@ -58,24 +121,83 @@ public class RetrieveActDataService extends IntentService {
                 return;
             }
             final ActListItem item = new ActListItem(jsonActListItem);
+            final boolean isInRetrieving = isInRetrieving(item);
+            final boolean isParsing = isItemParsing(item);
+            if (DEBUG)
+                Log.d(TAG, "item: " + item + ", isParsing: " + isParsing + ", isInRetrieving: " + isInRetrieving);
+            if (isParsing) {
+                return;
+            }
+            if (!isInRetrieving) {
+                addRetrievingActItem(item);
+            }
             retrieveActData(item);
+        } else if (ACTION_REQUEST_TO_CHECK_UNFINISHED_TASKS.equals(action)) {
+            checkUnFinishTasks();
+        }
+    }
+
+    private boolean isInRetrieving(ActListItem item) {
+        if (item == null) return true;
+        synchronized (mRetrievingActItemList) {
+            for (String json : mRetrievingActItemList) {
+                if (json.equals(item.toString())) return true;
+            }
+        }
+        return false;
+    }
+
+    private void addRetrievingActItem(ActListItem item) {
+        if (item == null) return;
+        synchronized (mRetrievingActItemList) {
+            mRetrievingActItemList.add(item.toString());
+            mPreferences.edit().putStringSet(KEY_RETRIEVING_ACT_ITEMS_SET, new HashSet<String>(mRetrievingActItemList)).commit();
+        }
+    }
+
+    private void removeRetrievingActItem(ActListItem item) {
+        if (item == null) return;
+        synchronized (mRetrievingActItemList) {
+            mRetrievingActItemList.remove(item.toString());
+            mPreferences.edit().putStringSet(KEY_RETRIEVING_ACT_ITEMS_SET, new HashSet<String>(mRetrievingActItemList)).commit();
+        }
+    }
+
+    private boolean isItemParsing(ActListItem item) {
+        synchronized (mParsingActItemList) {
+            return mParsingActItemList.contains(item.toString());
         }
     }
 
     private void retrieveActData(ActListItem item) {
+        synchronized (mParsingActItemList) {
+            mParsingActItemList.add(item.toString());
+        }
         Intent notifyIntent = new Intent(ACTION_RETRIEVE_ACT_DATA_DONE);
+        boolean retrieveSuccess = false;
         try {
             final String pCode = item.mUrl.substring(item.mUrl.lastIndexOf('?'));
             Document doc = Jsoup.connect("http://law.moj.gov.tw/LawClass/LawAll.aspx" + pCode).get();
             retrieveContent(doc, item);
             notifyIntent.putExtra(EXTRA_RETRIEVE_ACT_DATA_TITLE, item.mTitle);
             notifyIntent.putExtra(EXTRA_RETRIEVE_ACT_DATA_RESULT, true);
+            retrieveSuccess = true;
         } catch (IOException e) {
             if (DEBUG)
                 Log.d(TAG, "failed to retrieveActData", e);
             notifyIntent.putExtra(EXTRA_RETRIEVE_ACT_DATA_RESULT, false);
+            retrieveSuccess = false;
+
         } finally {
             sendBroadcast(notifyIntent);
+            synchronized (mParsingActItemList) {
+                mParsingActItemList.remove(item.toString());
+            }
+            if (retrieveSuccess) {
+                removeRetrievingActItem(item);
+            } else {
+                scheduleUnFinishTask(0);
+            }
         }
     }
 
@@ -118,7 +240,7 @@ public class RetrieveActDataService extends IntentService {
                 }
             } else {
                 if (chapter == null && !hasAnyChapters) {
-                    if(DEBUG) Log.i(TAG, "user empty chapter");
+                    if (DEBUG) Log.i(TAG, "user empty chapter");
                     if (usingEmptyChapter) {
 //                        chapterId = emptyChapter.mId;
                     } else {
