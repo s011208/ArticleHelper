@@ -5,7 +5,7 @@
 
     <string name="act_has_not_loaded_toast">%1$s has not been loaded</string>
     <string name="activity_act_editor_add_into_highlight">Mark as important item</string>
-    <string name="activity_act_editor_click_to_edit_content">Click to add content</string>
+    <string name="activity_act_editor_click_to_edit_content">Click to add some note</string>
     <string name="activity_act_editor_edit_note_dialog_title">Edit note</string>
     <string name="activity_act_editor_note_default_text">Put some notes here</string>
 
