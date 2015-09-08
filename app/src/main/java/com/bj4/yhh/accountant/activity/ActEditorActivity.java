@@ -77,7 +77,7 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
     private EditText mTextNoteView;
     private GridView mImageNoteArea;
     private EditorImageNoteGridAdapter mEditorImageNoteGridAdapter;
-
+    private RelativeLayout mLinksButton;
     private LinksView mLinksView;
 
     private boolean mHasAnyContentChanged = false;
@@ -372,6 +372,13 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
             }
         });
 
+        mLinksButton = (RelativeLayout) findViewById(R.id.links_button);
+        mLinksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         mLinksView = (LinksView) findViewById(R.id.links_view_area);
         mLinksView.setLinks(mActContent.mLinks);
     }

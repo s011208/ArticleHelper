@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Created by Yen-Hsun_Huang on 2015/9/3.
  */
 public class LinksView extends LinearLayout {
-    private final ArrayList<String> mLinks = new ArrayList<String>();
+    private final ArrayList<Long> mLinks = new ArrayList<Long>();
     private final Context mContext;
 
     public LinksView(Context context) {
@@ -32,12 +32,12 @@ public class LinksView extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
     }
 
-    public void setLinks(ArrayList<String> links) {
+    public void setLinks(ArrayList<Long> links) {
         if (links == null) return;
         mLinks.clear();
         mLinks.addAll(links);
-        mLinks.add("123");
-        mLinks.add("456");
+        mLinks.add(123l);
+        mLinks.add(456l);
         removeAllViews();
         inflateAll();
     }
@@ -45,9 +45,9 @@ public class LinksView extends LinearLayout {
     private void inflateAll() {
         if (mLinks.isEmpty()) return;
         final LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        for (String link : mLinks) {
+        for (Long link : mLinks) {
             TextView text = (TextView) inflater.inflate(R.layout.links_view_item, null);
-            text.setText(link);
+            text.setText(link.toString());
             text.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {

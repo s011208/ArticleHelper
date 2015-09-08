@@ -28,12 +28,15 @@ public abstract class ActContent implements Comparable<ActContent> {
     public String mContent;
     public boolean mHasStar;
     public boolean mHasTextNote, mHasImageNote;
-    public final ArrayList<String> mLinks = new ArrayList<String>();
+    /**
+     * Articles' id
+     */
+    public final ArrayList<Long> mLinks = new ArrayList<Long>();
     public SpannableString mSpannableContent;
     public int mFailedTime = -1;
     private int mDrawLineStart, mDrawLineEnd;
 
-    public ActContent(String number, String content, int order, long id, boolean hasStar, ArrayList<String> links, int drawLineStart, int drawLineEnd) {
+    public ActContent(String number, String content, int order, long id, boolean hasStar, ArrayList<Long> links, int drawLineStart, int drawLineEnd) {
         mNumber = number;
         mContent = content;
         mOrder = order;
@@ -47,22 +50,22 @@ public abstract class ActContent implements Comparable<ActContent> {
         resetDisplayContent();
     }
 
-    public static String convertLinksFromArray(ArrayList<String> links) {
+    public static String convertLinksFromArray(ArrayList<Long> links) {
         JSONArray array = new JSONArray();
         if (links == null) return array.toString();
-        for (String link : links) {
+        for (Long link : links) {
             array.put(link);
         }
         return array.toString();
     }
 
-    public static ArrayList<String> convertLinksFromJSON(String jsonArrayString) {
-        final ArrayList<String> rtn = new ArrayList<String>();
+    public static ArrayList<Long> convertLinksFromJSON(String jsonArrayString) {
+        final ArrayList<Long> rtn = new ArrayList<Long>();
         if (jsonArrayString == null) return rtn;
         try {
             JSONArray array = new JSONArray(jsonArrayString);
             for (int i = 0; i < array.length(); i++) {
-                rtn.add(array.getString(i));
+                rtn.add(array.getLong(i));
             }
         } catch (JSONException e) {
             e.printStackTrace();

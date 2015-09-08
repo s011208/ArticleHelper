@@ -22,7 +22,7 @@ public class Chapter extends ActContent {
         this(number, content, order, ActDatabase.NO_ID, false, null, -1, -1);
     }
 
-    public Chapter(String number, String content, int order, long id, boolean hasHighLight, ArrayList<String> links, int drawLineStart, int drawLineEnd) {
+    public Chapter(String number, String content, int order, long id, boolean hasHighLight, ArrayList<Long> links, int drawLineStart, int drawLineEnd) {
         super(number, content, order, id, hasHighLight, links, drawLineStart, drawLineEnd);
     }
 

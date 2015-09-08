@@ -156,10 +156,44 @@
                 android:layout_below="@+id/text_note_area"
                 android:layout_margin="@dimen/activity_act_editor_area_margin">
 
+                <RelativeLayout
+                    android:id="@+id/links_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/activity_act_editor_area_bg">
+
+                    <ImageView
+                        android:id="@+id/link_image"
+                        android:layout_width="@dimen/activity_act_editor_title_icon_size"
+                        android:layout_height="@dimen/activity_act_editor_title_icon_size"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/link_button" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/link_image"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignTop="@+id/link_image"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/activity_act_editor_title_text_margin_left"
+                        android:layout_toRightOf="@+id/link_image"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@string/activity_act_editor_add_links_text"
+                        android:textSize="@dimen/activity_act_editor_title_text_size" />
+                </RelativeLayout>
+
                 <com.bj4.yhh.accountant.activity.editor.LinksView
                     android:id="@+id/links_view_area"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/links_button">
 
                 </com.bj4.yhh.accountant.activity.editor.LinksView>
             </RelativeLayout>
