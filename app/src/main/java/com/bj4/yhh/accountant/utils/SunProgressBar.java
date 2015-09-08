@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -68,7 +67,8 @@ public class SunProgressBar extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
         int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
-        final int availableSize = Math.min(parentWidth, parentHeight);
+        final int availableSize = Math.min(parentWidth, parentHeight)
+                - Math.max(getPaddingLeft() + getPaddingRight(), getPaddingTop() + getPaddingBottom());
         setMeasuredDimension(availableSize, availableSize);
         final int unit = availableSize / TOTAL_UNIT;
         mRectItemWidth = unit * ITEM_UNIT;
