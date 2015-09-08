@@ -58,6 +58,8 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
 
     private static final int REQUEST_IMAGE_CAPTURE = 1001;
     private static final int REQUEST_IMAGE_GALLERY = 1002;
+    private static final int REQUEST_ADD_LINKS = 2000;
+
     private Uri mCurrentPhotoPath;
     private Note mPendingNote;
     // for edit area text note
@@ -376,7 +378,9 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
         mLinksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent startReviewModeIntent = new Intent(ActEditorActivity.this, ReviewModeActivity.class);
+                startReviewModeIntent.putExtra(ReviewModeActivity.EXTRA_KEY_MODE, ReviewModeActivity.EXTRA_MODE_SELECT_ARTICLE);
+                startActivityForResult(startReviewModeIntent, REQUEST_ADD_LINKS);
             }
         });
         mLinksView = (LinksView) findViewById(R.id.links_view_area);
@@ -461,9 +465,23 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
             if (DEBUG) {
                 Log.d(TAG, "REQUEST_IMAGE_GALLERY mCurrentPhotoPath: " + mCurrentPhotoPath.toString() + ", updateSuccess: " + updateSuccess);
             }
+        } else if (requestCode == REQUEST_ADD_LINKS && resultCode == RESULT_OK) {
+            String actContentString = data.getStringExtra(ReviewModeActivity.RESULT_SELECTED_ARTICLE);
+            if (DEBUG) Log.d(TAG, "actContentString: " + actContentString);
+            if (actContentString != null) {
+                ActContent article = new Article(actContentString);
+                addLinks(article);
+                refreshLinks();
+            }
         }
         mCurrentPhotoPath = null;
         mPendingNote = null;
+    }
+
+    private void addLinks(ActContent article) {
+    }
+
+    private void refreshLinks() {
     }
 
     private void initActContent() {

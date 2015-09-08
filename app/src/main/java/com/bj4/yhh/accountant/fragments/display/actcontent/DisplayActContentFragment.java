@@ -45,6 +45,11 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
     public static final int ARGUS_DISPLAY_TYPE_NONE = -1;
     private int mDisplayType = ARGUS_DISPLAY_TYPE_NONE;
 
+    public static final String ARGUS_CLICK_MODE = "click_mode";
+    public static final int ARGUS_CLICK_MODE_GET_LINKS = 2000;
+    public static final int ARGUS_CLICK_MODE_NORMAL = 2001;
+    private int mClickMode = ARGUS_CLICK_MODE_NORMAL;
+
     private static final int REQUEST_SORTING = 3000;
 
     private String mQueryString = "";
@@ -66,6 +71,20 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
     private float mCalculatedDeltaY;
 
     private Handler mHandler = new Handler();
+
+    public interface Callback {
+        void onActContentSelected(ActContent actContent);
+    }
+
+    private Callback mCallback;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof Callback) {
+            mCallback = (Callback) activity;
+        }
+    }
 
     @Override
     public void onResume() {
@@ -91,7 +110,8 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mDisplayType = getArguments().getInt(ARGUS_DISPLAY_TYPE, -1);
+        mDisplayType = getArguments().getInt(ARGUS_DISPLAY_TYPE, ARGUS_DISPLAY_TYPE_NONE);
+        mClickMode = getArguments().getInt(ARGUS_CLICK_MODE, ARGUS_CLICK_MODE_NORMAL);
         mRoot = (RelativeLayout) inflater.inflate(R.layout.display_act_content_fragment, null);
         mTranslationHeader = (TranslationHeaderLayout) mRoot.findViewById(R.id.translation_header_layout);
         mTranslationHeader.setCallback(this);
@@ -141,14 +161,20 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
                 if (DEBUG) {
                     Log.d(TAG, "position: " + position + ", act: " + act.toString());
                 }
-                Intent startIntent = new Intent(getActivity(), ActEditorActivity.class);
-                startIntent.putExtra(BaseActivity.EXTRA_ACT_CONTENT, act.toString());
-                startIntent.putExtra(BaseActivity.EXTRA_ACT_CONTENT_TYPE, act.getClass().getName());
-                startIntent.putExtra(BaseActivity.EXTRA_TOUCH_X, mTouchedX);
-                Rect viewRect = new Rect();
-                view.getGlobalVisibleRect(viewRect);
-                startIntent.setSourceBounds(viewRect);
-                getActivity().startActivityForResult(startIntent, MainActivity.REQUEST_EDIT_ACT_CONTENT);
+                if (mClickMode == ARGUS_CLICK_MODE_GET_LINKS) {
+                    if (mCallback != null) {
+                        mCallback.onActContentSelected(act);
+                    }
+                } else if (mClickMode == ARGUS_CLICK_MODE_NORMAL) {
+                    Intent startIntent = new Intent(getActivity(), ActEditorActivity.class);
+                    startIntent.putExtra(BaseActivity.EXTRA_ACT_CONTENT, act.toString());
+                    startIntent.putExtra(BaseActivity.EXTRA_ACT_CONTENT_TYPE, act.getClass().getName());
+                    startIntent.putExtra(BaseActivity.EXTRA_TOUCH_X, mTouchedX);
+                    Rect viewRect = new Rect();
+                    view.getGlobalVisibleRect(viewRect);
+                    startIntent.setSourceBounds(viewRect);
+                    getActivity().startActivityForResult(startIntent, MainActivity.REQUEST_EDIT_ACT_CONTENT);
+                }
             }
         });
 
