@@ -12,6 +12,7 @@ import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.activity.MainActivity;
 import com.bj4.yhh.accountant.fragments.entry.MainEntryFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
+import com.bj4.yhh.accountant.utils.BaseToast;
 import com.bj4.yhh.accountant.utils.Utils;
 
 /**
@@ -24,13 +25,17 @@ public class InitDataFragment extends BaseFragment implements AccountDataHelper.
 
     private TextView mProgressText;
 
+    private int mLocalActListCount = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAccountDataHelper = AccountDataHelper.getInstance(getActivity());
         mAccountDataHelper.addCallback(this);
+        mLocalActListCount = mAccountDataHelper.getAllActListCount();
         if (DEBUG) {
             Log.d(TAG, "mAccountDataHelper.isRetrieveDataSuccess(): " + mAccountDataHelper.isRetrieveDataSuccess());
+            Log.d(TAG, "mLocalActListCount: " + mLocalActListCount);
         }
         if (Utils.haveInternet(getActivity())) {
             if (DEBUG) Log.d(TAG, "have internet");
@@ -41,8 +46,12 @@ public class InitDataFragment extends BaseFragment implements AccountDataHelper.
             }
         } else {
             if (DEBUG) Log.w(TAG, "Don't have internet");
-            // TODO toast connect to wifi to update
-            gotoMainEntryFragment(false);
+            if (mLocalActListCount <= 0) {
+                BaseToast.showToast(getActivity(), R.string.init_data_fragment_please_connect_to_internet_at_first_time);
+            } else {
+                BaseToast.showToast(getActivity(), R.string.init_data_fragment_please_connect_to_internet);
+                gotoMainEntryFragment(false);
+            }
         }
     }
 
@@ -57,13 +66,16 @@ public class InitDataFragment extends BaseFragment implements AccountDataHelper.
         View root = inflater.inflate(R.layout.init_data_fragment, null);
         mProgressText = (TextView) root.findViewById(R.id.progress_text);
         mProgressText.setText(getActivity().getString(R.string.init_data_fragment_percentage, "0"));
-        TextView mSkip = (TextView) root.findViewById(R.id.skip_loading);
-        mSkip.setOnClickListener(new View.OnClickListener() {
+        TextView skip = (TextView) root.findViewById(R.id.skip_loading);
+        skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoMainEntryFragment(true);
             }
         });
+        if (mLocalActListCount <= 0) {
+            skip.setVisibility(View.INVISIBLE);
+        }
         return root;
     }
 

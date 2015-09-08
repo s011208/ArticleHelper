@@ -13,8 +13,18 @@ import com.bj4.yhh.accountant.R;
  * Created by Yen-Hsun_Huang on 2015/8/27.
  */
 public class BaseToast {
+    public static final int NO_DRAWABLE = 0;
+
     public static void showToast(Context context, String text) {
-        showToast(context, text, 0);
+        showToast(context, text, NO_DRAWABLE);
+    }
+
+    public static void showToast(Context context, int textResId) {
+        showToast(context, context.getResources().getString(textResId), NO_DRAWABLE);
+    }
+
+    public static void showToast(Context context, int textResId, int drawableResource) {
+        showToast(context, context.getResources().getString(textResId), drawableResource);
     }
 
     public static void showToast(Context context, String text, int drawableResource) {
@@ -22,7 +32,7 @@ public class BaseToast {
         final LinearLayout root = (LinearLayout) ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.base_toast, null);
         final TextView toastText = (TextView) root.findViewById(R.id.toast_text);
         toastText.setCompoundDrawablePadding(context.getResources().getDimensionPixelSize(R.dimen.base_toast_drawable_padding));
-        if (drawableResource > 0) {
+        if (drawableResource > NO_DRAWABLE) {
             toastText.setCompoundDrawablesWithIntrinsicBounds(context.getResources().getDrawable(drawableResource), null, null, null);
         }
         toastText.setText(text);

@@ -38,6 +38,7 @@ import com.bj4.yhh.accountant.fragments.display.actcontent.DisplayActContentFrag
 import com.bj4.yhh.accountant.parse.util.ActListItem;
 import com.bj4.yhh.accountant.services.RetrieveActDataService;
 import com.bj4.yhh.accountant.utils.BaseFragment;
+import com.bj4.yhh.accountant.utils.BaseToast;
 import com.bj4.yhh.accountant.utils.FloatingActionButton;
 import com.bj4.yhh.accountant.utils.SunProgressBar;
 
@@ -248,7 +249,7 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
             Log.d(TAG, "clickedItem: " + act);
         if (!act.hasLoadedSuccess()) {
             final String toast = getString(R.string.act_has_not_loaded_toast, act.getTitle());
-            Toast.makeText(getActivity(), toast, Toast.LENGTH_LONG).show();
+            BaseToast.showToast(getActivity(), toast);
             return;
         } else {
             ActFragment displayActContent = new DisplayActContentFragment();

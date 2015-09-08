@@ -57,6 +57,8 @@
 
     <string name="init_data_fragment_percentage">"sync acts list... %s %%"</string>
     <string name="init_data_fragment_skip_loading_text">or click me to skip</string>
+    <string name="init_data_fragment_please_connect_to_internet">Please connect to Internet to update</string>
+    <string name="init_data_fragment_please_connect_to_internet_at_first_time">Please connect to Internet to initialize acts data</string>
 
     <string name="test_item_fragment_remain_item_text">Remain %s items</string>
     <string name="test_item_fragment_next_button">Next</string>

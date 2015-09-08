@@ -150,6 +150,21 @@ public class AccountDataHelper {
         ParseQuery.getQuery(object).countInBackground(cb);
     }
 
+    public int getAllActListCount() {
+        int localAllActListCount = 0;
+        Cursor data = mContext.getContentResolver().query(Uri.parse("content://" + ActProvider.AUTHORITY + "/" + ActProvider.PATH_ALL_ACTS_LIST_COUNT), null, null, null, null);
+        if (data != null) {
+            try {
+                while (data.moveToNext()) {
+                    localAllActListCount = data.getInt(0);
+                }
+            } finally {
+                data.close();
+            }
+        }
+        return localAllActListCount;
+    }
+
     public void parseAllActListFromParse() {
         onStartRetrieveAllActDataFromParse();
         getParseObjectCount("ActListItem", new CountCallback() {
@@ -168,17 +183,7 @@ public class AccountDataHelper {
                         if (DEBUG) {
                             Log.i(TAG, "ActListItem count: " + parseDataCount);
                         }
-                        int localAllActListCount = 0;
-                        Cursor data = mContext.getContentResolver().query(Uri.parse("content://" + ActProvider.AUTHORITY + "/" + ActProvider.PATH_ALL_ACTS_LIST_COUNT), null, null, null, null);
-                        if (data != null) {
-                            try {
-                                while (data.moveToNext()) {
-                                    localAllActListCount = data.getInt(0);
-                                }
-                            } finally {
-                                data.close();
-                            }
-                        }
+                        int localAllActListCount = getAllActListCount();
                         progress = 20;
                         onProgressUpdate(progress);
                         if (localAllActListCount == parseDataCount) {
