@@ -255,7 +255,7 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
             Bundle args = new Bundle();
             args.putString(ActFragment.ARGUMENT_JSON_ACT, act.toJson().toString());
             displayActContent.setArguments(args);
-            getFragmentManager().beginTransaction().replace(R.id.container, displayActContent, DisplayActContentFragment.class.getName()).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, displayActContent, DisplayActContentFragment.class.getName()).addToBackStack(null).commitAllowingStateLoss();
             if (mAutoCompleteTextView != null) {
                 final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(mAutoCompleteTextView.getWindowToken(), 0);

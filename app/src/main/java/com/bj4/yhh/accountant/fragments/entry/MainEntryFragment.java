@@ -54,10 +54,10 @@ public class MainEntryFragment extends BaseFragment implements AdapterView.OnIte
         }
         switch (position) {
             case MainEntryGridAdapter.ADD_NEW_ACT:
-                getFragmentManager().beginTransaction().replace(R.id.container, new SearchActFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.container, new SearchActFragment()).addToBackStack(null).commitAllowingStateLoss();
                 break;
             case MainEntryGridAdapter.PLAN_MODE:
-                getFragmentManager().beginTransaction().replace(R.id.container, new PlanModeFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.container, new PlanModeFragment()).addToBackStack(null).commitAllowingStateLoss();
                 break;
             case MainEntryGridAdapter.REVIEW_MODE:
                 Intent startReviewModeIntent = new Intent(getActivity(), ReviewModeActivity.class);

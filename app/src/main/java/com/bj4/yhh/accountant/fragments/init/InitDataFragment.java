@@ -12,7 +12,6 @@ import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.activity.MainActivity;
 import com.bj4.yhh.accountant.fragments.entry.MainEntryFragment;
 import com.bj4.yhh.accountant.utils.BaseFragment;
-import com.bj4.yhh.accountant.utils.BaseToast;
 import com.bj4.yhh.accountant.utils.Utils;
 
 /**
@@ -69,10 +68,20 @@ public class InitDataFragment extends BaseFragment implements AccountDataHelper.
     }
 
     private void gotoMainEntryFragment(final boolean withAnimation) {
-        if (withAnimation) {
-            getFragmentManager().beginTransaction().setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out).replace(MainActivity.getMainFragmentContainerId(), new MainEntryFragment()).commit();
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                if (withAnimation) {
+                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out).replace(MainActivity.getMainFragmentContainerId(), new MainEntryFragment()).commitAllowingStateLoss();
+                } else {
+                    getFragmentManager().beginTransaction().replace(MainActivity.getMainFragmentContainerId(), new MainEntryFragment()).commitAllowingStateLoss();
+                }
+            }
+        };
+        if (android.os.Process.myPid() == android.os.Process.myTid()) {
+            task.run();
         } else {
-            getFragmentManager().beginTransaction().replace(MainActivity.getMainFragmentContainerId(), new MainEntryFragment()).commit();
+            getActivity().runOnUiThread(task);
         }
     }
 

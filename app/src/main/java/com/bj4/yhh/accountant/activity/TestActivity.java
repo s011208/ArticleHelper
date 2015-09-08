@@ -46,7 +46,7 @@ public class TestActivity extends BaseActivity implements TestItemFragment.Callb
             Log.d(TAG, "Plan: " + mPlan);
         }
         setContentView(R.layout.activity_test);
-        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), new TestItemFragment()).commit();
+        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), new TestItemFragment()).commitAllowingStateLoss();
     }
 
     @Override

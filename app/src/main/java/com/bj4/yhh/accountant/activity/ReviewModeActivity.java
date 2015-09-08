@@ -22,7 +22,7 @@ public class ReviewModeActivity extends BaseActivity implements SimpleActFragmen
         Bundle args = new Bundle();
         args.putInt(SimpleActFragment.ARGUS_TITLE_RESOURCE, R.string.review_mode_fragment_title);
         frag.setArguments(args);
-        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), frag).commit();
+        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), frag).commitAllowingStateLoss();
     }
 
     public static int getMainFragmentContainerId() {
@@ -36,6 +36,6 @@ public class ReviewModeActivity extends BaseActivity implements SimpleActFragmen
         args.putString(DisplayActContentFragment.ARGUMENT_JSON_ACT, act.toString());
         args.putInt(DisplayActContentFragment.ARGUS_DISPLAY_TYPE, DisplayActContentFragment.ARGUS_DISPLAY_TYPE_REVIEW_MODE);
         frag.setArguments(args);
-        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), frag).commit();
+        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), frag).commitAllowingStateLoss();
     }
 }

@@ -21,7 +21,7 @@ public class MainActivity extends BaseActivity {
         sContainerId = R.id.container;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), new InitDataFragment()).commit();
+        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), new InitDataFragment()).commitAllowingStateLoss();
     }
 
     public static int getMainFragmentContainerId() {

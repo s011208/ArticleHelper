@@ -16,7 +16,7 @@ public class TestModeActivity extends BaseActivity {
         sContainerId = R.id.container;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_mode);
-        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), new TestModeItemFragment()).commit();
+        getFragmentManager().beginTransaction().replace(getMainFragmentContainerId(), new TestModeItemFragment()).commitAllowingStateLoss();
     }
 
     public static int getMainFragmentContainerId() {

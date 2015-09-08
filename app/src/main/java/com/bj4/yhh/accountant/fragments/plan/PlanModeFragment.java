@@ -96,7 +96,7 @@ public class PlanModeFragment extends BaseFragment implements View.OnClickListen
             if (DEBUG) {
                 Log.d(TAG, "add_new_plan");
             }
-            getFragmentManager().beginTransaction().replace(MainActivity.getMainFragmentContainerId(), new AddPlanFragment()).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction().replace(MainActivity.getMainFragmentContainerId(), new AddPlanFragment()).addToBackStack(null).commitAllowingStateLoss();
         } else if (vId == R.id.remove_all_plans) {
             if (DEBUG) {
                 Log.d(TAG, "remove_all_plans");
