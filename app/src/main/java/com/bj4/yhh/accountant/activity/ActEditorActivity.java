@@ -171,6 +171,8 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
         if (mTextNoteViewSwitcher == null) {
             return;
         }
+        mTextNoteViewSwitcher.setInAnimation(this, R.anim.start_switch_translation_in);
+        mTextNoteViewSwitcher.setOutAnimation(this, R.anim.start_switch_translation_out);
         mTextNoteViewSwitcher.showNext();
         isEditingTextNote = true;
         resetTextNoteViewStatus();
@@ -190,6 +192,8 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
             mTextNoteView.setText(null);
         }
 
+        mTextNoteViewSwitcher.setOutAnimation(this, R.anim.finish_switch_translation_out);
+        mTextNoteViewSwitcher.setInAnimation(this, R.anim.finish_switch_translation_in);
         mTextNoteViewSwitcher.showNext();
         isEditingTextNote = false;
         resetTextNoteViewStatus();
@@ -220,6 +224,8 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
 
         mHasAnyContentChanged = true;
 
+        mTextNoteViewSwitcher.setOutAnimation(this, R.anim.finish_switch_translation_out);
+        mTextNoteViewSwitcher.setInAnimation(this, R.anim.finish_switch_translation_in);
         mTextNoteViewSwitcher.showNext();
         isEditingTextNote = false;
         resetTextNoteViewStatus();
