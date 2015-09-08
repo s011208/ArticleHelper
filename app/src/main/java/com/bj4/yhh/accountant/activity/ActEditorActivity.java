@@ -1,6 +1,7 @@
 package com.bj4.yhh.accountant.activity;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Rect;
@@ -14,7 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -31,7 +34,6 @@ import com.bj4.yhh.accountant.activity.editor.LinksView;
 import com.bj4.yhh.accountant.activity.image.ImageWallpaperActivity;
 import com.bj4.yhh.accountant.database.ActDatabase;
 import com.bj4.yhh.accountant.fragments.display.actcontent.editor.EditorImageNoteGridAdapter;
-import com.bj4.yhh.accountant.fragments.display.actcontent.editor.EditorNoteDialogFragment;
 import com.bj4.yhh.accountant.fragments.display.actcontent.editor.ImageResourceChooser;
 
 import java.io.File;
@@ -42,7 +44,7 @@ import java.util.Date;
 /**
  * Created by yenhsunhuang on 15/7/23.
  */
-public class ActEditorActivity extends BaseActivity implements EditorNoteDialogFragment.Callback, ImageResourceChooser.Callback {
+public class ActEditorActivity extends BaseActivity implements ImageResourceChooser.Callback {
     public static final boolean DEBUG = true;
     public static final String TAG = "ActEditorActivity";
 
@@ -71,7 +73,7 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
     private ViewSwitcher mTextNoteViewSwitcher;
     private ImageView mTextNoteEditOk, mTextNoteEditCancel;
     private RelativeLayout mEditButton;
-    private TextView mTextNoteView;
+    private EditText mTextNoteView;
     private GridView mImageNoteArea;
     private EditorImageNoteGridAdapter mEditorImageNoteGridAdapter;
 
@@ -170,22 +172,56 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
         }
         mTextNoteViewSwitcher.showNext();
         isEditingTextNote = true;
+        resetTextNoteViewStatus();
+        mTextNoteView.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mTextNoteView, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void cancelEditTextNote() {
         if (mTextNoteViewSwitcher == null) {
             return;
         }
+
+        if (mTextNote != null) {
+            mTextNoteView.setText(mTextNote.mNoteContent);
+        } else {
+            mTextNoteView.setText(null);
+        }
+
         mTextNoteViewSwitcher.showNext();
         isEditingTextNote = false;
+        resetTextNoteViewStatus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mTextNoteView.getWindowToken(), 0);
     }
 
     private void confirmEditTextNote() {
         if (mTextNoteViewSwitcher == null) {
             return;
         }
+
+        if (mTextNote == null) {
+            mTextNote = new Note((mActContent instanceof Chapter) ? ActDatabase.NOTE_PARENT_TYPE_CHAPTER : ActDatabase.NOTE_PARENT_TYPE_ARTICLE, mActContent.mId, ActDatabase.NOTE_TYPE_TEXT, mTextNoteView.getText().toString());
+        } else {
+            mTextNote.mNoteContent = mTextNoteView.getText().toString();
+        }
+        boolean updateSuccess = Note.insertOrUpdate(this, mTextNote);
+        if (DEBUG)
+            Log.v(TAG, "newNote: " + mTextNoteView.getText().toString() + ", updateSuccess: " + updateSuccess);
+        mHasAnyContentChanged = true;
+
         mTextNoteViewSwitcher.showNext();
         isEditingTextNote = false;
+        resetTextNoteViewStatus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mTextNoteView.getWindowToken(), 0);
+    }
+
+    private void resetTextNoteViewStatus() {
+        mTextNoteView.setFocusable(isEditingTextNote);
+        mTextNoteView.setClickable(isEditingTextNote);
+        mTextNoteView.setFocusableInTouchMode(isEditingTextNote);
     }
 
     private void initComponents() {
@@ -277,24 +313,10 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
                 cancelEditTextNote();
             }
         });
-//
-//        mEditNoteButton = (TextView) findViewById(R.id.edit_button);
-//        mEditNoteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EditorNoteDialogFragment dialog = new EditorNoteDialogFragment();
-//                Bundle extras = new Bundle();
-//                extras.putString("txt", mTextNote == null ? "" : mTextNote.mNoteContent);
-//                dialog.setArguments(extras);
-//                dialog.show(getFragmentManager(), EditorNoteDialogFragment.TAG);
-//            }
-//        });
 
-
-        mTextNoteView = (TextView) findViewById(R.id.text_note_view);
-        if (mTextNote == null) {
-            mTextNoteView.setText(R.string.activity_act_editor_note_default_text);
-        } else {
+        mTextNoteView = (EditText) findViewById(R.id.text_note_view);
+        resetTextNoteViewStatus();
+        if (mTextNote != null) {
             mTextNoteView.setText(mTextNote.mNoteContent);
         }
 
@@ -438,17 +460,6 @@ public class ActEditorActivity extends BaseActivity implements EditorNoteDialogF
             Log.d(TAG, "view rect: " + mViewRect);
         }
         mTouchedX = getIntent().getIntExtra(BaseActivity.EXTRA_TOUCH_X, -1);
-    }
-
-    @Override
-    public void onPositiveClick(String newNote) {
-        mTextNoteView.setText(newNote);
-        if (mTextNote == null) {
-            mTextNote = new Note((mActContent instanceof Chapter) ? ActDatabase.NOTE_PARENT_TYPE_CHAPTER : ActDatabase.NOTE_PARENT_TYPE_ARTICLE, mActContent.mId, ActDatabase.NOTE_TYPE_TEXT, newNote);
-        }
-        boolean updateSuccess = Note.insertOrUpdate(this, mTextNote);
-        if (DEBUG) Log.v(TAG, "newNote: " + newNote + ", updateSuccess: " + updateSuccess);
-        mHasAnyContentChanged = true;
     }
 
     @Override

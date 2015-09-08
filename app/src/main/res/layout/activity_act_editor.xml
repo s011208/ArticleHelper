@@ -28,7 +28,8 @@
                     android:layout_height="@dimen/activity_act_editor_title_icon_size"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:scaleType="centerInside"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitXY"
                     android:src="@drawable/star_icon" />
 
                 <TextView
@@ -57,6 +58,7 @@
                     android:id="@+id/edit_content_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:textIsSelectable="true"
                     android:textSize="@dimen/activity_act_editor_title_text_size" />
 
@@ -86,7 +88,8 @@
                             android:layout_height="@dimen/activity_act_editor_title_icon_size"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
-                            android:scaleType="centerInside"
+                            android:layout_centerVertical="true"
+                            android:scaleType="fitXY"
                             android:src="@drawable/edit_button" />
 
                         <TextView
@@ -114,8 +117,8 @@
                             android:layout_height="@dimen/activity_act_editor_title_icon_size"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
-                            android:scaleType="fitXY"
                             android:layout_marginLeft="15dp"
+                            android:scaleType="fitXY"
                             android:src="@drawable/check_icon" />
 
                         <ImageView
@@ -129,11 +132,14 @@
                     </RelativeLayout>
                 </ViewSwitcher>
 
-                <TextView
+                <EditText
                     android:id="@+id/text_note_view"
+                    android:hint="@string/activity_act_editor_note_default_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/text_note_area_switcher" />
+                    android:layout_below="@+id/text_note_area_switcher"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/grey_border" />
 
             </RelativeLayout>
 
