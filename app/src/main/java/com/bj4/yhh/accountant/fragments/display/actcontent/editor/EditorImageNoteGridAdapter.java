@@ -50,18 +50,16 @@ public class EditorImageNoteGridAdapter extends ImageNoteAdapter {
         mAllData.addAll(getAllImageNotes());
         if (DEBUG) Log.d(TAG, "mAllData size: " + mAllData.size());
         if (mAllData.size() >= mMaximumColumnCount) {
-            for (int i = 0; i < mMaximumColumnCount - 2; i++) {
+            for (int i = 0; i < mMaximumColumnCount - 1; i++) {
                 mDisplayData.add(mAllData.get(i));
             }
-            mDisplayData.add(getAddNewNote());
             mDisplayData.add(getMoreNote());
         } else {
             mDisplayData.addAll(mAllData);
-            mDisplayData.add(getAddNewNote());
         }
     }
 
-    private Note getAddNewNote() {
+    public Note getAddNewNote() {
         Note note = new Note(getParentType(), getActContent().mId, ActDatabase.NOTE_TYPE_IMAGE, "");
         return note;
     }
@@ -109,12 +107,7 @@ public class EditorImageNoteGridAdapter extends ImageNoteAdapter {
         if (item.isMore()) {
             ((FrameLayout) convertView).setForeground(null);
             holder.mSwitcher.setDisplayedChild(1);
-            holder.mImageNote.setImageResource(R.drawable.ic_grid);
-            holder.mImageNote.setPadding(mIconResourcePadding, mIconResourcePadding, mIconResourcePadding, mIconResourcePadding);
-        } else if (item.isEmptyContent()) {
-            ((FrameLayout) convertView).setForeground(null);
-            holder.mSwitcher.setDisplayedChild(1);
-            holder.mImageNote.setImageResource(R.drawable.ic_add_more);
+            holder.mImageNote.setImageResource(R.drawable.more_button);
             holder.mImageNote.setPadding(mIconResourcePadding, mIconResourcePadding, mIconResourcePadding, mIconResourcePadding);
         } else {
             ((FrameLayout) convertView).setForeground(getContext().getResources().getDrawable(R.drawable.editor_image_note_grid_foreground));

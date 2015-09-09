@@ -357,7 +357,9 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
         mAddImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mPendingNote = mEditorImageNoteGridAdapter.getAddNewNote();
+                ImageResourceChooser chooser = new ImageResourceChooser();
+                chooser.show(getFragmentManager(), ImageResourceChooser.class.getName());
             }
         });
         mImageNoteArea = (GridView) findViewById(R.id.image_note_area);
@@ -378,10 +380,6 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
                     view.getGlobalVisibleRect(viewRect);
                     startIntent.setSourceBounds(viewRect);
                     startActivity(startIntent);
-                } else if (note.isEmptyContent()) {
-                    mPendingNote = note;
-                    ImageResourceChooser chooser = new ImageResourceChooser();
-                    chooser.show(getFragmentManager(), ImageResourceChooser.class.getName());
                 } else {
                     Intent startIntent = new Intent(ActEditorActivity.this, ImageWallpaperActivity.class);
                     startIntent.putExtra(BaseActivity.EXTRA_ACT_CONTENT, mActContent.toString());

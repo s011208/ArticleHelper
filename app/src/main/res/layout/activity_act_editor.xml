@@ -209,6 +209,7 @@
                     android:id="@+id/image_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
                     android:background="@drawable/activity_act_editor_area_bg">
 
                     <ImageView
@@ -248,8 +249,7 @@
                     android:listSelector="@null"
                     android:numColumns="@integer/activity_act_editor_grid_column_count"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="1dp">
-                </GridView>
+                    android:verticalSpacing="1dp"></GridView>
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
