@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bj4.yhh.accountant">
+    package="com.bj4.yhh.lawhelper">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,7 +10,7 @@
         android:required="true" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
-        android:name=".AccountApplication"
+        android:name="com.bj4.yhh.lawhelper.AccountApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
@@ -18,7 +18,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.bj4.yhh.lawhelper.activity.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -29,40 +29,40 @@
         </activity>
 
         <activity
-            android:name=".activity.ActEditorActivity"
+            android:name="com.bj4.yhh.lawhelper.activity.ActEditorActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".activity.image.ImageWallpaperActivity"
+            android:name="com.bj4.yhh.lawhelper.activity.image.ImageWallpaperActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".activity.TestActivity"
+            android:name="com.bj4.yhh.lawhelper.activity.TestActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".activity.ReviewModeActivity"
+            android:name="com.bj4.yhh.lawhelper.activity.ReviewModeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".activity.TestModeActivity"
+            android:name="com.bj4.yhh.lawhelper.activity.TestModeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
 
         <provider
-            android:name="com.bj4.yhh.accountant.database.ActProvider"
-            android:authorities="com.bj4.yhh.accountant" />
+            android:name="com.bj4.yhh.lawhelper.database.ActProvider"
+            android:authorities="com.bj4.yhh.lawhelper" />
 
         <provider
-            android:name="com.bj4.yhh.accountant.database.PlanProvider"
-            android:authorities="com.bj4.yhh.accountant.PlanProvider" />
+            android:name="com.bj4.yhh.lawhelper.database.PlanProvider"
+            android:authorities="com.bj4.yhh.lawhelper.PlanProvider" />
 
-        <service android:name=".parse.service.ParseService" />
-        <service android:name=".services.RetrieveActDataService" />
+        <service android:name="com.bj4.yhh.lawhelper.parse.service.ParseService" />
+        <service android:name="com.bj4.yhh.lawhelper.services.RetrieveActDataService" />
     </application>
 
 </manifest>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.bj4.yhh.accountant.utils.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.bj4.yhh.lawhelper.utils.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_entry_item_click_bg">
@@ -25,4 +25,4 @@
         android:maxLines="2"
         android:textColor="#ffffff"
         android:textSize="20sp" />
-</com.bj4.yhh.accountant.utils.SquareRelativeLayout>
+</com.bj4.yhh.lawhelper.utils.SquareRelativeLayout>

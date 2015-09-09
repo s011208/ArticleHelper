@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <com.bj4.yhh.accountant.utils.ScaledImageView
+    <com.bj4.yhh.lawhelper.utils.ScaledImageView
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

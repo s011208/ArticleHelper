@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:padding="2dp">
 
-        <com.bj4.yhh.accountant.utils.SunProgressBar
+        <com.bj4.yhh.lawhelper.utils.SunProgressBar
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center" />

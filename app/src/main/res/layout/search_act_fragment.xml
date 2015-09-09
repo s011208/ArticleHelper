@@ -13,7 +13,7 @@
         android:ellipsize="end"
         android:maxLength="20"></AutoCompleteTextView>
 
-    <com.bj4.yhh.accountant.utils.SunProgressBar
+    <com.bj4.yhh.lawhelper.utils.SunProgressBar
         android:id="@+id/auto_loading_progress"
         android:layout_width="@dimen/search_act_fragment_search_bar_height"
         android:layout_height="@dimen/search_act_fragment_search_bar_height"
@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/auto"></ExpandableListView>
 
-    <com.bj4.yhh.accountant.utils.FloatingActionButton
+    <com.bj4.yhh.lawhelper.utils.FloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="@dimen/floating_action_button_size"
         android:layout_height="@dimen/floating_action_button_size"

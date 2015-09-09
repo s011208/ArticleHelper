@@ -189,13 +189,13 @@
                         android:textSize="@dimen/activity_act_editor_title_text_size" />
                 </RelativeLayout>
 
-                <com.bj4.yhh.accountant.activity.editor.LinksView
+                <com.bj4.yhh.lawhelper.activity.editor.LinksView
                     android:id="@+id/links_view_area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/links_button">
 
-                </com.bj4.yhh.accountant.activity.editor.LinksView>
+                </com.bj4.yhh.lawhelper.activity.editor.LinksView>
             </RelativeLayout>
 
             <RelativeLayout

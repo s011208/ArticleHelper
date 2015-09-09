@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.bj4.yhh.accountant.utils.TranslationHeaderLayout
+    <com.bj4.yhh.lawhelper.utils.TranslationHeaderLayout
         android:id="@+id/translation_header_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/main_background_color">
 
-    </com.bj4.yhh.accountant.utils.TranslationHeaderLayout>
+    </com.bj4.yhh.lawhelper.utils.TranslationHeaderLayout>
 
-    <com.bj4.yhh.accountant.utils.FloatingActionButton
+    <com.bj4.yhh.lawhelper.utils.FloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="@dimen/floating_action_button_size"
         android:layout_height="@dimen/floating_action_button_size"

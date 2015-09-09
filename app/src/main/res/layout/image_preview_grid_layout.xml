@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.bj4.yhh.accountant.utils.SquareGridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.bj4.yhh.lawhelper.utils.SquareGridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</com.bj4.yhh.accountant.utils.SquareGridLayout>
+</com.bj4.yhh.lawhelper.utils.SquareGridLayout>
