@@ -2,10 +2,13 @@ package com.bj4.yhh.accountant.activity.editor;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +26,10 @@ import java.util.Collections;
 public class LinksView extends LinearLayout {
     private final ArrayList<Long> mLinks = new ArrayList<Long>();
     private final Context mContext;
+    private FrameLayout mMainContainer;
+    private final int mLinkReadingWindowMargin;
+
+    public static boolean sIsShowing = false;
 
     public LinksView(Context context) {
         this(context, null);
@@ -36,6 +43,12 @@ public class LinksView extends LinearLayout {
         super(context, attrs, defStyleAttr);
         mContext = context;
         setOrientation(LinearLayout.VERTICAL);
+        mLinkReadingWindowMargin = context.getResources().getDimensionPixelSize(R.dimen.link_reading_window_margin);
+        sIsShowing = false;
+    }
+
+    public void setMainContainer(FrameLayout main) {
+        mMainContainer = main;
     }
 
     public void setLinks(ArrayList<Long> links) {
@@ -53,7 +66,7 @@ public class LinksView extends LinearLayout {
         for (Long link : mLinks) {
             TextView text = (TextView) inflater.inflate(R.layout.links_view_item, null);
             text.setText(R.string.links_view_loading_text);
-            new DisplayTextTask(mContext, link, text).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            new DisplayTextTask(mContext, link, text, mMainContainer, mLinkReadingWindowMargin).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             addView(text);
         }
     }
@@ -62,14 +75,18 @@ public class LinksView extends LinearLayout {
         private final Context mContext;
         private final Long mArticleId;
         private final TextView mTextView;
+        private final FrameLayout mMainContainer;
+        private final int mLinkReadingWindowMargin;
         private Act mAct;
         private Chapter mChapter;
         private Article mArticle;
 
-        DisplayTextTask(Context context, long id, TextView txt) {
+        DisplayTextTask(Context context, long id, TextView txt, FrameLayout main, int windowMargin) {
             mContext = context;
             mArticleId = id;
             mTextView = txt;
+            mMainContainer = main;
+            mLinkReadingWindowMargin = windowMargin;
         }
 
         @Override
@@ -101,7 +118,29 @@ public class LinksView extends LinearLayout {
             mTextView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    sIsShowing = true;
+                    LinkReadingWindow window = new LinkReadingWindow(mContext);
+                    window.setData(mAct, mChapter, mArticle);
+                    window.setCallback(new LinkReadingWindow.Callback() {
+                        @Override
+                        public void onHide(View self) {
+                            if (mMainContainer != null) {
+                                mMainContainer.removeView(self);
+                            }
+                            sIsShowing = false;
+                        }
+                    });
+                    Rect viewRect = new Rect();
+                    view.getGlobalVisibleRect(viewRect);
+                    FrameLayout.LayoutParams fl = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                    window.setPadding(mLinkReadingWindowMargin, mLinkReadingWindowMargin, mLinkReadingWindowMargin, mLinkReadingWindowMargin);
+                    fl.gravity = Gravity.CENTER;
+                    mMainContainer.addView(window, fl);
+                    window.setPivotX(viewRect.centerX());
+                    window.setPivotY(viewRect.centerY());
+                    window.setScaleX(0);
+                    window.setScaleY(0);
+                    window.animate().scaleX(1).scaleY(1).setDuration(300).start();
                 }
             });
         }

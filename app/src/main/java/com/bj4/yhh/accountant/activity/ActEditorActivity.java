@@ -31,6 +31,7 @@ import com.bj4.yhh.accountant.act.ActContent;
 import com.bj4.yhh.accountant.act.Article;
 import com.bj4.yhh.accountant.act.Chapter;
 import com.bj4.yhh.accountant.act.Note;
+import com.bj4.yhh.accountant.activity.editor.LinkReadingWindow;
 import com.bj4.yhh.accountant.activity.editor.LinksView;
 import com.bj4.yhh.accountant.activity.image.ImageWallpaperActivity;
 import com.bj4.yhh.accountant.database.ActDatabase;
@@ -139,6 +140,18 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
 
     @Override
     public void onBackPressed() {
+        if (LinksView.sIsShowing) {
+            LinksView.sIsShowing = false;
+            if (mMainContainer != null && mLinksView != null) {
+                for (int i = 0; i < mMainContainer.getChildCount(); i++) {
+                    View child = mMainContainer.getChildAt(i);
+                    if (child instanceof LinkReadingWindow) {
+                        ((LinkReadingWindow) child).hide();
+                        return;
+                    }
+                }
+            }
+        }
         if (isEditingTextNote) {
             cancelEditTextNote();
             return;
@@ -384,6 +397,7 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
             }
         });
         mLinksView = (LinksView) findViewById(R.id.links_view_area);
+        mLinksView.setMainContainer(mMainContainer);
         mLinksView.setLinks(mActContent.mLinks);
     }
 

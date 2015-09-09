@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@drawable/link_reading_window_background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/close_window_btn"
+                android:layout_width="@dimen/link_reading_window_close_button_size"
+                android:layout_height="@dimen/link_reading_window_close_button_size"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/cancel_icon" />
+
+            <TextView
+                android:id="@+id/act_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/close_window_btn"
+                android:layout_margin="3dp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/chapter_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/act_area"
+                android:layout_margin="3dp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/article_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/chapter_area" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -86,4 +86,7 @@
     <dimen name="base_toast_margin_v">6dp</dimen>
     <dimen name="base_toast_background_corner">12dp</dimen>
     <dimen name="base_toast_text_size">20sp</dimen>
+
+    <dimen name="link_reading_window_margin">15dp</dimen>
+    <dimen name="link_reading_window_close_button_size">30dp</dimen>
 </resources>
