@@ -63,6 +63,7 @@
 
         <service android:name="com.bj4.yhh.lawhelper.parse.service.ParseService" />
         <service android:name="com.bj4.yhh.lawhelper.services.RetrieveActDataService" />
+        <service android:name=".services.UpdateActService"></service>
     </application>
 
 </manifest>
