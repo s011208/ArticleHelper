@@ -79,6 +79,7 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
     private ImageView mTextNoteEditOk, mTextNoteEditCancel;
     private RelativeLayout mEditButton;
     private EditText mTextNoteView;
+    private RelativeLayout mAddImageButton;
     private GridView mImageNoteArea;
     private EditorImageNoteGridAdapter mEditorImageNoteGridAdapter;
     private RelativeLayout mLinksButton;
@@ -352,6 +353,13 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
         }
 
         // img note area
+        mAddImageButton = (RelativeLayout) findViewById(R.id.image_button);
+        mAddImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         mImageNoteArea = (GridView) findViewById(R.id.image_note_area);
         mEditorImageNoteGridAdapter = new EditorImageNoteGridAdapter(mActContent, this);
         mImageNoteArea.setAdapter(mEditorImageNoteGridAdapter);
