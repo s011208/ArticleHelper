@@ -3,6 +3,7 @@ package com.bj4.yhh.lawhelper.utils.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.bj4.yhh.lawhelper.R;
+import com.bj4.yhh.lawhelper.utils.Utils;
 
 /**
  * Created by yenhsunhuang on 15/7/30.
@@ -26,10 +28,21 @@ public abstract class BaseDialogFragment extends DialogFragment {
 
     public abstract String getTitleText();
 
+    private Context mContext;
+
+    private AlertDialog.Builder mBuilder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mBuilder = new AlertDialog.Builder(getActivity(), Utils.getDialogFragmentTheme());
+        mContext = mBuilder.getContext();
+
         initComponents();
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 
     private void setCustomTitle() {
@@ -60,18 +73,12 @@ public abstract class BaseDialogFragment extends DialogFragment {
     }
 
     public AlertDialog.Builder getDialogBuilder() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
         setCustomTitle();
-        dialogBuilder.setCustomTitle(mTitle);
+        mBuilder.setCustomTitle(mTitle);
         if (mMessage != null) {
-//            LinearLayout msgRoot = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.base_dialog_fragment_message, null);
-//            LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//            final int margin = getActivity().getResources().getDimensionPixelSize(R.dimen.base_dialog_fragment_message_left_margin);
-//            ll.setMargins(margin, 0, margin, 0);
-//            msgRoot.addView(mMessage, ll);
-            dialogBuilder.setView(mMessage);
+            mBuilder.setView(mMessage);
         }
-        return dialogBuilder;
+        return mBuilder;
     }
 
     @Override

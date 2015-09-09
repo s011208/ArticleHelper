@@ -45,7 +45,7 @@ public class ActListLongClickDialog extends BaseDialogFragment {
 
     @Override
     public View getCustomMessage() {
-        ListView listview = new ListView(getActivity());
+        ListView listview = new ListView(getContext());
         String[] data = getActivity().getResources().getStringArray(mItemSelectionsId);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1, data);
         listview.setAdapter(adapter);

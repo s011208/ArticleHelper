@@ -1,5 +1,6 @@
 package com.bj4.yhh.lawhelper.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -94,5 +95,9 @@ public class Utils {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         return ((netInfo != null) && netInfo.isConnected());
+    }
+
+    public static int getDialogFragmentTheme() {
+        return AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
     }
 }

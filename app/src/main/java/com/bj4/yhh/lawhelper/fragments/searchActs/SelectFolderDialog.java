@@ -3,9 +3,11 @@ package com.bj4.yhh.lawhelper.fragments.searchActs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -66,7 +68,7 @@ public class SelectFolderDialog extends BaseDialogFragment {
 
     @Override
     public View getCustomMessage() {
-        mCustomMessage = getActivity().getLayoutInflater().inflate(R.layout.select_act_folder_dialog_view, null);
+        mCustomMessage = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.select_act_folder_dialog_view, null);
         setAdapter();
         mFolderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
