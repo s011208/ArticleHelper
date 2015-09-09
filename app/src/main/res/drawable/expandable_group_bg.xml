@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true">
-        <color android:color="@color/main_title_color_dark"></color>
-    </item>
-    <item android:state_pressed="true">
-        <color android:color="@color/main_title_color_dark"></color>
-    </item>
-    <item>
-        <color android:color="@color/main_title_color"></color>
-    </item>
+    <item android:drawable="@drawable/expandable_bg_press" android:state_selected="true"></item>
+    <item android:drawable="@drawable/expandable_bg_press" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/expandable_bg_unpress"></item>
 
 </selector>
