@@ -355,6 +355,9 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
             cv.put(ActDatabase.AMENDED_DATE, item.mAmendedDate);
             cv.put(ActDatabase.CATEGORY, item.mCategory);
             cv.put(ActDatabase.HAS_LOAD_SUCCESS, ActDatabase.FALSE);
+            final String pCode = item.mUrl.substring(item.mUrl.lastIndexOf('?'));
+            cv.put(ActDatabase.URL, "http://law.moj.gov.tw/LawClass/LawAll.aspx" + pCode);
+            if (DEBUG) Log.d(TAG, "ActDatabase.URL: " + cv.getAsString(ActDatabase.URL));
             long actId = ContentUris.parseId(mContext.getContentResolver().insert(Uri.parse("content://" + ActProvider.AUTHORITY + "/" + ActProvider.PATH_ACTS), cv));
             ActsFolder.updateActsFolderContentById(getActivity(), mFolderId, actId);
             RetrieveActDataService.retrieveActData(mContext, item);

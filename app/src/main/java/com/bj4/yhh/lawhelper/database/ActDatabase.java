@@ -231,6 +231,7 @@ public class ActDatabase extends SQLiteOpenHelper {
                 + NUMBER + " TEXT,"
                 + TITLE + " TEXT,"
                 + AMENDED_DATE + " TEXT,"
+                + URL + " TEXT,"
                 + HAS_LOAD_SUCCESS + " INTEGER,"
                 + CATEGORY + " TEXT)");
     }
