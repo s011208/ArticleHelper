@@ -37,6 +37,7 @@ import com.bj4.yhh.accountant.activity.image.ImageWallpaperActivity;
 import com.bj4.yhh.accountant.database.ActDatabase;
 import com.bj4.yhh.accountant.fragments.display.actcontent.editor.EditorImageNoteGridAdapter;
 import com.bj4.yhh.accountant.fragments.display.actcontent.editor.ImageResourceChooser;
+import com.bj4.yhh.accountant.utils.dialogs.ConfirmDialogFragment;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +47,7 @@ import java.util.Date;
 /**
  * Created by yenhsunhuang on 15/7/23.
  */
-public class ActEditorActivity extends BaseActivity implements ImageResourceChooser.Callback {
+public class ActEditorActivity extends BaseActivity implements ImageResourceChooser.Callback, ConfirmDialogFragment.Callback {
     public static final boolean DEBUG = true;
     public static final String TAG = "ActEditorActivity";
 
@@ -398,7 +399,8 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
         });
         mLinksView = (LinksView) findViewById(R.id.links_view_area);
         mLinksView.setMainContainer(mMainContainer);
-        mLinksView.setLinks(mActContent.mLinks);
+        mLinksView.setActContent(mActContent);
+        mLinksView.setActivity(this);
     }
 
     private void dispatchQueryGalleryImageIntent() {
@@ -498,14 +500,8 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
         mActContent.updateLinks(this);
     }
 
-    private void removeLinks(ActContent article) {
-        if (!mActContent.mLinks.contains(article.mId)) return;
-        mActContent.mLinks.remove(article.mId);
-        mActContent.updateLinks(this);
-    }
-
     private void refreshLinks() {
-        mLinksView.setLinks(mActContent.mLinks);
+        mLinksView.setActContent(mActContent);
     }
 
     private void initActContent() {
@@ -534,5 +530,16 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
     @Override
     public void onSelectGallery() {
         dispatchQueryGalleryImageIntent();
+    }
+
+    @Override
+    public void onConfirm() {
+        if (mLinksView == null) return;
+        mLinksView.deleteItem();
+    }
+
+    @Override
+    public void onCancel() {
+
     }
 }

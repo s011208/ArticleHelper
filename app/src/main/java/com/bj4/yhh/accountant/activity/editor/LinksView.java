@@ -1,9 +1,11 @@
 package com.bj4.yhh.accountant.activity.editor;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,8 +16,10 @@ import android.widget.TextView;
 
 import com.bj4.yhh.accountant.R;
 import com.bj4.yhh.accountant.act.Act;
+import com.bj4.yhh.accountant.act.ActContent;
 import com.bj4.yhh.accountant.act.Article;
 import com.bj4.yhh.accountant.act.Chapter;
+import com.bj4.yhh.accountant.utils.dialogs.ConfirmDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,8 +32,13 @@ public class LinksView extends LinearLayout {
     private final Context mContext;
     private FrameLayout mMainContainer;
     private final int mLinkReadingWindowMargin;
+    private ActContent mActContent;
 
     public static boolean sIsShowing = false;
+
+    private Activity mActivity;
+
+    private Long mPendingTag = -1l;
 
     public LinksView(Context context) {
         this(context, null);
@@ -47,16 +56,32 @@ public class LinksView extends LinearLayout {
         sIsShowing = false;
     }
 
+    public void setActivity(Activity activity) {
+        mActivity = activity;
+    }
+
     public void setMainContainer(FrameLayout main) {
         mMainContainer = main;
     }
 
-    public void setLinks(ArrayList<Long> links) {
-        if (links == null) return;
+    public void setActContent(ActContent actContent) {
+        mActContent = actContent;
+        if (actContent == null || actContent.mLinks == null) return;
         mLinks.clear();
-        mLinks.addAll(links);
+        mLinks.addAll(actContent.mLinks);
         removeAllViews();
         inflateAll();
+    }
+
+    public boolean deleteItem() {
+        if (mPendingTag == -1) return false;
+        if (mActContent == null) return false;
+        if (!mActContent.mLinks.contains(mPendingTag)) return false;
+        mActContent.mLinks.remove(mPendingTag);
+        mActContent.updateLinks(mContext);
+        setActContent(mActContent);
+        mPendingTag = -1l;
+        return true;
     }
 
     private void inflateAll() {
@@ -64,10 +89,27 @@ public class LinksView extends LinearLayout {
         final LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Collections.sort(mLinks);
         for (Long link : mLinks) {
-            TextView text = (TextView) inflater.inflate(R.layout.links_view_item, null);
+            final TextView text = (TextView) inflater.inflate(R.layout.links_view_item, null);
+            text.setTag(link);
             text.setText(R.string.links_view_loading_text);
             new DisplayTextTask(mContext, link, text, mMainContainer, mLinkReadingWindowMargin).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             addView(text);
+            text.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mPendingTag = -1l;
+                    Long link = (Long) view.getTag();
+                    if (link == null) return false;
+                    mPendingTag = link;
+                    ConfirmDialogFragment dialog = new ConfirmDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString(ConfirmDialogFragment.ARGUS_TITLE, mContext.getResources().getString(R.string.links_view_delete_item_confirm_title));
+                    args.putString(ConfirmDialogFragment.ARGUS_MESSAGE, mContext.getResources().getString(R.string.links_view_delete_item_confirm_content, text.getText().toString()));
+                    dialog.setArguments(args);
+                    dialog.show(mActivity.getFragmentManager(), dialog.getClass().getName());
+                    return true;
+                }
+            });
         }
     }
 
