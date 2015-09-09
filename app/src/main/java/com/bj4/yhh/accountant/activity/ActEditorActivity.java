@@ -479,9 +479,19 @@ public class ActEditorActivity extends BaseActivity implements ImageResourceChoo
     }
 
     private void addLinks(ActContent article) {
+        if (mActContent.mLinks.contains(article.mId)) return;
+        mActContent.mLinks.add(article.mId);
+        mActContent.updateLinks(this);
+    }
+
+    private void removeLinks(ActContent article) {
+        if (!mActContent.mLinks.contains(article.mId)) return;
+        mActContent.mLinks.remove(article.mId);
+        mActContent.updateLinks(this);
     }
 
     private void refreshLinks() {
+        mLinksView.setLinks(mActContent.mLinks);
     }
 
     private void initActContent() {

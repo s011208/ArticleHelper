@@ -96,4 +96,7 @@
     <string name="act_list_long_click_dialog_delete_all_act_content_message">Are you sure to delete all content related to %s</string>
 
     <string name="act_editor_activity_text_view_highlight_action">High light</string>
+
+    <string name="links_view_loading_text">Loading...</string>
+    <string name="links_view_lost_data_text">Lost act data</string>
 </resources>

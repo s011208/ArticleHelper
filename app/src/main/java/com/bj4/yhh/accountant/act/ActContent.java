@@ -164,6 +164,19 @@ public abstract class ActContent implements Comparable<ActContent> {
         resetDisplayContent();
     }
 
+    public void updateLinks(Context context) {
+        if (mId == ActDatabase.NO_ID) {
+            return;
+        }
+        Uri uri = getBaseUriByInstance();
+        if (uri == null) {
+            return;
+        }
+        ContentValues cv = new ContentValues();
+        cv.put(ActDatabase.LINKS, convertLinksFromArray(mLinks));
+        context.getContentResolver().update(uri, cv, ActDatabase.ID + "=" + mId, null);
+    }
+
     public boolean updateStar(Context context, boolean star) {
         mHasStar = star;
         if (mId == ActDatabase.NO_ID) {
