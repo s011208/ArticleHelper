@@ -100,6 +100,7 @@ public class ParseService extends Service {
     }
 
     private void updateParseAllActsList() {
+        if (DEBUG) Log.d(TAG, "updateParseAllActsList");
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ActListItem");
         query.setLimit(Integer.MAX_VALUE).findInBackground(new FindCallback<ParseObject>() {
             @Override

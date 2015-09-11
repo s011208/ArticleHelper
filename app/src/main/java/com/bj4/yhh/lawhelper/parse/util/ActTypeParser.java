@@ -24,11 +24,11 @@ public class ActTypeParser {
     private static final String TAG = "ActTypeParser";
 
     public interface Callback {
-        public void onStartParse();
+        void onStartParse();
 
-        public void onProgressUpdate(int value);
+        void onProgressUpdate(int value);
 
-        public void onFinishParse();
+        void onFinishParse();
     }
 
     private final ArrayList<Callback> mCallbacks = new ArrayList<Callback>();

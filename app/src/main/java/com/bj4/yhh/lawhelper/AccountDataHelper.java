@@ -245,6 +245,7 @@ public class AccountDataHelper {
             @Override
             public void onChange(boolean selfChange) {
                 super.onChange(selfChange);
+                Log.d(TAG, "registerActItemListReceiver onChange, selfChange: " + selfChange);
                 if (!selfChange) {
                     ParseService.updateAllActsList(mContext);
                 }
