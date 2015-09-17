@@ -114,7 +114,7 @@ public class InitDataFragment extends BaseFragment implements AccountDataHelper.
     }
 
     @Override
-    public void onProgressUpdate(int progress) {
+    public void onProgressUpdate(int progress, String extraMessage) {
         mProgressText.setText(getActivity().getString(R.string.init_data_fragment_percentage, String.valueOf(progress)));
     }
 }

@@ -294,7 +294,7 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
     }
 
     @Override
-    public void onProgressUpdate(int progress) {
+    public void onProgressUpdate(int progress, String extraMessage) {
     }
 
     @Override

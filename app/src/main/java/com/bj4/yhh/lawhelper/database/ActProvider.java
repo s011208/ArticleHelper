@@ -211,6 +211,9 @@ public class ActProvider extends ContentProvider {
             case CODE_ACTS_FOLDER:
                 rtn = mActDatabase.getDataBase().update(ActDatabase.TABLE_ACTS_FOLDER, values, selection, selectionArgs);
                 break;
+            case CODE_ALL_ACTS_LIST:
+                rtn = mActDatabase.getDataBase().update(ActDatabase.TABLE_ALL_ACTS_LISTS, values, selection, selectionArgs);
+                break;
         }
         return rtn;
     }

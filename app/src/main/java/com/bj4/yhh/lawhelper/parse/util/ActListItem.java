@@ -19,7 +19,21 @@ import java.util.ArrayList;
 public class ActListItem {
     public String mUrl, mTitle, mAmendedDate, mCategory;
 
+    public long mId = -1;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ActListItem)) return false;
+        ActListItem other = (ActListItem) o;
+        return other.mUrl.equals(mUrl) && other.mTitle.equals(mTitle) && other.mCategory.equals(mCategory);
+    }
+
     public ActListItem(String url, String title, String amendedDate, String category) {
+        this(-1, url, title, amendedDate, category);
+    }
+
+    public ActListItem(long id, String url, String title, String amendedDate, String category) {
+        mId = id;
         mUrl = url;
         mTitle = title;
         mAmendedDate = amendedDate;
@@ -29,6 +43,9 @@ public class ActListItem {
     public ActListItem(String jsonString) {
         try {
             JSONObject json = new JSONObject(jsonString);
+            if (json.has(ActDatabase.ID)) {
+                mId = json.getLong(ActDatabase.ID);
+            }
             mUrl = json.getString(ActDatabase.URL);
             mTitle = json.getString(ActDatabase.TITLE);
             mAmendedDate = json.getString(ActDatabase.AMENDED_DATE);
@@ -40,6 +57,7 @@ public class ActListItem {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         try {
+            json.put(ActDatabase.ID, mId);
             json.put(ActDatabase.URL, mUrl);
             json.put(ActDatabase.TITLE, mTitle);
             json.put(ActDatabase.AMENDED_DATE, mAmendedDate);
@@ -68,12 +86,13 @@ public class ActListItem {
         Cursor allActList = context.getContentResolver().query(Uri.parse("content://" + ActProvider.AUTHORITY + "/" + ActProvider.PATH_ALL_ACTS_LIST), projection, selection, selectionArgs, sortOrder);
         if (allActList != null) {
             try {
+                final int indexOfId = allActList.getColumnIndex(ActDatabase.ID);
                 final int indexOfUrl = allActList.getColumnIndex(ActDatabase.URL);
                 final int indexOfTitle = allActList.getColumnIndex(ActDatabase.TITLE);
                 final int indexOfAmendedDate = allActList.getColumnIndex(ActDatabase.AMENDED_DATE);
                 final int indexOfCategory = allActList.getColumnIndex(ActDatabase.CATEGORY);
                 while (allActList.moveToNext()) {
-                    rtn.add(new ActListItem(allActList.getString(indexOfUrl), allActList.getString(indexOfTitle), allActList.getString(indexOfAmendedDate), allActList.getString(indexOfCategory)));
+                    rtn.add(new ActListItem(allActList.getLong(indexOfId), allActList.getString(indexOfUrl), allActList.getString(indexOfTitle), allActList.getString(indexOfAmendedDate), allActList.getString(indexOfCategory)));
                 }
             } finally {
                 allActList.close();
