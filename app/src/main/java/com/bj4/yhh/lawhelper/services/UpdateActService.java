@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.bj4.yhh.lawhelper.act.Act;
+import com.bj4.yhh.lawhelper.database.ActDatabase;
+import com.bj4.yhh.lawhelper.parse.util.ActListItem;
+
+import java.util.ArrayList;
 
 /**
  * Created by yenhsunhuang on 15/9/9.
@@ -35,5 +39,10 @@ public class UpdateActService extends IntentService {
     private void updateAct(Act act) {
         if (act == null) return;
         if (DEBUG) Log.d(TAG, "updateAct act: " + act);
+        ArrayList<ActListItem> itemList = ActListItem.queryFromProvider(UpdateActService.this, null, ActDatabase.TITLE + "=" + act.getTitle(), null, null);
+        if (itemList.isEmpty()) return;
+    }
+
+    private void updateProgress(int progress, String message) {
     }
 }
