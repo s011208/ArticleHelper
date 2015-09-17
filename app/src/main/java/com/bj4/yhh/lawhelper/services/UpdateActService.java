@@ -2,6 +2,7 @@ package com.bj4.yhh.lawhelper.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import com.bj4.yhh.lawhelper.act.Act;
 
@@ -33,5 +34,6 @@ public class UpdateActService extends IntentService {
 
     private void updateAct(Act act) {
         if (act == null) return;
+        if (DEBUG) Log.d(TAG, "updateAct act: " + act);
     }
 }

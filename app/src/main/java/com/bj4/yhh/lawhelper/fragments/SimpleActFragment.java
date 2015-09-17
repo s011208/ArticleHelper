@@ -1,6 +1,7 @@
 package com.bj4.yhh.lawhelper.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ public class SimpleActFragment extends BaseFragment {
     }
 
     public static final String ARGUS_TITLE_RESOURCE = "argus_title_resource";
+    public static final String EXTRA_CLICK_ITEM = "extra_click_item";
     private static final boolean DEBUG = true;
     private static final String TAG = "SimpleActFragment";
 
@@ -52,10 +54,16 @@ public class SimpleActFragment extends BaseFragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Act act = mSimpleActListAdapter.getItem(i);
                 if (mCallback != null) {
-                    Act act = mSimpleActListAdapter.getItem(i);
                     mCallback.onActClicked(act);
                     if (DEBUG) Log.d(TAG, "act: " + act);
+                } else {
+                    if (getTargetFragment() != null) {
+                        Intent intent = getActivity().getIntent();
+                        intent.putExtra(EXTRA_CLICK_ITEM, act.toString());
+                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+                    }
                 }
             }
         });
