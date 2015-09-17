@@ -3,6 +3,7 @@ package com.bj4.yhh.lawhelper.fragments.display.actcontent;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -170,10 +171,13 @@ public class DisplayActContentFragment extends ActFragment implements Translatio
                     startIntent.putExtra(BaseActivity.EXTRA_ACT_CONTENT, act.toString());
                     startIntent.putExtra(BaseActivity.EXTRA_ACT_CONTENT_TYPE, act.getClass().getName());
                     startIntent.putExtra(BaseActivity.EXTRA_TOUCH_X, mTouchedX);
+                    startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Rect viewRect = new Rect();
                     view.getGlobalVisibleRect(viewRect);
                     startIntent.setSourceBounds(viewRect);
-                    getActivity().startActivityForResult(startIntent, MainActivity.REQUEST_EDIT_ACT_CONTENT);
+                    getActivity().startActivityForResult(startIntent, MainActivity.REQUEST_EDIT_ACT_CONTENT,
+                            ActivityOptions.makeScaleUpAnimation(view, view.getMeasuredWidth() / 2, view.getMeasuredHeight() / 2,
+                                    view.getMeasuredWidth() / 10, view.getMeasuredHeight() / 10).toBundle());
                 }
             }
         });
