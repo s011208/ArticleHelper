@@ -50,12 +50,13 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
     private static final boolean DEBUG = false;
     private static final String TAG = "SearchActFragment";
 
-    public static final int REQUEST_ADD_TITLE = 1000;
-    public static final int REQUEST_SELECT_FOLDER = 1001;
-    public static final int REQUEST_UPDATE_EXPANDABLE_ITEMS = 1002;
-    public static final int REQUEST_MOVE_TO = 1003;
-    public static final int REQUEST_COPY_TO = 1004;
-    public static final int REQUEST_EDIT_FOLDER_TITLE = 1006;
+    public static final int REQUEST_ADD_TITLE = 1;
+    public static final int REQUEST_SELECT_FOLDER = 1 << 1;
+    public static final int REQUEST_UPDATE_EXPANDABLE_ITEMS = 1 << 2;
+    public static final int REQUEST_MOVE_TO = 1 << 3;
+    public static final int REQUEST_COPY_TO = 1 << 4;
+    public static final int REQUEST_DELETE = 1 << 5;
+    public static final int REQUEST_EDIT_FOLDER_TITLE = 1 << 6;
 
     private final Handler mHandler = new Handler();
     private AccountDataHelper mAccountDataHelper;
@@ -452,25 +453,25 @@ public class SearchActFragment extends BaseFragment implements AccountDataHelper
                 }
             }
 
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ADD_TITLE) {
+        if ((requestCode & REQUEST_ADD_TITLE) != 0) {
             if (resultCode == Activity.RESULT_OK) {
                 final String title = data.getStringExtra("title");
                 onAddTitle(title);
             }
-        } else if (requestCode == REQUEST_SELECT_FOLDER) {
+        } else if ((requestCode & REQUEST_SELECT_FOLDER) != 0) {
             if (resultCode == Activity.RESULT_OK) {
                 final long selectedFolderId = data.getLongExtra("selected_folder_id", -1);
                 if (selectedFolderId != -1) {
                     onAddAct(selectedFolderId);
                 }
             }
-        } else if (requestCode == REQUEST_UPDATE_EXPANDABLE_ITEMS) {
+        } else if ((requestCode & REQUEST_UPDATE_EXPANDABLE_ITEMS) != 0) {
             if (resultCode == Activity.RESULT_OK) {
                 setActData();
                 setAutoCompleteTextViewItem();

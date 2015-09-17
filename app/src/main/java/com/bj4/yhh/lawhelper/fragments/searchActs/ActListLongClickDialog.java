@@ -131,10 +131,10 @@ public class ActListLongClickDialog extends BaseDialogFragment {
                 Act.deleteActById(context, mActId);
                 return null;
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         // delete act in folder
         ActsFolder.removeActsFolderContentById(getActivity(), mActsFolder.mId, mActId);
-        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
+        getTargetFragment().onActivityResult(getTargetRequestCode() | SearchActFragment.REQUEST_DELETE, Activity.RESULT_OK, getActivity().getIntent());
         dismiss();
     }
 
@@ -186,7 +186,7 @@ public class ActListLongClickDialog extends BaseDialogFragment {
         if (DEBUG) Log.d(TAG, "requestCode: " + requestCode + ", resultCode: " + resultCode);
         if (resultCode != Activity.RESULT_OK)
             return;
-        if (requestCode == SearchActFragment.REQUEST_MOVE_TO) {
+        if ((requestCode & SearchActFragment.REQUEST_MOVE_TO) != 0) {
             long moveToFolderId = data.getLongExtra("selected_folder_id", -1);
             if (DEBUG) Log.d(TAG, "moveToFolderId: " + moveToFolderId);
             mActsFolder.mActIds.remove(mActId);
@@ -194,13 +194,13 @@ public class ActListLongClickDialog extends BaseDialogFragment {
             ActsFolder.updateActsFolderContentById(getActivity(), moveToFolderId, mActId);
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
             dismiss();
-        } else if (requestCode == SearchActFragment.REQUEST_COPY_TO) {
+        } else if ((requestCode & SearchActFragment.REQUEST_COPY_TO) != 0) {
             long copyToFolderId = data.getLongExtra("selected_folder_id", -1);
             if (DEBUG) Log.d(TAG, "moveToFolderId: " + copyToFolderId);
             ActsFolder.updateActsFolderContentById(getActivity(), copyToFolderId, mActId);
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
             dismiss();
-        } else if (requestCode == SearchActFragment.REQUEST_EDIT_FOLDER_TITLE) {
+        } else if ((requestCode & SearchActFragment.REQUEST_EDIT_FOLDER_TITLE) != 0) {
             final String newTitle = data.getStringExtra("title");
             if (DEBUG) Log.d(TAG, "edit folder title: " + newTitle);
             mActsFolder.mTitle = newTitle;

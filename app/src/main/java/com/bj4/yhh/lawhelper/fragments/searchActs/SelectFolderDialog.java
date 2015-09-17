@@ -39,14 +39,12 @@ public class SelectFolderDialog extends BaseDialogFragment {
         mActFolders.clear();
         mActFolders.addAll(ActsFolder.query(getActivity(), null, null, null, ActDatabase.ACT_FOLDER_TITLE));
         boolean addNewFolder = false;
-        switch (mRequestCode) {
-            case SearchActFragment.REQUEST_COPY_TO:
-            case SearchActFragment.REQUEST_MOVE_TO:
-                addNewFolder = false;
-                break;
-            default:
-                addNewFolder = true;
+        if ((mRequestCode & SearchActFragment.REQUEST_COPY_TO) != 0 || (mRequestCode & SearchActFragment.REQUEST_MOVE_TO) != 0) {
+            addNewFolder = false;
+        } else {
+            addNewFolder = true;
         }
+
         if (DEBUG) {
             Log.d(TAG, "addNewFolder: " + addNewFolder + ", mRequestCode: " + mRequestCode);
         }
@@ -97,7 +95,7 @@ public class SelectFolderDialog extends BaseDialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SearchActFragment.REQUEST_ADD_TITLE) {
+        if ((requestCode & SearchActFragment.REQUEST_ADD_TITLE) != 0) {
             if (resultCode == Activity.RESULT_OK) {
                 final String title = data.getStringExtra("title");
                 SearchActFragment.addTitle(getActivity(), title);
