@@ -21,10 +21,12 @@ public class ActProvider extends ContentProvider {
     public static final String PATH_ALL_ACTS_LIST_FROM_PARSE = "all_acts_list_from_parse"; // from parse.com
     public static final String PATH_ALL_ACTS_LIST_COUNT = "all_acts_list_count";
     public static final String PATH_ALL_ACTS_LIST_REMOVE_ALL = "all_acts_list_remove_all";
+    public static final String PATH_ALL_ACTS_LIST_REMOVE_DUPLICATED = "all_acts_list_remove_duplicated";
 
     public static final int CODE_ALL_ACTS_LIST = 1000;
     public static final int CODE_ALL_ACTS_LIST_COUNT = 1001;
     public static final int CODE_ALL_ACTS_LIST_REMOVE_ALL = 1002;
+    public static final int CODE_ALL_ACTS_LIST_REMOVE_DUPLICATED = 1003;
 
     // acts
     public static final String PATH_ACTS = "acts";
@@ -60,6 +62,7 @@ public class ActProvider extends ContentProvider {
         mUriMatcher.addURI(AUTHORITY, PATH_ALL_ACTS_LIST_FROM_PARSE, CODE_ALL_ACTS_LIST);
         mUriMatcher.addURI(AUTHORITY, PATH_ALL_ACTS_LIST_COUNT, CODE_ALL_ACTS_LIST_COUNT);
         mUriMatcher.addURI(AUTHORITY, PATH_ALL_ACTS_LIST_REMOVE_ALL, CODE_ALL_ACTS_LIST_REMOVE_ALL);
+        mUriMatcher.addURI(AUTHORITY, PATH_ALL_ACTS_LIST_REMOVE_DUPLICATED, CODE_ALL_ACTS_LIST_REMOVE_DUPLICATED);
 
         mUriMatcher.addURI(AUTHORITY, PATH_ACTS, CODE_ACTS);
 
@@ -170,6 +173,12 @@ public class ActProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int rtn = 0;
         switch (mUriMatcher.match(uri)) {
+            case CODE_ALL_ACTS_LIST_REMOVE_DUPLICATED:
+                rtn = mActDatabase.getDataBase().delete(ActDatabase.TABLE_ALL_ACTS_LISTS, ActDatabase.ID + " not in (select max(" + ActDatabase.ID + ") from " + ActDatabase.TABLE_ALL_ACTS_LISTS + " group by " + ActDatabase.TITLE + ")", null);
+                break;
+            case CODE_ALL_ACTS_LIST:
+                rtn = mActDatabase.getDataBase().delete(ActDatabase.TABLE_ALL_ACTS_LISTS, selection, selectionArgs);
+                break;
             case CODE_ALL_ACTS_LIST_REMOVE_ALL:
                 rtn = mActDatabase.getDataBase().delete(ActDatabase.TABLE_ALL_ACTS_LISTS, null, null);
                 break;

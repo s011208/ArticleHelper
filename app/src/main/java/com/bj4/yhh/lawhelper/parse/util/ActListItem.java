@@ -25,7 +25,7 @@ public class ActListItem {
     public boolean equals(Object o) {
         if (!(o instanceof ActListItem)) return false;
         ActListItem other = (ActListItem) o;
-        return other.mUrl.equals(mUrl) && other.mTitle.equals(mTitle) && other.mCategory.equals(mCategory);
+        return other.mUrl.equals(mUrl) && other.mTitle.equals(mTitle);
     }
 
     public ActListItem(String url, String title, String amendedDate, String category) {

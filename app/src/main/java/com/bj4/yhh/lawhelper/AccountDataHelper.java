@@ -214,10 +214,6 @@ public class AccountDataHelper {
                                                             progress = 20 + (70 / totalQueryTime) * i;
                                                             onProgressUpdate(progress, "");
                                                         }
-                                                        if (listOnParse.size() <= localAllActListCount) {
-                                                            onFinishRetrieveAllActDataFromParse();
-                                                            return;
-                                                        }
                                                         final ArrayList<ActListItem> itemInLocal = ActListItem.queryFromProvider(mContext, null, null, null, null);
                                                         final ArrayList<ActListItem> itemToAdd = new ArrayList<ActListItem>();
                                                         final ArrayList<ActListItem> itemToUpdate = new ArrayList<ActListItem>();
@@ -251,6 +247,9 @@ public class AccountDataHelper {
                                                         for (int i = 0; i < itemToUpdate.size(); i++) {
                                                             mContext.getContentResolver().update(Uri.parse("content://" + ActProvider.AUTHORITY + "/" + ActProvider.PATH_ALL_ACTS_LIST_FROM_PARSE), itemToUpdate.get(i).getContentValues(), ActDatabase.ID + "=" + itemToUpdate.get(i).mId, null);
                                                         }
+                                                        // delete duplicated items
+                                                        int deletedDuplicatedItems = mContext.getContentResolver().delete(Uri.parse("content://" + ActProvider.AUTHORITY + "/" + ActProvider.PATH_ALL_ACTS_LIST_REMOVE_DUPLICATED), null, null);
+                                                        Log.d(TAG, "deletedDuplicatedItems: " + deletedDuplicatedItems);
                                                         progress = 98;
                                                         onProgressUpdate(progress, "");
                                                         if (DEBUG) {
