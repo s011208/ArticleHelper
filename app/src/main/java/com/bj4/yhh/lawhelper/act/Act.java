@@ -21,6 +21,7 @@ public class Act implements Comparable<Act> {
     private long mId = ActDatabase.NO_ID;
     private String mTitle;
     private String mAmendedDate;
+    private String mUpdateAmendedDate;
     private String mCategory;
     private boolean mHasLoadSuccess = false;
     private final ArrayList<Chapter> mChapters = new ArrayList<Chapter>();
@@ -35,12 +36,13 @@ public class Act implements Comparable<Act> {
         mCategory = category;
     }
 
-    public Act(String title, String amendedDate, String category, long id, int hasLoadSuccess) {
+    public Act(String title, String amendedDate, String category, long id, int hasLoadSuccess, String updateAmendedDate) {
         mTitle = title;
         mAmendedDate = amendedDate;
         mCategory = category;
         mId = id;
         mHasLoadSuccess = (hasLoadSuccess == ActDatabase.TRUE);
+        mUpdateAmendedDate = updateAmendedDate;
     }
 
     public Act(ContentValues cv) {
@@ -89,6 +91,10 @@ public class Act implements Comparable<Act> {
         return mHasLoadSuccess;
     }
 
+    public String getUpdateAmendedDate() {
+        return mUpdateAmendedDate;
+    }
+
     public void addChapter(Chapter chapter) {
         mChapters.add(chapter);
         Collections.sort(mChapters);
@@ -102,6 +108,7 @@ public class Act implements Comparable<Act> {
     public ContentValues toContentValues() {
         ContentValues rtn = new ContentValues();
         rtn.put(ActDatabase.AMENDED_DATE, mAmendedDate);
+        rtn.put(ActDatabase.UPDATE_AMENDED_DATE, mUpdateAmendedDate);
         rtn.put(ActDatabase.TITLE, mTitle);
         rtn.put(ActDatabase.CATEGORY, mCategory);
         rtn.put(ActDatabase.HAS_LOAD_SUCCESS, mHasLoadSuccess ? ActDatabase.TRUE : ActDatabase.FALSE);
@@ -114,6 +121,7 @@ public class Act implements Comparable<Act> {
         JSONObject json = new JSONObject();
         try {
             json.put(ActDatabase.AMENDED_DATE, mAmendedDate);
+            json.put(ActDatabase.UPDATE_AMENDED_DATE, mUpdateAmendedDate);
             json.put(ActDatabase.TITLE, mTitle);
             json.put(ActDatabase.CATEGORY, mCategory);
             json.put(ActDatabase.HAS_LOAD_SUCCESS, mHasLoadSuccess ? ActDatabase.TRUE : ActDatabase.FALSE);
@@ -145,8 +153,10 @@ public class Act implements Comparable<Act> {
                 final int indexOfAmendedDate = allActList.getColumnIndex(ActDatabase.AMENDED_DATE);
                 final int indexOfCategory = allActList.getColumnIndex(ActDatabase.CATEGORY);
                 final int indexOfLoaded = allActList.getColumnIndex(ActDatabase.HAS_LOAD_SUCCESS);
+                final int indexOfUpdateAmendedDate = allActList.getColumnIndex(ActDatabase.UPDATE_AMENDED_DATE);
                 while (allActList.moveToNext()) {
-                    rtn.add(new Act(allActList.getString(indexOfTitle), allActList.getString(indexOfAmendedDate), allActList.getString(indexOfCategory), allActList.getLong(indexOfId), allActList.getInt(indexOfLoaded)));
+                    rtn.add(new Act(allActList.getString(indexOfTitle), allActList.getString(indexOfAmendedDate), allActList.getString(indexOfCategory)
+                            , allActList.getLong(indexOfId), allActList.getInt(indexOfLoaded), allActList.getString(indexOfUpdateAmendedDate)));
                 }
             } finally {
                 allActList.close();

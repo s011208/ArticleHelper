@@ -17,11 +17,12 @@ public class Article extends ActContent {
     public long mChapterId;
 
     public Article(String number, String content, int order) {
-        this(number, content, order, ActDatabase.NO_ID, false, null, -1, -1, ActDatabase.NO_ID);
+        this(number, content, order, ActDatabase.NO_ID, false, null, -1, -1, ActDatabase.NO_ID, "", "");
     }
 
-    public Article(String number, String content, int order, long id, boolean hasHighLight, ArrayList<Long> links, int drawLineStart, int drawLineEnd, long chapterId) {
-        super(number, content, order, id, hasHighLight, links, drawLineStart, drawLineEnd);
+    public Article(String number, String content, int order, long id, boolean hasHighLight, ArrayList<Long> links, int drawLineStart
+            , int drawLineEnd, long chapterId, String updateAmendedDate, String updateContent) {
+        super(number, content, order, id, hasHighLight, links, drawLineStart, drawLineEnd, updateAmendedDate, updateContent);
         mChapterId = chapterId;
     }
 
@@ -74,13 +75,16 @@ public class Article extends ActContent {
                 final int drawLineStartColumn = data.getColumnIndex(ActDatabase.DRAW_LINE_START);
                 final int drawLineEndColumn = data.getColumnIndex(ActDatabase.DRAW_LINE_END);
                 final int chapterIdColumn = data.getColumnIndex(ActDatabase.CHAPTER_ID);
+                final int updateAmendedDateColumn = data.getColumnIndex(ActDatabase.UPDATE_AMENDED_DATE);
+                final int updateContentColumn = data.getColumnIndex(ActDatabase.UPDATE_CONTENT);
                 while (data.moveToNext()) {
                     rtn.add(new Article(data.getString(numberColumn), data.getString(contentColumn)
                             , data.getInt(orderColumn), data.getLong(idColumn)
                             , data.getInt(highLightColumn) == ActDatabase.TRUE
                             , ActContent.convertLinksFromJSON(data.getString(linksColumn))
                             , data.getInt(drawLineStartColumn), data.getInt(drawLineEndColumn)
-                            , data.getLong(chapterIdColumn)));
+                            , data.getLong(chapterIdColumn)
+                            , data.getString(updateAmendedDateColumn), data.getString(updateContentColumn)));
                 }
             } finally {
                 data.close();

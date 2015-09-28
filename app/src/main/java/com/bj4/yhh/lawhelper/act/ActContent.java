@@ -28,6 +28,7 @@ public abstract class ActContent implements Comparable<ActContent> {
     public String mContent;
     public boolean mHasStar;
     public boolean mHasTextNote, mHasImageNote;
+    public String mUpdateAmendedDate, mUpdateContent;
     /**
      * Articles' id
      */
@@ -36,7 +37,8 @@ public abstract class ActContent implements Comparable<ActContent> {
     public int mFailedTime = -1;
     private int mDrawLineStart, mDrawLineEnd;
 
-    public ActContent(String number, String content, int order, long id, boolean hasStar, ArrayList<Long> links, int drawLineStart, int drawLineEnd) {
+    public ActContent(String number, String content, int order, long id, boolean hasStar, ArrayList<Long> links, int drawLineStart
+            , int drawLineEnd, String updateAmendedDate, String updateContent) {
         mNumber = number;
         mContent = content;
         mOrder = order;
@@ -44,6 +46,8 @@ public abstract class ActContent implements Comparable<ActContent> {
         mHasStar = hasStar;
         mDrawLineStart = drawLineStart;
         mDrawLineEnd = drawLineEnd;
+        mUpdateAmendedDate = updateAmendedDate;
+        mUpdateContent = updateContent;
         if (links != null) {
             mLinks.addAll(links);
         }
@@ -84,6 +88,8 @@ public abstract class ActContent implements Comparable<ActContent> {
             mLinks.addAll(convertLinksFromJSON(json.getString(ActDatabase.LINKS)));
             mDrawLineStart = json.getInt(ActDatabase.DRAW_LINE_START);
             mDrawLineEnd = json.getInt(ActDatabase.DRAW_LINE_END);
+            mUpdateContent = json.getString(ActDatabase.UPDATE_CONTENT);
+            mUpdateAmendedDate = json.getString(ActDatabase.UPDATE_AMENDED_DATE);
         } catch (JSONException e) {
         }
     }
@@ -108,6 +114,8 @@ public abstract class ActContent implements Comparable<ActContent> {
             json.put(ActDatabase.DRAW_LINE_START, mDrawLineStart);
             json.put(ActDatabase.DRAW_LINE_END, mDrawLineEnd);
             json.put("mFailedTime", mFailedTime);
+            json.put(ActDatabase.UPDATE_AMENDED_DATE, mUpdateAmendedDate);
+            json.put(ActDatabase.UPDATE_CONTENT, mUpdateContent);
         } catch (JSONException e) {
         }
         return json;

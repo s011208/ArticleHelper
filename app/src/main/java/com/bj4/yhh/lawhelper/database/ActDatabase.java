@@ -35,6 +35,10 @@ public class ActDatabase extends SQLiteOpenHelper {
     * */
     public static final String TABLE_ALL_ACTS_LISTS = "all_acts_lists";
 
+    // columns for update
+    public static final String UPDATE_AMENDED_DATE = "update_amended_date";
+    public static final String UPDATE_CONTENT = "update_content";
+
     // columns for all
     public static final String ID = "_id";
     public static final int NO_ID = -1;
@@ -231,6 +235,7 @@ public class ActDatabase extends SQLiteOpenHelper {
                 + NUMBER + " TEXT,"
                 + TITLE + " TEXT,"
                 + AMENDED_DATE + " TEXT,"
+                + UPDATE_AMENDED_DATE + " TEXT,"
                 + URL + " TEXT,"
                 + HAS_LOAD_SUCCESS + " INTEGER,"
                 + CATEGORY + " TEXT)");
@@ -247,6 +252,8 @@ public class ActDatabase extends SQLiteOpenHelper {
                 + COLUMN_ORDER + " INTEGER,"
                 + HAS_STAR + " INTEGER,"
                 + LINKS + " TEXT,"
+                + UPDATE_AMENDED_DATE + " TEXT,"
+                + UPDATE_CONTENT + " TEXT,"
                 + DRAW_LINE_START + " INTEGER DEFAULT -1,"
                 + DRAW_LINE_END + " INTEGER DEFAULT -1,"
                 + CONTENT + " TEXT)");
@@ -264,6 +271,8 @@ public class ActDatabase extends SQLiteOpenHelper {
                 + HAS_STAR + " INTEGER,"
                 + COLUMN_ORDER + " INTEGER,"
                 + LINKS + " TEXT,"
+                + UPDATE_AMENDED_DATE + " TEXT,"
+                + UPDATE_CONTENT + " TEXT,"
                 + DRAW_LINE_START + " INTEGER,"
                 + DRAW_LINE_END + " INTEGER,"
                 + CONTENT + " TEXT)");
